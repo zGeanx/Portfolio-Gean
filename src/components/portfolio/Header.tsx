@@ -45,14 +45,14 @@ export function Header() {
       {open && (
         <>
           <div
-            className="fixed inset-0 z-40 bg-background/60 backdrop-blur-xs md:hidden"
+            className="fixed inset-0 z-40 md:hidden"
             onClick={() => setOpen(false)}
             aria-hidden="true"
           />
           <nav
             id="mobile-nav"
             aria-label="Navegação mobile"
-            className="absolute top-[calc(100%+6px)] right-4 z-50 w-52 overflow-hidden rounded-md border border-border bg-surface/95 p-1.5 shadow-2xl backdrop-blur-md md:hidden"
+            className="absolute top-[calc(100%+6px)] right-4 z-50 w-52 overflow-hidden rounded-md border border-border bg-surface p-1.5 shadow-2xl md:hidden"
           >
             <ul className="flex flex-col">
               {navItems.map((item) => (

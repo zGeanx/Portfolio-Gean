@@ -1,5 +1,6 @@
 import booksLibraryShot from "@/assets/books-library.jpg";
 import profileShot from "@/assets/profile.jpg";
+import pulsoTvShot from "@/assets/pulso-tv.png";
 
 export const PLACEHOLDER = "[a definir]";
 
@@ -84,13 +85,14 @@ export const projects: Project[] = [
     image: booksLibraryShot,
   },
   {
-    category: PLACEHOLDER,
-    name: "Projeto 02 " + PLACEHOLDER,
-    description: "Espaço reservado para o próximo projeto. Conteúdo a ser preenchido.",
-    tech: [PLACEHOLDER],
-    demo: null,
+    category: "Streaming & Guia TV",
+    name: "Pulso TV",
+    description:
+      "Plataforma interativa para canais e eventos ao vivo, grade esportiva em tempo real, busca instantânea e reprodução individual de transmissões.",
+    tech: ["React", "TypeScript", "Tailwind CSS", "Cloudflare Workers", "REST API"],
+    demo: "https://pulso-tv.pulsotv.workers.dev/",
     repo: null,
-    image: null,
+    image: pulsoTvShot,
   },
   {
     category: PLACEHOLDER,

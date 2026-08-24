@@ -26,7 +26,7 @@ export const facts = [
 export const links = {
   github: "https://github.com/zGeanx",
   linkedin: "https://www.linkedin.com/in/gean-luca-a758b5215",
-  email: PLACEHOLDER,
+  email: "geanlucadias12@gmail.com",
   resume: PLACEHOLDER,
 };
 

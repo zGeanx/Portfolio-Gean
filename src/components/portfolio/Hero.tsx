@@ -75,14 +75,14 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="reveal relative mx-auto w-full max-w-[340px] sm:max-w-[400px] lg:max-w-[440px] order-1 lg:order-2">
+        <div className="reveal relative mx-auto w-full max-w-[280px] sm:max-w-[360px] lg:max-w-[420px] order-1 lg:order-2">
           <span
             aria-hidden
-            className="absolute -top-3 -left-3 inline-flex items-center gap-1 font-mono text-[10px] text-muted-foreground"
+            className="relative mb-1.5 inline-flex items-center gap-1 font-mono text-[10px] text-muted-foreground sm:absolute sm:-top-3 sm:-left-3 sm:mb-0"
           >
             <User className="h-3 w-3 text-primary" aria-hidden /> / perfil
           </span>
-          <div className="border border-border bg-surface p-2.5">
+          <div className="border border-border bg-surface p-2 sm:p-2.5">
             <div className="relative flex aspect-square items-center justify-center overflow-hidden border border-border bg-background">
               {profile.avatar ? (
                 <img

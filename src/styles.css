@@ -82,6 +82,14 @@
   animation: reveal-in 0.5s ease-out forwards;
 }
 
+@utility scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @keyframes reveal-in {
   to {
     opacity: 1;

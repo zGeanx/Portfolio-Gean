@@ -27,7 +27,7 @@ export function Contact() {
               const unset = item.value === PLACEHOLDER;
               const Icon = item.icon;
               const displayValue = unset
-                ? "geanlucadias12@gmail.com"
+                ? "[a definir]"
                 : item.value.replace(/^https?:\/\/(www\.)?/, "");
 
               const inner = (

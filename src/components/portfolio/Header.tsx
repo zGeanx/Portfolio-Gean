@@ -43,25 +43,32 @@ export function Header() {
       </div>
 
       {open && (
-        <nav
-          id="mobile-nav"
-          aria-label="Navegação mobile"
-          className="border-t border-border bg-background md:hidden"
-        >
-          <ul className="mx-auto max-w-[1160px] px-4 py-2 sm:px-6">
-            {navItems.map((item) => (
-              <li key={item.id} className="border-b border-border last:border-b-0">
-                <a
-                  href={`#${item.id}`}
-                  onClick={() => setOpen(false)}
-                  className="block py-3 text-sm text-muted-foreground transition-colors duration-200 hover:text-primary"
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-background/60 backdrop-blur-xs md:hidden"
+            onClick={() => setOpen(false)}
+            aria-hidden="true"
+          />
+          <nav
+            id="mobile-nav"
+            aria-label="Navegação mobile"
+            className="absolute top-[calc(100%+6px)] right-4 z-50 w-52 overflow-hidden rounded-md border border-border bg-surface/95 p-1.5 shadow-2xl backdrop-blur-md md:hidden"
+          >
+            <ul className="flex flex-col">
+              {navItems.map((item) => (
+                <li key={item.id}>
+                  <a
+                    href={`#${item.id}`}
+                    onClick={() => setOpen(false)}
+                    className="flex items-center rounded-sm px-3 py-2 text-sm text-muted-foreground transition-colors duration-150 hover:bg-surface-2 hover:text-primary"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </>
       )}
     </header>
   );

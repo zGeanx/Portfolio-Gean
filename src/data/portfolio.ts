@@ -1,6 +1,7 @@
 import booksLibraryShot from "@/assets/books-library.jpg";
 import profileShot from "@/assets/profile.jpg";
 import pulsoTvShot from "@/assets/pulso-tv.png";
+import sistemaFolgasShot from "@/assets/sistema-de-folgas.png";
 
 export const PLACEHOLDER = "[a definir]";
 
@@ -75,14 +76,14 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    category: "Aplicação web",
-    name: "Books Library",
+    category: "Gestão & Produtividade",
+    name: "Sistema de Folgas",
     description:
-      "Aplicação para consulta e gerenciamento de livros, autores e categorias, desenvolvida com uma interface moderna, responsiva e integrada a uma API própria.",
-    tech: ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "Flask", "SQLite"],
-    demo: "https://books-library.geanlucadias12.workers.dev",
+      "Plataforma intuitiva para agendamento e controle de escalas de folgas e horários, com validação de regras de limite, visão geral e exportação de dados.",
+    tech: ["React", "TypeScript", "Tailwind CSS", "Cloudflare Pages"],
+    demo: "https://sistema-de-folgas.pages.dev",
     repo: null,
-    image: booksLibraryShot,
+    image: sistemaFolgasShot,
   },
   {
     category: "Streaming & Guia TV",
@@ -95,13 +96,14 @@ export const projects: Project[] = [
     image: pulsoTvShot,
   },
   {
-    category: PLACEHOLDER,
-    name: "Projeto 03 " + PLACEHOLDER,
-    description: "Espaço reservado para o próximo projeto. Conteúdo a ser preenchido.",
-    tech: [PLACEHOLDER],
-    demo: null,
+    category: "Aplicação web",
+    name: "Books Library",
+    description:
+      "Aplicação para consulta e gerenciamento de livros, autores e categorias, desenvolvida com uma interface moderna, responsiva e integrada a uma API própria.",
+    tech: ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "Flask", "SQLite"],
+    demo: "https://books-library.geanlucadias12.workers.dev",
     repo: null,
-    image: null,
+    image: booksLibraryShot,
   },
 ];
 

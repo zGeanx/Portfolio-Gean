@@ -10,8 +10,8 @@ const items = [
 export function Contact() {
   return (
     <section id="contato" className="border-b border-border">
-      <div className="mx-auto max-w-[1160px] px-4 py-12 sm:py-16 sm:px-6">
-        <div className="border border-border bg-surface p-5 sm:p-8 md:p-10">
+      <div className="mx-auto max-w-[1160px] px-4 py-12 sm:px-6 sm:py-16">
+        <div className="border border-border bg-surface p-4 sm:p-8 md:p-10">
           <p className="inline-flex items-center gap-1.5 font-mono text-xs tracking-widest text-primary uppercase">
             <Mail className="h-3.5 w-3.5" aria-hidden /> / contato
           </p>
@@ -22,7 +22,7 @@ export function Contact() {
             {contact.text}
           </p>
 
-          <div className="mt-6 sm:mt-8 grid gap-3 grid-cols-1 sm:grid-cols-3">
+          <div className="mt-6 grid grid-cols-1 gap-2.5 sm:mt-8 sm:grid-cols-3 sm:gap-3">
             {items.map((item) => {
               const unset = item.value === PLACEHOLDER;
               const Icon = item.icon;
@@ -49,7 +49,7 @@ export function Contact() {
               return unset ? (
                 <div
                   key={item.label}
-                  className="flex min-w-0 items-center gap-3 border border-border bg-background p-3.5 sm:p-4 opacity-70"
+                  className="flex min-h-14 min-w-0 items-center gap-3 border border-border bg-background p-3.5 opacity-70 sm:p-4"
                 >
                   {inner}
                 </div>
@@ -57,9 +57,11 @@ export function Contact() {
                 <a
                   key={item.label}
                   href={item.href(item.value)}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="flex min-w-0 items-center gap-3 border border-border bg-background p-3.5 sm:p-4 transition-colors duration-200 hover:border-primary"
+                  target={item.href(item.value).startsWith("mailto:") ? undefined : "_blank"}
+                  rel={
+                    item.href(item.value).startsWith("mailto:") ? undefined : "noreferrer noopener"
+                  }
+                  className="flex min-h-14 min-w-0 items-center gap-3 border border-border bg-background p-3.5 transition-colors duration-200 hover:border-primary sm:p-4"
                 >
                   {inner}
                 </a>

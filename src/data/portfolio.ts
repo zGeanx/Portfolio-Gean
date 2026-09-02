@@ -112,4 +112,4 @@ export const contact = {
   text: "Estou disponível para oportunidades como Desenvolvedor Frontend Júnior, projetos e novas conexões profissionais.",
 };
 
-export const footerText = "© 2026 Gean Luca. Desenvolvido com React e TypeScript.";
+export const footerText = "© 2026 Gean Luca. Todos os direitos reservados.";

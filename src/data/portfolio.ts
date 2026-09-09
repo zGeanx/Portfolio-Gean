@@ -3,32 +3,35 @@ import profileShot from "@/assets/profile.jpg";
 import pulsoTvShot from "@/assets/pulso-tv.png";
 import sistemaFolgasShot from "@/assets/sistema-de-folgas.png";
 
-export const PLACEHOLDER = "[a definir]";
+export const siteUrl = "https://geanluca.dev/";
 
 export const profile = {
   brand: "geanluca.dev",
   name: "Gean Luca",
-  role: "Desenvolvedor Frontend Júnior",
+  role: "Desenvolvedor Frontend",
   status: "Disponível para oportunidades",
   initials: "GL",
   avatar: profileShot,
   description:
-    "Desenvolvo interfaces web modernas, responsivas e acessíveis, transformando ideias em experiências digitais claras, rápidas e intuitivas.",
+    "Crio interfaces web com React e TypeScript, unindo desempenho, consistência visual e atenção aos detalhes.",
   about:
-    "Sou estudante de Análise e Desenvolvimento de Sistemas no Senac RS e Desenvolvedor Frontend Júnior, com foco em React, TypeScript e criação de interfaces responsivas. Gosto de transformar problemas em soluções simples, funcionais e visualmente bem construídas.",
+    "Meu foco é transformar necessidades em interfaces claras e funcionais. Trabalho com React e TypeScript na construção de aplicações responsivas, integração com APIs e organização de componentes. Meus projetos incluem ferramentas de gestão, consulta de conteúdo e organização de acervos, sempre com atenção à navegação e aos detalhes de uso.",
 };
 
 export const facts = [
-  { label: "Localização", value: "Pelotas, RS" },
-  { label: "Formação", value: "Análise e Desenvolvimento de Sistemas" },
-  { label: "Conclusão prevista", value: "2026" },
+  { label: "Localização", value: "Pelotas, RS · Brasil", detail: null },
+  { label: "Atuação", value: "Desenvolvimento de interfaces web", detail: "React · TypeScript" },
+  {
+    label: "Formação",
+    value: "Análise e Desenvolvimento de Sistemas",
+    detail: "Senac RS · em andamento · conclusão prevista em 2026",
+  },
 ];
 
 export const links = {
   github: "https://github.com/zGeanx",
   linkedin: "https://www.linkedin.com/in/gean-luca-a758b5215",
   email: "geanlucadias12@gmail.com",
-  resume: PLACEHOLDER,
 };
 
 export const navItems = [
@@ -51,7 +54,7 @@ export const techGroups = [
     items: ["Git", "GitHub", "npm", "Docker", "Figma", "Visual Studio Code"],
   },
   {
-    title: "Conhecimentos",
+    title: "Práticas de desenvolvimento",
     icon: "layers",
     items: [
       "Design responsivo",
@@ -79,37 +82,37 @@ export const projects: Project[] = [
     category: "Gestão & Produtividade",
     name: "Sistema de Folgas",
     description:
-      "Plataforma intuitiva para agendamento e controle de escalas de folgas e horários, com validação de regras de limite, visão geral e exportação de dados.",
+      "Organiza escalas, horários e solicitações de folga em um só lugar. Valida limites de agendamento e permite acompanhar a programação e exportar os dados para apoiar o planejamento da equipe.",
     tech: ["React", "TypeScript", "Tailwind CSS", "Cloudflare Pages"],
     demo: "https://sistema-de-folgas.pages.dev",
     repo: null,
     image: sistemaFolgasShot,
   },
   {
-    category: "Streaming & Guia TV",
+    category: "Conteúdo & Transmissões",
     name: "Pulso TV",
     description:
-      "Plataforma interativa para canais e eventos ao vivo, grade esportiva em tempo real, busca instantânea e reprodução individual de transmissões.",
+      "Reúne canais ao vivo e programação esportiva em uma interface de consulta rápida. Integra busca de conteúdo, grade de eventos atualizada e reprodução de transmissões em um único fluxo.",
     tech: ["React", "TypeScript", "Tailwind CSS", "Cloudflare Workers", "REST API"],
     demo: "https://pulso-tv.pulsotv.workers.dev/",
     repo: null,
     image: pulsoTvShot,
   },
   {
-    category: "Aplicação web",
+    category: "Catálogo & Gestão de acervo",
     name: "Books Library",
     description:
-      "Aplicação para consulta e gerenciamento de livros, autores e categorias, desenvolvida com uma interface moderna, responsiva e integrada a uma API própria.",
+      "Centraliza a consulta e o gerenciamento de livros, autores e categorias. Conecta uma interface em Next.js a uma API própria em Flask, com armazenamento em SQLite e navegação adaptada ao celular.",
     tech: ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "Flask", "SQLite"],
-    demo: "https://books-library.geanlucadias12.workers.dev",
+    demo: null,
     repo: null,
     image: booksLibraryShot,
   },
 ];
 
 export const contact = {
-  title: "Vamos construir algo juntos?",
-  text: "Estou disponível para oportunidades como Desenvolvedor Frontend Júnior, projetos e novas conexões profissionais.",
+  title: "Vamos conversar sobre seu próximo projeto?",
+  text: "Tem uma ideia, precisa de uma interface para seu negócio ou quer conversar sobre uma oportunidade? Entre em contato por e-mail ou LinkedIn e me conte o que você precisa.",
 };
 
 export const footerText = "© 2026 Gean Luca. Todos os direitos reservados.";

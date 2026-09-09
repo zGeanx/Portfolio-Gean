@@ -47,13 +47,13 @@
   html,
   body {
     max-width: 100%;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
-    scroll-padding-top: 4rem;
+    overflow-x: clip;
   }
 
   html {
     color-scheme: dark;
+    scroll-behavior: smooth;
+    scroll-padding-top: 4rem;
   }
 
   body {
@@ -63,6 +63,9 @@
     -webkit-font-smoothing: antialiased;
     width: 100%;
     position: relative;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   a,
@@ -73,7 +76,7 @@
 
   section[id],
   main[id] {
-    scroll-margin-top: 4rem;
+    scroll-margin-top: 0.5rem;
   }
 
   :focus-visible {
@@ -83,14 +86,8 @@
 }
 
 @media (min-width: 640px) {
-  html,
-  body {
+  html {
     scroll-padding-top: 4.5rem;
-  }
-
-  section[id],
-  main[id] {
-    scroll-margin-top: 4.5rem;
   }
 }
 

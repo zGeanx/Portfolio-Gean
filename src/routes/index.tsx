@@ -6,10 +6,11 @@ import { Technologies } from "@/components/portfolio/Technologies";
 import { Projects } from "@/components/portfolio/Projects";
 import { Contact } from "@/components/portfolio/Contact";
 import { Footer } from "@/components/portfolio/Footer";
+import { links, profile, siteUrl } from "@/data/portfolio";
 
-const title = "Gean Luca — Desenvolvedor Frontend Júnior";
+const title = `${profile.name} — ${profile.role}`;
 const description =
-  "Portfólio de Gean Luca, Desenvolvedor Frontend Júnior focado em React, TypeScript e interfaces responsivas e acessíveis.";
+  "Sites e aplicações web com React e TypeScript. Conheça os projetos de Gean Luca, desenvolvedor frontend com foco em usabilidade, desempenho e interfaces responsivas.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -19,19 +20,34 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:url", content: siteUrl },
+      { property: "og:locale", content: "pt_BR" },
+      { property: "og:image", content: new URL(profile.avatar, siteUrl).href },
+      { property: "og:image:alt", content: `Foto de ${profile.name}, ${profile.role}` },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: title },
+      { name: "twitter:description", content: description },
+      { name: "twitter:image", content: new URL(profile.avatar, siteUrl).href },
+      { name: "twitter:image:alt", content: `Foto de ${profile.name}, ${profile.role}` },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: siteUrl }],
     scripts: [
       {
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Person",
-          name: "Gean Luca",
-          jobTitle: "Desenvolvedor Frontend Júnior",
-          address: { "@type": "PostalAddress", addressLocality: "Pelotas", addressRegion: "RS" },
+          name: profile.name,
+          jobTitle: profile.role,
+          url: siteUrl,
+          image: new URL(profile.avatar, siteUrl).href,
+          sameAs: [links.github, links.linkedin],
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Pelotas",
+            addressRegion: "RS",
+            addressCountry: "BR",
+          },
         }),
       },
     ],
@@ -41,7 +57,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-background">
+    <div className="min-h-screen w-full max-w-full overflow-x-clip bg-background">
       <a
         href="#conteudo"
         className="fixed left-4 top-4 z-[100] inline-flex min-h-11 -translate-y-24 items-center bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-transform focus-visible:translate-y-0"
@@ -49,7 +65,7 @@ function Index() {
         Ir para o conteúdo
       </a>
       <Header />
-      <main id="conteudo" className="w-full max-w-full overflow-x-hidden">
+      <main id="conteudo" className="w-full max-w-full overflow-x-clip">
         <Hero />
         <About />
         <Technologies />

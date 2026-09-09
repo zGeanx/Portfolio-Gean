@@ -1,23 +1,40 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { navItems, profile } from "@/data/portfolio";
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!open) return;
 
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
+      if (event.key === "Escape") {
+        setOpen(false);
+        menuButton.current?.focus();
+      }
+    };
+    const desktop = window.matchMedia("(min-width: 768px)");
+    const closeOnDesktop = () => {
+      if (desktop.matches) setOpen(false);
     };
 
     window.addEventListener("keydown", closeOnEscape);
-    return () => window.removeEventListener("keydown", closeOnEscape);
+    desktop.addEventListener("change", closeOnDesktop);
+    return () => {
+      window.removeEventListener("keydown", closeOnEscape);
+      desktop.removeEventListener("change", closeOnDesktop);
+    };
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur">
+    <header
+      className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur"
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
+      }}
+    >
       <div className="mx-auto flex h-14 max-w-[1160px] items-center justify-between gap-4 px-4 sm:h-16 sm:px-6">
         <a
           href="#inicio"
@@ -42,6 +59,7 @@ export function Header() {
         </nav>
 
         <button
+          ref={menuButton}
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
@@ -58,13 +76,17 @@ export function Header() {
           <button
             type="button"
             aria-label="Fechar menu"
-            className="fixed inset-x-0 bottom-0 top-14 z-40 cursor-default bg-background/40 md:hidden"
-            onClick={() => setOpen(false)}
+            tabIndex={-1}
+            className="absolute inset-x-0 top-full z-40 h-[calc(100dvh-3.5rem)] cursor-default bg-background/40 sm:h-[calc(100dvh-4rem)] md:hidden"
+            onClick={() => {
+              setOpen(false);
+              menuButton.current?.focus();
+            }}
           />
           <nav
             id="mobile-nav"
             aria-label="Navegação mobile"
-            className="absolute inset-x-4 top-[calc(100%+6px)] z-50 overflow-hidden rounded-md border border-border bg-surface p-1.5 shadow-2xl md:hidden"
+            className="absolute inset-x-4 top-[calc(100%+6px)] z-50 max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain rounded-md border border-border bg-surface p-1.5 shadow-2xl sm:max-h-[calc(100dvh-5.5rem)] md:hidden"
           >
             <ul className="flex flex-col">
               {navItems.map((item) => (

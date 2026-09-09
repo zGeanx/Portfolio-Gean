@@ -23,6 +23,11 @@ export function About() {
                 {fact.label}
               </dt>
               <dd className="mt-2 text-sm text-foreground">{fact.value}</dd>
+              {fact.detail && (
+                <dd className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                  {fact.detail}
+                </dd>
+              )}
             </div>
           ))}
         </dl>

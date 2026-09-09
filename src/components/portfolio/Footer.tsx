@@ -1,5 +1,5 @@
 import { Github, Linkedin } from "lucide-react";
-import { footerText, links, PLACEHOLDER } from "@/data/portfolio";
+import { footerText, links } from "@/data/portfolio";
 
 export function Footer() {
   return (
@@ -17,28 +17,18 @@ export function Footer() {
         {[
           { label: "GitHub", href: links.github, Icon: Github },
           { label: "LinkedIn", href: links.linkedin, Icon: Linkedin },
-        ].map(({ label, href, Icon }) =>
-          href === PLACEHOLDER ? (
-            <span
-              key={label}
-              aria-label={`${label} a definir`}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-sm border border-border text-muted-foreground opacity-60"
-            >
-              <Icon className="h-4 w-4" aria-hidden />
-            </span>
-          ) : (
-            <a
-              key={label}
-              href={href}
-              aria-label={label}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-sm border border-border text-muted-foreground transition-colors duration-200 hover:border-primary hover:bg-primary/5 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-            >
-              <Icon className="h-4 w-4" aria-hidden />
-            </a>
-          ),
-        )}
+        ].map(({ label, href, Icon }) => (
+          <a
+            key={label}
+            href={href}
+            aria-label={label}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-sm border border-border text-muted-foreground transition-colors duration-200 hover:border-primary hover:bg-primary/5 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          >
+            <Icon className="h-4 w-4" aria-hidden />
+          </a>
+        ))}
       </div>
     </footer>
   );

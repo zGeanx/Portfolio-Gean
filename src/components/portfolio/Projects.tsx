@@ -1,7 +1,40 @@
-import { ExternalLink, FolderGit2, Github, ImageOff } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { ArrowLeft, ArrowRight, ExternalLink, FolderGit2, Github } from "lucide-react";
 import { projects } from "@/data/portfolio";
 
 export function Projects() {
+  const carousel = useRef<HTMLDivElement>(null);
+  const [edges, setEdges] = useState({ start: true, end: false });
+  const updateEdges = useCallback(() => {
+    const element = carousel.current;
+    if (!element) return;
+    setEdges({
+      start: element.scrollLeft <= 1,
+      end: element.scrollLeft + element.clientWidth >= element.scrollWidth - 1,
+    });
+  }, []);
+
+  useEffect(() => {
+    const element = carousel.current;
+    if (!element) return;
+    const observer = new ResizeObserver(updateEdges);
+    observer.observe(element);
+    updateEdges();
+    return () => observer.disconnect();
+  }, [updateEdges]);
+
+  const scrollProject = (direction: number) => {
+    const element = carousel.current;
+    const card = element?.firstElementChild;
+    if (!element || !card) return;
+    element.scrollBy({
+      left: direction * (card.getBoundingClientRect().width + 12),
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "instant"
+        : "smooth",
+    });
+  };
+
   return (
     <section id="projetos" className="border-b border-border">
       <div className="mx-auto max-w-[1160px] px-4 py-12 sm:px-6 sm:py-16">
@@ -10,23 +43,51 @@ export function Projects() {
         </p>
         <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">Projetos</h2>
 
-        <p className="mt-2 font-mono text-[10px] text-muted-foreground/70 md:hidden">
-          Arraste para o lado →
-        </p>
+        <div className="mt-3 flex items-center justify-between gap-3 md:hidden">
+          <p className="font-mono text-xs text-muted-foreground">Arraste ou use as setas</p>
+          <div className="flex shrink-0 gap-2">
+            {[
+              { label: "Projeto anterior", direction: -1, disabled: edges.start, Icon: ArrowLeft },
+              { label: "Próximo projeto", direction: 1, disabled: edges.end, Icon: ArrowRight },
+            ].map(({ label, direction, disabled, Icon }) => (
+              <button
+                key={label}
+                type="button"
+                aria-label={label}
+                aria-controls="project-list"
+                disabled={disabled}
+                onClick={() => scrollProject(direction)}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-sm border border-border text-primary transition-colors hover:border-primary disabled:cursor-default disabled:opacity-40"
+              >
+                <Icon className="h-4 w-4" aria-hidden />
+              </button>
+            ))}
+          </div>
+        </div>
 
         <div
+          ref={carousel}
+          id="project-list"
           role="region"
-          aria-label="Projetos em carrossel"
+          aria-label="Projetos desenvolvidos"
           tabIndex={0}
-          className="scrollbar-none -mx-4 mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-4 pb-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:mx-0 md:mt-8 md:grid md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3"
+          onScroll={updateEdges}
+          onKeyDown={(event) => {
+            if (event.target !== event.currentTarget || window.innerWidth >= 768) return;
+            if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+              event.preventDefault();
+              scrollProject(event.key === "ArrowLeft" ? -1 : 1);
+            }
+          }}
+          className="scrollbar-none -mx-4 mt-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto overscroll-x-contain px-4 pb-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:mx-0 md:mt-8 md:grid md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3"
         >
           {projects.map((project) => (
             <article
               key={project.name}
-              className="flex w-[78vw] min-w-[250px] max-w-[290px] shrink-0 snap-start flex-col overflow-hidden border border-border bg-surface transition-colors duration-200 hover:border-primary md:w-auto md:min-w-0 md:max-w-none"
+              className="flex w-[min(86vw,340px)] min-w-0 shrink-0 snap-start flex-col overflow-hidden border border-border bg-surface transition-colors duration-200 hover:border-primary md:w-auto"
             >
-              <div className="aspect-video border-b border-border bg-background">
-                {project.image ? (
+              {project.image && (
+                <div className="aspect-video border-b border-border bg-background">
                   <img
                     src={project.image}
                     alt={`Captura de tela do projeto ${project.name}`}
@@ -36,22 +97,15 @@ export function Projects() {
                     decoding="async"
                     className="h-full w-full object-cover object-top"
                   />
-                ) : (
-                  <div className="flex h-full w-full flex-col items-center justify-center gap-1.5 py-5 text-muted-foreground">
-                    <ImageOff className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden />
-                    <span className="font-mono text-[10px] sm:text-[11px]">
-                      screenshot [a definir]
-                    </span>
-                  </div>
-                )}
-              </div>
+                </div>
+              )}
 
               <div className="flex min-w-0 flex-1 flex-col p-3.5 md:p-4">
-                <p className="font-mono text-[10px] sm:text-[11px] tracking-wider text-primary uppercase">
+                <p className="font-mono text-[11px] tracking-wider text-primary uppercase">
                   {project.category}
                 </p>
-                <h3 className="mt-1 text-sm font-medium sm:text-base">{project.name}</h3>
-                <p className="mt-1 line-clamp-3 text-xs leading-relaxed text-muted-foreground md:line-clamp-none md:text-sm">
+                <h3 className="mt-1 text-base font-medium">{project.name}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                   {project.description}
                 </p>
 
@@ -59,7 +113,7 @@ export function Projects() {
                   {project.tech.map((tech) => (
                     <li
                       key={tech}
-                      className="rounded-sm border border-border bg-background px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground sm:text-[11px]"
+                      className="rounded-sm border border-border bg-background px-1.5 py-0.5 font-mono text-[11px] text-muted-foreground"
                     >
                       {tech}
                     </li>
@@ -67,35 +121,29 @@ export function Projects() {
                 </ul>
 
                 <div className="mt-auto flex gap-2 pt-4 md:pt-5">
-                  {project.demo ? (
+                  {project.demo && (
                     <a
                       href={project.demo}
                       target="_blank"
                       rel="noreferrer noopener"
-                      className="inline-flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-sm bg-primary px-3 py-2 text-xs font-medium text-primary-foreground transition-colors duration-200 hover:bg-primary/85 sm:flex-none"
+                      aria-label={`Ver projeto ${project.name} (abre em nova aba)`}
+                      className="inline-flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-sm bg-primary px-3 py-2 text-sm font-medium text-primary-foreground transition-colors duration-200 hover:bg-primary/85 sm:flex-none sm:text-xs"
                     >
                       <ExternalLink className="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden />
-                      Demonstração
+                      Ver projeto
                     </a>
-                  ) : (
-                    <span className="inline-flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-sm border border-border px-3 py-2 font-mono text-[10px] text-muted-foreground sm:flex-none sm:text-xs">
-                      demo [a definir]
-                    </span>
                   )}
-                  {project.repo ? (
+                  {project.repo && (
                     <a
                       href={project.repo}
                       target="_blank"
                       rel="noreferrer noopener"
+                      aria-label={`Ver código de ${project.name} (abre em nova aba)`}
                       className="inline-flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-sm border border-border px-3 py-2 text-xs font-medium transition-colors duration-200 hover:border-primary hover:text-primary sm:flex-none"
                     >
                       <Github className="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden />
                       Código
                     </a>
-                  ) : (
-                    <span className="inline-flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-sm border border-border px-3 py-2 font-mono text-[10px] text-muted-foreground sm:flex-none sm:text-xs">
-                      código [a definir]
-                    </span>
                   )}
                 </div>
               </div>

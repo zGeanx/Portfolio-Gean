@@ -63,21 +63,21 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="reveal relative order-1 mx-auto w-full max-w-[min(208px,24svh)] sm:max-w-[360px] lg:order-2 lg:max-w-[420px]">
+        <div className="reveal order-1 mx-auto w-full max-w-[340px] sm:max-w-[300px] lg:order-2 lg:max-w-[340px]">
           <span
             aria-hidden
-            className="relative mb-1.5 inline-flex items-center gap-1 font-mono text-[10px] text-muted-foreground sm:absolute sm:-top-3 sm:-left-3 sm:mb-0"
+            className="mb-2 flex items-center gap-1 pl-2 font-mono text-[10px] text-muted-foreground"
           >
             <User className="h-3 w-3 text-primary" aria-hidden /> / perfil
           </span>
-          <div className="border border-border bg-surface p-2 sm:p-2.5">
-            <div className="relative flex aspect-square items-center justify-center overflow-hidden border border-border bg-background">
+          <div className="aspect-[4/5] rounded-[24px] border border-primary/30 bg-surface p-2">
+            <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-[18px] bg-background">
               {profile.avatar ? (
                 <img
                   src={profile.avatar}
                   alt={`Foto de perfil de ${profile.name}`}
-                  width={600}
-                  height={600}
+                  width={490}
+                  height={1024}
                   loading="eager"
                   fetchPriority="high"
                   className="h-full w-full object-cover object-[50%_18%]"
@@ -87,18 +87,6 @@ export function Hero() {
                   {profile.initials}
                 </span>
               )}
-              <span
-                aria-hidden
-                className="pointer-events-none absolute top-2 left-2 h-3 w-3 border-t border-l border-primary"
-              />
-              <span
-                aria-hidden
-                className="pointer-events-none absolute right-2 bottom-2 h-3 w-3 border-r border-b border-primary"
-              />
-            </div>
-            <div className="mt-2 flex items-center justify-between border-t border-border pt-2 font-mono text-[10px] text-muted-foreground">
-              <span>{profile.name}</span>
-              <span>Pelotas, RS</span>
             </div>
           </div>
         </div>

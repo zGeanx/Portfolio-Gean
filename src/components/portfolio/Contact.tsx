@@ -4,7 +4,6 @@ import { Toaster } from "@/components/ui/sonner";
 import { contact, links } from "@/data/portfolio";
 
 const items = [
-  { label: "E-mail", display: links.email, icon: Mail, href: `mailto:${links.email}` },
   { label: "LinkedIn", display: "Gean Luca", icon: Linkedin, href: links.linkedin },
   { label: "GitHub", display: "@zGeanx", icon: Github, href: links.github },
 ];
@@ -40,12 +39,28 @@ export function Contact() {
           </p>
 
           <div className="mt-6 grid grid-cols-1 gap-2.5 sm:mt-8 sm:gap-3 md:grid-cols-3">
+            <button
+              type="button"
+              onClick={copyEmail}
+              aria-label={`Copiar e-mail: ${links.email}`}
+              title="Clique para copiar o e-mail"
+              className="flex min-h-14 min-w-0 cursor-pointer items-center gap-3 border border-border bg-background p-3.5 text-left transition-colors duration-200 hover:border-primary sm:p-4"
+            >
+              <Mail className="h-4 w-4 shrink-0 text-primary" aria-hidden />
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-medium text-foreground">E-mail</span>
+                <span className="mt-1 block select-text break-words font-mono text-xs text-muted-foreground [overflow-wrap:anywhere]">
+                  {links.email}
+                </span>
+              </span>
+              <Copy className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
+            </button>
             {items.map(({ label, display, icon: Icon, href }) => (
               <a
                 key={label}
                 href={href}
-                target={href.startsWith("mailto:") ? undefined : "_blank"}
-                rel={href.startsWith("mailto:") ? undefined : "noreferrer noopener"}
+                target="_blank"
+                rel="noreferrer noopener"
                 className="flex min-h-14 min-w-0 items-center gap-3 border border-border bg-background p-3.5 transition-colors duration-200 hover:border-primary sm:p-4"
               >
                 <Icon className="h-4 w-4 shrink-0 text-primary" aria-hidden />
@@ -58,14 +73,6 @@ export function Contact() {
               </a>
             ))}
           </div>
-          <button
-            type="button"
-            onClick={copyEmail}
-            className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-sm px-2 text-sm text-muted-foreground transition-colors hover:text-primary"
-          >
-            <Copy className="h-4 w-4" aria-hidden />
-            Copiar e-mail
-          </button>
         </div>
       </div>
       <Toaster

@@ -85,7 +85,7 @@ export const projects: Project[] = [
       "Organiza escalas, horários e solicitações de folga em um só lugar. Valida limites de agendamento e permite acompanhar a programação e exportar os dados para apoiar o planejamento da equipe.",
     tech: ["React", "TypeScript", "Tailwind CSS", "Cloudflare Pages"],
     demo: "https://sistema-de-folgas.pages.dev",
-    repo: null,
+    repo: "https://github.com/zGeanx/Sistema_De_Folgas",
     image: sistemaFolgasShot,
   },
   {
@@ -95,7 +95,7 @@ export const projects: Project[] = [
       "Reúne canais ao vivo e programação esportiva em uma interface de consulta rápida. Integra busca de conteúdo, grade de eventos atualizada e reprodução de transmissões em um único fluxo.",
     tech: ["React", "TypeScript", "Tailwind CSS", "Cloudflare Workers", "REST API"],
     demo: "https://pulso-tv.pulsotv.workers.dev/",
-    repo: null,
+    repo: "https://github.com/zGeanx/pulso-tv",
     image: pulsoTvShot,
   },
   {
@@ -104,8 +104,8 @@ export const projects: Project[] = [
     description:
       "Centraliza a consulta e o gerenciamento de livros, autores e categorias. Conecta uma interface em Next.js a uma API própria em Flask, com armazenamento em SQLite e navegação adaptada ao celular.",
     tech: ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "Flask", "SQLite"],
-    demo: null,
-    repo: null,
+    demo: "https://books-library.pulsotv.workers.dev/",
+    repo: "https://github.com/zGeanx/Books-Library",
     image: booksLibraryShot,
   },
 ];

@@ -221,12 +221,7 @@ export function Header() {
   }, [open]);
 
   return (
-    <header
-      className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur"
-      onBlurCapture={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
-      }}
-    >
+    <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-[1160px] items-center justify-between gap-4 px-4 sm:h-16 sm:px-6">
         <a
           href="#inicio"

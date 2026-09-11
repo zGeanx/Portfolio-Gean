@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronDown, Menu, Moon, Sun, X } from "lucide-react";
 import { navItems, profile } from "@/data/portfolio";
 import { languages, useLanguage } from "@/i18n/LanguageProvider";
+import { scrollToSection } from "./internalNavigation";
 
 type Theme = "dark" | "light";
 
@@ -229,6 +230,7 @@ export function Header() {
       <div className="mx-auto flex h-14 max-w-[1160px] items-center justify-between gap-4 px-4 sm:h-16 sm:px-6">
         <a
           href="#inicio"
+          onClick={(event) => scrollToSection(event, "inicio")}
           className="inline-flex min-h-11 items-center font-mono text-sm tracking-tight text-foreground transition-colors duration-200 hover:text-primary"
         >
           {profile.brand}
@@ -241,6 +243,7 @@ export function Header() {
                 <li key={item.id}>
                   <a
                     href={`#${item.id}`}
+                    onClick={(event) => scrollToSection(event, item.id)}
                     className="flex min-h-11 items-center rounded-sm px-3 py-2 text-sm text-muted-foreground transition-colors duration-200 hover:text-primary"
                   >
                     {messages.header.nav[index]}
@@ -297,7 +300,10 @@ export function Header() {
                 <li key={item.id}>
                   <a
                     href={`#${item.id}`}
-                    onClick={() => setOpen(false)}
+                    onClick={(event) => {
+                      setOpen(false);
+                      scrollToSection(event, item.id);
+                    }}
                     className="flex min-h-11 items-center rounded-sm px-3 py-2 text-sm text-muted-foreground transition-colors duration-150 hover:bg-surface-2 hover:text-primary"
                   >
                     {messages.header.nav[index]}

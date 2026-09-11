@@ -10,7 +10,7 @@ import { links, profile, siteUrl } from "@/data/portfolio";
 import { LanguageProvider, useLanguage } from "@/i18n/LanguageProvider";
 import { scrollToSection } from "@/components/portfolio/internalNavigation";
 
-const title = `${profile.name} — ${profile.role}`;
+const title = `geanluca.dev | ${profile.role}`;
 const description =
   "Sites e aplicações web com React e TypeScript. Conheça os projetos de Gean Luca, desenvolvedor frontend com foco em usabilidade, desempenho e interfaces responsivas.";
 

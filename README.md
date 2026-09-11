@@ -1,29 +1,29 @@
-# Welcome to your Lovable project
+# Portfólio — Gean Luca
 
-This project was built with [Lovable](https://lovable.dev).
+Portfólio profissional de Gean Luca, Desenvolvedor Frontend focado em criar aplicações web modernas, de alta performance e com ótima experiência de uso.
 
-## Build with Lovable
+## 🚀 Tecnologias
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+- **Framework**: [TanStack Start](https://tanstack.com/start) / React 19
+- **Linguagem**: TypeScript
+- **Estilização**: Tailwind CSS v4
+- **Roteamento**: TanStack Router
+- **Deploy**: Cloudflare
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+## 💻 Desenvolvimento Local
 
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+Pré-requisitos: Node.js 20+ e npm (ou bun).
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+# Instalar dependências
+npm install
+
+# Rodar servidor de desenvolvimento
 npm run dev
+
+# Gerar build de produção
+npm run build
+
+# Pré-visualizar build
+npm run preview
 ```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS

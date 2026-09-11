@@ -9,7 +9,6 @@ export const profile = {
   brand: "geanluca.dev",
   name: "Gean Luca",
   role: "Desenvolvedor Frontend",
-  status: "Disponível para oportunidades",
   initials: "GL",
   avatar: profileShot,
   description:
@@ -19,14 +18,20 @@ export const profile = {
 };
 
 export const facts = [
-  { label: "Localização", value: "Pelotas, RS · Brasil", detail: null },
-  { label: "Atuação", value: "Desenvolvimento de interfaces web", detail: "React · TypeScript" },
+  { label: "Localização", value: "Pelotas, RS · Brasil", detail: null, icon: "map-pin" },
+  {
+    label: "Atuação",
+    value: "Desenvolvimento de interfaces web",
+    detail: "React · TypeScript",
+    icon: "briefcase",
+  },
   {
     label: "Formação",
     value: "Análise e Desenvolvimento de Sistemas",
     detail: "Senac RS · em andamento · conclusão prevista em 2026",
+    icon: "graduation-cap",
   },
-];
+] as const;
 
 export const links = {
   github: "https://github.com/zGeanx",

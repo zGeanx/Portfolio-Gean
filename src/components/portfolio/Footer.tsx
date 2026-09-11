@@ -1,6 +1,7 @@
 import { Github, Linkedin } from "lucide-react";
 import { links } from "@/data/portfolio";
 import { useLanguage } from "@/i18n/LanguageProvider";
+import { scrollToSection } from "./internalNavigation";
 
 export function Footer() {
   const { messages } = useLanguage();
@@ -10,6 +11,7 @@ export function Footer() {
       <div className="space-y-2">
         <a
           href="#inicio"
+          onClick={(event) => scrollToSection(event, "inicio")}
           className="inline-flex min-h-11 items-center font-mono text-sm font-semibold tracking-tight text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
         >
           geanluca.dev

@@ -2,6 +2,7 @@ import { ArrowRight, Github, Linkedin, Mail, User } from "lucide-react";
 import { links, profile } from "@/data/portfolio";
 import { useReveal } from "@/hooks/useReveal";
 import { useLanguage } from "@/i18n/LanguageProvider";
+import { scrollToSection } from "./internalNavigation";
 
 function ActionLink({
   href,
@@ -23,6 +24,7 @@ function ActionLink({
   return (
     <a
       href={href}
+      onClick={href.startsWith("#") ? (event) => scrollToSection(event, href.slice(1)) : undefined}
       className={cls}
       target={href.startsWith("#") ? undefined : "_blank"}
       rel={href.startsWith("#") ? undefined : "noreferrer noopener"}

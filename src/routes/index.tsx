@@ -7,6 +7,7 @@ import { Projects } from "@/components/portfolio/Projects";
 import { Contact } from "@/components/portfolio/Contact";
 import { Footer } from "@/components/portfolio/Footer";
 import { links, profile, siteUrl } from "@/data/portfolio";
+import { LanguageProvider, useLanguage } from "@/i18n/LanguageProvider";
 
 const title = `${profile.name} — ${profile.role}`;
 const description =
@@ -57,12 +58,22 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
+    <LanguageProvider>
+      <PortfolioPage />
+    </LanguageProvider>
+  );
+}
+
+function PortfolioPage() {
+  const { messages } = useLanguage();
+
+  return (
     <div className="min-h-screen w-full max-w-full overflow-x-clip bg-background">
       <a
         href="#conteudo"
         className="fixed left-4 top-4 z-[100] inline-flex min-h-11 -translate-y-24 items-center bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-transform focus-visible:translate-y-0"
       >
-        Ir para o conteúdo
+        {messages.skipLink}
       </a>
       <Header />
       <main id="conteudo" className="w-full max-w-full overflow-x-clip">

@@ -1,5 +1,7 @@
 import { ArrowRight, Github, Linkedin, Mail, User } from "lucide-react";
 import { links, profile } from "@/data/portfolio";
+import { useReveal } from "@/hooks/useReveal";
+import { useLanguage } from "@/i18n/LanguageProvider";
 
 function ActionLink({
   href,
@@ -32,27 +34,41 @@ function ActionLink({
 }
 
 export function Hero() {
+  const { language, messages } = useLanguage();
+  const contentRef = useReveal<HTMLDivElement>();
+  const portraitRef = useReveal<HTMLDivElement>();
+
   return (
     <section id="inicio" className="relative overflow-hidden border-b border-border">
       <div aria-hidden className="grid-bg pointer-events-none absolute inset-0" />
       <div className="relative mx-auto grid max-w-[1160px] gap-6 px-4 py-8 sm:gap-12 sm:px-6 sm:py-14 md:py-20 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
-        <div className="reveal order-2 min-w-0 lg:order-1">
-          <h1 className="text-[clamp(2.25rem,11vw,4.25rem)] leading-[1.05] font-semibold tracking-tight text-balance">
+        <div ref={contentRef} className="reveal-target order-2 min-w-0 lg:order-1">
+          <h1 className="text-gradient text-[clamp(2.25rem,11vw,4.25rem)] leading-[1.05] font-semibold tracking-tight text-balance">
             {profile.name}
           </h1>
-          <p className="mt-2.5 sm:mt-3 font-mono text-sm text-primary sm:text-base">
-            {profile.role}
+          <p
+            className="mt-2.5 sm:mt-3 font-mono text-sm text-primary sm:text-base"
+            aria-label={messages.hero.role}
+          >
+            <span
+              aria-hidden
+              key={language}
+              className="typing-role"
+              style={{ "--typing-width": `${messages.hero.role.length}ch` } as React.CSSProperties}
+            >
+              {messages.hero.role}
+            </span>
           </p>
           <p className="mt-4 sm:mt-5 max-w-[54ch] text-base leading-relaxed text-muted-foreground">
-            {profile.description}
+            {messages.hero.description}
           </p>
 
           <div className="mt-7 grid grid-cols-2 gap-2.5 sm:mt-8 sm:flex sm:flex-wrap sm:gap-3">
             <ActionLink href="#projetos" primary icon={ArrowRight}>
-              Ver projetos
+              {messages.hero.viewProjects}
             </ActionLink>
             <ActionLink href="#contato" icon={Mail}>
-              Fale comigo
+              {messages.hero.contact}
             </ActionLink>
             <ActionLink href={links.github} icon={Github}>
               GitHub
@@ -63,19 +79,23 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="reveal order-1 mx-auto w-full max-w-[340px] sm:max-w-[300px] lg:order-2 lg:max-w-[340px]">
+        <div
+          ref={portraitRef}
+          data-delay="100"
+          className="reveal-target order-1 mx-auto w-full max-w-[340px] sm:max-w-[300px] lg:order-2 lg:max-w-[340px]"
+        >
           <span
             aria-hidden
             className="mb-2 flex items-center gap-1 pl-2 font-mono text-[10px] text-muted-foreground"
           >
-            <User className="h-3 w-3 text-primary" aria-hidden /> / perfil
+            <User className="h-3 w-3 text-primary" aria-hidden /> {messages.hero.profile}
           </span>
           <div className="aspect-[4/5] rounded-[24px] border border-primary/30 bg-surface p-2">
             <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-[18px] bg-background">
               {profile.avatar ? (
                 <img
                   src={profile.avatar}
-                  alt={`Foto de perfil de ${profile.name}`}
+                  alt={messages.hero.profileAlt}
                   width={490}
                   height={1024}
                   loading="eager"

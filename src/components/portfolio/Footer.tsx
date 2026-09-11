@@ -1,7 +1,10 @@
 import { Github, Linkedin } from "lucide-react";
-import { footerText, links } from "@/data/portfolio";
+import { links } from "@/data/portfolio";
+import { useLanguage } from "@/i18n/LanguageProvider";
 
 export function Footer() {
+  const { messages } = useLanguage();
+
   return (
     <footer className="mx-auto flex max-w-[1160px] flex-col gap-5 border-t border-border/70 px-4 py-8 sm:flex-row sm:items-end sm:justify-between sm:gap-6 sm:px-6 sm:py-10">
       <div className="space-y-2">
@@ -11,7 +14,7 @@ export function Footer() {
         >
           geanluca.dev
         </a>
-        <p className="text-xs text-muted-foreground">{footerText}</p>
+        <p className="text-xs text-muted-foreground">{messages.footer}</p>
       </div>
       <div className="flex items-center gap-2">
         {[

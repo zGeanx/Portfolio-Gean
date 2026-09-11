@@ -11,7 +11,7 @@ export const languages: { code: Language; shortLabel: string; name: string }[] =
 
 const ptBR = {
   meta: {
-    title: "Gean Luca — Desenvolvedor Frontend",
+    title: "geanluca.dev | Desenvolvedor Frontend",
     description:
       "Sites e aplicações web com React e TypeScript. Conheça os projetos de Gean Luca, desenvolvedor frontend com foco em usabilidade, desempenho e interfaces responsivas.",
   },
@@ -134,7 +134,7 @@ export type Messages = DeepString<typeof ptBR>;
 
 const en: Messages = {
   meta: {
-    title: "Gean Luca — Frontend Developer",
+    title: "geanluca.dev | Frontend Developer",
     description:
       "Websites and web applications built with React and TypeScript. Explore Gean Luca's work in usability, performance, and responsive interfaces.",
   },

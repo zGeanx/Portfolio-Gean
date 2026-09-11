@@ -8,6 +8,7 @@ import { Contact } from "@/components/portfolio/Contact";
 import { Footer } from "@/components/portfolio/Footer";
 import { links, profile, siteUrl } from "@/data/portfolio";
 import { LanguageProvider, useLanguage } from "@/i18n/LanguageProvider";
+import { scrollToSection } from "@/components/portfolio/internalNavigation";
 
 const title = `${profile.name} — ${profile.role}`;
 const description =
@@ -71,6 +72,7 @@ function PortfolioPage() {
     <div className="min-h-screen w-full max-w-full overflow-x-clip bg-background">
       <a
         href="#conteudo"
+        onClick={(event) => scrollToSection(event, "conteudo")}
         className="fixed left-4 top-4 z-[100] inline-flex min-h-11 -translate-y-24 items-center bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-transform focus-visible:translate-y-0"
       >
         {messages.skipLink}

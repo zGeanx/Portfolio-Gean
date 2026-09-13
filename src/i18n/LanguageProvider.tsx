@@ -11,9 +11,9 @@ export const languages: { code: Language; shortLabel: string; name: string }[] =
 
 const ptBR = {
   meta: {
-    title: "geanluca.dev | Desenvolvedor Frontend",
+    title: "geanluca.dev | Desenvolvedor Full Stack",
     description:
-      "Sites e aplicações web com React e TypeScript. Conheça os projetos de Gean Luca, desenvolvedor frontend com foco em usabilidade, desempenho e interfaces responsivas.",
+      "Aplicações web full stack. Conheça os projetos de Gean Luca, desenvolvedor com experiência em APIs, dados, segurança e interfaces responsivas.",
   },
   skipLink: "Ir para o conteúdo",
   header: {
@@ -27,9 +27,9 @@ const ptBR = {
     nav: ["Início", "Sobre", "Tecnologias", "Projetos", "Contato"],
   },
   hero: {
-    role: "Desenvolvedor Frontend",
+    role: "Desenvolvedor Full Stack",
     description:
-      "Crio interfaces web com React e TypeScript, unindo desempenho, consistência visual e atenção aos detalhes.",
+      "Desenvolvedor full stack com experiência em aplicações web, APIs, bancos de dados e interfaces responsivas.",
     viewProjects: "Ver projetos",
     contact: "Fale comigo",
     profile: "/ perfil",
@@ -38,18 +38,18 @@ const ptBR = {
   about: {
     eyebrow: "/ sobre",
     title: "Sobre mim",
-    body: "Meu foco é transformar necessidades em interfaces claras e funcionais. Trabalho com React e TypeScript na construção de aplicações responsivas, integração com APIs e organização de componentes. Meus projetos incluem ferramentas de gestão, consulta de conteúdo e organização de acervos, sempre com atenção à navegação e aos detalhes de uso.",
+    body: "Sou desenvolvedor full stack formado em Análise e Desenvolvimento de Sistemas. Construo aplicações web da interface ao back-end, integrando APIs, regras de negócio, autenticação e bancos de dados. Minha experiência inclui projetos de gestão, catálogos, conteúdo ao vivo e processamento de dados, com atenção à organização, segurança e publicação.",
     facts: [
       { label: "Localização", value: "Pelotas, RS · Brasil", detail: "" },
       {
         label: "Atuação",
-        value: "Desenvolvimento de interfaces web",
-        detail: "React · TypeScript",
+        value: "Desenvolvimento full stack",
+        detail: "Interfaces · APIs · Dados",
       },
       {
         label: "Formação",
         value: "Análise e Desenvolvimento de Sistemas",
-        detail: "Senac RS · em andamento · conclusão prevista em 2026",
+        detail: "Senac RS · concluído em 2026",
       },
     ],
   },
@@ -58,22 +58,25 @@ const ptBR = {
     title: "Tecnologias",
     groups: [
       {
-        title: "Frontend",
-        items: ["HTML5", "CSS3", "JavaScript", "TypeScript", "React", "Tailwind CSS"],
+        title: "Front-end",
+        items: ["React", "Next.js", "Vue.js", "TypeScript", "Vite", "Tailwind CSS", "shadcn/ui"],
       },
       {
-        title: "Ferramentas",
-        items: ["Git", "GitHub", "npm", "Docker", "Figma", "Visual Studio Code"],
+        title: "Back-end",
+        items: ["Python", "Django", "Django REST Framework", "Flask", "Java", "REST API", "JWT"],
       },
       {
-        title: "Práticas de desenvolvimento",
+        title: "Dados e entrega",
         items: [
-          "Design responsivo",
-          "Acessibilidade",
-          "HTML semântico",
-          "SEO técnico",
-          "Core Web Vitals",
-          "Otimização de performance",
+          "PostgreSQL",
+          "MySQL",
+          "SQLite",
+          "Docker",
+          "Supabase",
+          "Cloudflare Workers",
+          "Cloudflare Pages",
+          "Render",
+          "Git",
         ],
       },
     ],
@@ -93,24 +96,32 @@ const ptBR = {
       {
         category: "Gestão & Produtividade",
         description:
-          "Organiza escalas, horários e solicitações de folga em um só lugar. Valida limites de agendamento e permite acompanhar a programação e exportar os dados para apoiar o planejamento da equipe.",
+          "Aplicação full stack para solicitações de folga, com portal público, painel administrativo protegido por JWT e fluxo de aprovação. A API em Django centraliza regras de negócio e persiste dados no PostgreSQL do Supabase.",
       },
       {
         category: "Conteúdo & Transmissões",
         description:
-          "Reúne canais ao vivo e programação esportiva em uma interface de consulta rápida. Integra busca de conteúdo, grade de eventos atualizada e reprodução de transmissões em um único fluxo.",
+          "Aplicação para navegação por canais e eventos ao vivo, com catálogo, agenda e páginas de reprodução. Usa rotas no servidor para integrar uma API externa e aplica políticas de origem para os players incorporados.",
       },
       {
         category: "Catálogo & Gestão de acervo",
         description:
-          "Centraliza a consulta e o gerenciamento de livros, autores e categorias. Conecta uma interface em Next.js a uma API própria em Flask, com armazenamento em SQLite e navegação adaptada ao celular.",
+          "Sistema full stack para consulta e gerenciamento de livros. Conecta uma interface em Next.js a uma API Flask, com busca por título e autor, armazenamento em SQLite e ambiente local padronizado com Docker.",
       },
     ],
   },
   contact: {
     eyebrow: "/ contato",
     title: "Vamos conversar sobre seu próximo projeto?",
-    text: "Tem uma ideia, precisa de uma interface para seu negócio ou quer conversar sobre uma oportunidade? Entre em contato por e-mail ou LinkedIn e me conte o que você precisa.",
+    text: "Estou aberto a oportunidades, colaborações e novos projetos. Preencha o formulário e me conte brevemente como posso contribuir.",
+    formTitle: "Envie uma mensagem",
+    name: "Nome",
+    namePlaceholder: "Como você se chama?",
+    emailPlaceholder: "voce@empresa.com",
+    message: "Mensagem",
+    messagePlaceholder: "Conte sobre a oportunidade ou projeto...",
+    submit: "Preparar e-mail",
+    formHint: "Ao enviar, seu aplicativo de e-mail será aberto com a mensagem preenchida.",
     email: "E-mail",
     copyAria: "Copiar e-mail",
     copyTitle: "Clique para copiar o e-mail",
@@ -134,9 +145,9 @@ export type Messages = DeepString<typeof ptBR>;
 
 const en: Messages = {
   meta: {
-    title: "geanluca.dev | Frontend Developer",
+    title: "geanluca.dev | Full Stack Developer",
     description:
-      "Websites and web applications built with React and TypeScript. Explore Gean Luca's work in usability, performance, and responsive interfaces.",
+      "Full stack web applications. Explore Gean Luca's work with APIs, data, security, and responsive interfaces.",
   },
   skipLink: "Skip to content",
   header: {
@@ -150,9 +161,9 @@ const en: Messages = {
     nav: ["Home", "About", "Technologies", "Projects", "Contact"],
   },
   hero: {
-    role: "Frontend Developer",
+    role: "Full Stack Developer",
     description:
-      "I build web interfaces with React and TypeScript, combining performance, visual consistency, and attention to detail.",
+      "Full stack developer with experience in web applications, APIs, databases, and responsive interfaces.",
     viewProjects: "View projects",
     contact: "Contact me",
     profile: "/ profile",
@@ -161,14 +172,18 @@ const en: Messages = {
   about: {
     eyebrow: "/ about",
     title: "About me",
-    body: "I focus on turning requirements into clear, functional interfaces. I work with React and TypeScript to build responsive applications, integrate APIs, and organize reusable components. My projects include management tools, content discovery, and library organization, always with careful attention to navigation and usability.",
+    body: "I am a full stack developer with a degree in Systems Analysis and Development. I build web applications from the interface to the back end, integrating APIs, business rules, authentication, and databases. My experience includes management, catalog, live content, and data-processing projects, with attention to organization, security, and deployment.",
     facts: [
       { label: "Location", value: "Pelotas, RS · Brazil", detail: "" },
-      { label: "Role", value: "Web interface development", detail: "React · TypeScript" },
+      {
+        label: "Role",
+        value: "Full stack development",
+        detail: "Interfaces · APIs · Data",
+      },
       {
         label: "Education",
         value: "Systems Analysis and Development",
-        detail: "Senac RS · in progress · expected graduation in 2026",
+        detail: "Senac RS · completed in 2026",
       },
     ],
   },
@@ -177,22 +192,25 @@ const en: Messages = {
     title: "Technologies",
     groups: [
       {
-        title: "Frontend",
-        items: ["HTML5", "CSS3", "JavaScript", "TypeScript", "React", "Tailwind CSS"],
+        title: "Front-end",
+        items: ["React", "Next.js", "Vue.js", "TypeScript", "Vite", "Tailwind CSS", "shadcn/ui"],
       },
       {
-        title: "Tools",
-        items: ["Git", "GitHub", "npm", "Docker", "Figma", "Visual Studio Code"],
+        title: "Back-end",
+        items: ["Python", "Django", "Django REST Framework", "Flask", "Java", "REST API", "JWT"],
       },
       {
-        title: "Development practices",
+        title: "Data & delivery",
         items: [
-          "Responsive design",
-          "Accessibility",
-          "Semantic HTML",
-          "Technical SEO",
-          "Core Web Vitals",
-          "Performance optimization",
+          "PostgreSQL",
+          "MySQL",
+          "SQLite",
+          "Docker",
+          "Supabase",
+          "Cloudflare Workers",
+          "Cloudflare Pages",
+          "Render",
+          "Git",
         ],
       },
     ],
@@ -212,24 +230,32 @@ const en: Messages = {
       {
         category: "Management & Productivity",
         description:
-          "Organizes schedules, working hours, and time-off requests in one place. It validates scheduling limits, tracks team plans, and exports data to support workforce planning.",
+          "Full stack leave-request application with a public portal, JWT-protected admin panel, and approval flow. Its Django API centralizes business rules and persists data in Supabase PostgreSQL.",
       },
       {
         category: "Content & Streaming",
         description:
-          "Brings live channels and sports schedules into a fast discovery interface. It combines content search, an updated events guide, and stream playback in a single flow.",
+          "Application for browsing live channels and events, with a catalog, schedule, and playback pages. It uses server routes to integrate an external API and applies origin policies to embedded players.",
       },
       {
         category: "Catalog & Library Management",
         description:
-          "Centralizes the search and management of books, authors, and categories. It connects a Next.js interface to a custom Flask API with SQLite storage and mobile-friendly navigation.",
+          "Full stack system for searching and managing books. It connects a Next.js interface to a Flask API, supports title and author search, stores data in SQLite, and provides a Docker-standardized local environment.",
       },
     ],
   },
   contact: {
     eyebrow: "/ contact",
     title: "Shall we talk about your next project?",
-    text: "Have an idea, need an interface for your business, or want to discuss an opportunity? Send me an email or connect on LinkedIn and tell me what you need.",
+    text: "I am open to opportunities, collaborations, and new projects. Fill out the form and briefly tell me how I can contribute.",
+    formTitle: "Send a message",
+    name: "Name",
+    namePlaceholder: "What is your name?",
+    emailPlaceholder: "you@company.com",
+    message: "Message",
+    messagePlaceholder: "Tell me about the opportunity or project...",
+    submit: "Prepare email",
+    formHint: "Submitting opens your email app with the message ready to send.",
     email: "Email",
     copyAria: "Copy email",
     copyTitle: "Click to copy the email",

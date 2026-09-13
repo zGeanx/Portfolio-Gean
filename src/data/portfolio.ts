@@ -8,27 +8,27 @@ export const siteUrl = "https://geanluca.dev/";
 export const profile = {
   brand: "geanluca.dev",
   name: "Gean Luca",
-  role: "Desenvolvedor Frontend",
+  role: "Desenvolvedor Full Stack",
   initials: "GL",
   avatar: profileShot,
   description:
-    "Crio interfaces web com React e TypeScript, unindo desempenho, consistência visual e atenção aos detalhes.",
+    "Desenvolvedor full stack com experiência em aplicações web, APIs, bancos de dados e interfaces responsivas.",
   about:
-    "Meu foco é transformar necessidades em interfaces claras e funcionais. Trabalho com React e TypeScript na construção de aplicações responsivas, integração com APIs e organização de componentes. Meus projetos incluem ferramentas de gestão, consulta de conteúdo e organização de acervos, sempre com atenção à navegação e aos detalhes de uso.",
+    "Sou desenvolvedor full stack formado em Análise e Desenvolvimento de Sistemas. Construo aplicações web da interface ao back-end, integrando APIs, regras de negócio, autenticação e bancos de dados. Minha experiência inclui projetos de gestão, catálogos, conteúdo ao vivo e processamento de dados, com atenção à organização, segurança e publicação.",
 };
 
 export const facts = [
   { label: "Localização", value: "Pelotas, RS · Brasil", detail: null, icon: "map-pin" },
   {
     label: "Atuação",
-    value: "Desenvolvimento de interfaces web",
-    detail: "React · TypeScript",
+    value: "Desenvolvimento full stack",
+    detail: "Interfaces · APIs · Dados",
     icon: "briefcase",
   },
   {
     label: "Formação",
     value: "Análise e Desenvolvimento de Sistemas",
-    detail: "Senac RS · em andamento · conclusão prevista em 2026",
+    detail: "Senac RS · concluído em 2026",
     icon: "graduation-cap",
   },
 ] as const;
@@ -49,25 +49,28 @@ export const navItems = [
 
 export const techGroups = [
   {
-    title: "Frontend",
+    title: "Front-end",
     icon: "code",
-    items: ["HTML5", "CSS3", "JavaScript", "TypeScript", "React", "Tailwind CSS"],
+    items: ["React", "Next.js", "Vue.js", "TypeScript", "Vite", "Tailwind CSS", "shadcn/ui"],
   },
   {
-    title: "Ferramentas",
-    icon: "wrench",
-    items: ["Git", "GitHub", "npm", "Docker", "Figma", "Visual Studio Code"],
+    title: "Back-end",
+    icon: "database",
+    items: ["Python", "Django", "Django REST Framework", "Flask", "Java", "REST API", "JWT"],
   },
   {
-    title: "Práticas de desenvolvimento",
-    icon: "layers",
+    title: "Dados e entrega",
+    icon: "workflow",
     items: [
-      "Design responsivo",
-      "Acessibilidade",
-      "HTML semântico",
-      "SEO técnico",
-      "Core Web Vitals",
-      "Otimização de performance",
+      "PostgreSQL",
+      "MySQL",
+      "SQLite",
+      "Docker",
+      "Supabase",
+      "Cloudflare Workers",
+      "Cloudflare Pages",
+      "Render",
+      "Git",
     ],
   },
 ];
@@ -87,8 +90,8 @@ export const projects: Project[] = [
     category: "Gestão & Produtividade",
     name: "Sistema de Folgas",
     description:
-      "Organiza escalas, horários e solicitações de folga em um só lugar. Valida limites de agendamento e permite acompanhar a programação e exportar os dados para apoiar o planejamento da equipe.",
-    tech: ["React", "TypeScript", "Tailwind CSS", "Cloudflare Pages"],
+      "Aplicação full stack para solicitações de folga, com portal público, painel administrativo protegido por JWT e fluxo de aprovação. A API em Django centraliza regras de negócio e persiste dados no PostgreSQL do Supabase.",
+    tech: ["React", "Vite", "Django", "Django REST Framework", "JWT", "PostgreSQL", "Supabase"],
     demo: "https://sistema-de-folgas.pages.dev",
     repo: "https://github.com/zGeanx/Sistema_De_Folgas",
     image: sistemaFolgasShot,
@@ -97,8 +100,8 @@ export const projects: Project[] = [
     category: "Conteúdo & Transmissões",
     name: "Pulso TV",
     description:
-      "Reúne canais ao vivo e programação esportiva em uma interface de consulta rápida. Integra busca de conteúdo, grade de eventos atualizada e reprodução de transmissões em um único fluxo.",
-    tech: ["React", "TypeScript", "Tailwind CSS", "Cloudflare Workers", "REST API"],
+      "Aplicação para navegação por canais e eventos ao vivo, com catálogo, agenda e páginas de reprodução. Usa rotas no servidor para integrar uma API externa e aplica políticas de origem para os players incorporados.",
+    tech: ["React", "Vinext", "Vite", "TypeScript", "Tailwind CSS", "Cloudflare Workers"],
     demo: "https://www.pulso-tv.online/",
     repo: "https://github.com/zGeanx/pulso-tv",
     image: pulsoTvShot,
@@ -107,9 +110,9 @@ export const projects: Project[] = [
     category: "Catálogo & Gestão de acervo",
     name: "Books Library",
     description:
-      "Centraliza a consulta e o gerenciamento de livros, autores e categorias. Conecta uma interface em Next.js a uma API própria em Flask, com armazenamento em SQLite e navegação adaptada ao celular.",
-    tech: ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "Flask", "SQLite"],
-    demo: "https://books-library.pulsotv.workers.dev/",
+      "Sistema full stack para consulta e gerenciamento de livros. Conecta uma interface em Next.js a uma API Flask, com busca por título e autor, armazenamento em SQLite e ambiente local padronizado com Docker.",
+    tech: ["Next.js", "TypeScript", "Flask", "SQLite", "Docker", "shadcn/ui"],
+    demo: "https://books-library.geanlucadias12.workers.dev/",
     repo: "https://github.com/zGeanx/Books-Library",
     image: booksLibraryShot,
   },

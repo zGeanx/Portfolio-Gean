@@ -12,7 +12,7 @@ import { scrollToSection } from "@/components/portfolio/internalNavigation";
 
 const title = `geanluca.dev | ${profile.role}`;
 const description =
-  "Sites e aplicações web com React e TypeScript. Conheça os projetos de Gean Luca, desenvolvedor frontend com foco em usabilidade, desempenho e interfaces responsivas.";
+  "Aplicações web full stack. Conheça os projetos de Gean Luca, desenvolvedor com experiência em APIs, dados, segurança e interfaces responsivas.";
 
 export const Route = createFileRoute("/")({
   head: () => ({

@@ -3,6 +3,7 @@ import { Check, Copy, Github, Linkedin, Mail } from "lucide-react";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { links } from "@/data/portfolio";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { useReveal } from "@/hooks/useReveal";
 import { useLanguage } from "@/i18n/LanguageProvider";
 
@@ -13,6 +14,7 @@ const items = [
 
 export function Contact() {
   const { messages } = useLanguage();
+  const isMobile = useIsMobile();
   const [copied, setCopied] = useState(false);
   const resetTimer = useRef<ReturnType<typeof setTimeout>>(null);
   const panelRef = useReveal<HTMLDivElement>();
@@ -25,6 +27,7 @@ export function Contact() {
   );
 
   const copyEmail = async () => {
+    const toastPosition = isMobile ? "top-center" : "bottom-center";
     try {
       await navigator.clipboard.writeText(links.email);
       setCopied(true);
@@ -32,11 +35,13 @@ export function Contact() {
       resetTimer.current = setTimeout(() => setCopied(false), 2000);
       toast.success(messages.contact.copiedTitle, {
         id: "copy-email",
+        position: toastPosition,
         description: messages.contact.copiedDescription,
       });
     } catch {
       toast.error(messages.contact.errorTitle, {
         id: "copy-email",
+        position: toastPosition,
         description: messages.contact.errorDescription,
       });
     }
@@ -107,9 +112,12 @@ export function Contact() {
       </div>
       <Toaster
         theme="dark"
-        position="bottom-center"
+        position={isMobile ? "top-center" : "bottom-center"}
         duration={4000}
-        mobileOffset={{ bottom: "max(16px, env(safe-area-inset-bottom))" }}
+        mobileOffset={{
+          top: "max(16px, calc(env(safe-area-inset-top) + 8px))",
+          bottom: "max(16px, env(safe-area-inset-bottom))",
+        }}
       />
     </section>
   );

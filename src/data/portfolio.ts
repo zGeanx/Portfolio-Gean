@@ -99,7 +99,7 @@ export const projects: Project[] = [
     description:
       "Reúne canais ao vivo e programação esportiva em uma interface de consulta rápida. Integra busca de conteúdo, grade de eventos atualizada e reprodução de transmissões em um único fluxo.",
     tech: ["React", "TypeScript", "Tailwind CSS", "Cloudflare Workers", "REST API"],
-    demo: "https://pulso-tv.pulsotv.workers.dev/",
+    demo: "https://www.pulso-tv.online/",
     repo: "https://github.com/zGeanx/pulso-tv",
     image: pulsoTvShot,
   },

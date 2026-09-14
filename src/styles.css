@@ -177,6 +177,32 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .technology-chip {
+    cursor: default;
+    transition:
+      color 180ms ease,
+      background-color 180ms ease,
+      border-color 180ms ease,
+      box-shadow 180ms ease,
+      transform 180ms ease;
+  }
+
+  .technology-chip-icon {
+    transition: color 180ms ease;
+  }
+
+  .technology-chip:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary);
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+    box-shadow: 0 10px 24px -16px color-mix(in oklch, var(--primary) 90%, transparent);
+  }
+
+  .technology-chip:hover .technology-chip-icon {
+    color: var(--primary-foreground);
+  }
+
   .project-card:hover {
     transform: translateY(-2px);
     border-color: var(--primary);

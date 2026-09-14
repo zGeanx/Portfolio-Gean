@@ -10,7 +10,7 @@ import { links, profile, siteUrl } from "@/data/portfolio";
 import { LanguageProvider, useLanguage } from "@/i18n/LanguageProvider";
 import { scrollToSection } from "@/components/portfolio/internalNavigation";
 
-const title = `geanluca.dev | ${profile.role}`;
+const title = `geanluca.dev │ ${profile.role}`;
 const description =
   "Aplicações web full stack. Conheça os projetos de Gean Luca, desenvolvedor com experiência em APIs, dados, segurança e interfaces responsivas.";
 

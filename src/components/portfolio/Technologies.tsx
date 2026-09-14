@@ -87,9 +87,9 @@ function TechnologyGroup({
         {group.items.map((item, itemIndex) => (
           <li
             key={item}
-            className="inline-flex items-center gap-1.5 rounded-sm border border-border bg-background px-2.5 py-1 font-mono text-xs text-muted-foreground"
+            className="technology-chip inline-flex items-center gap-1.5 rounded-sm border border-border bg-background px-2.5 py-1 font-mono text-xs text-muted-foreground"
           >
-            <span className="text-primary/80">
+            <span className="technology-chip-icon text-primary/80">
               <TechIcon name={item} />
             </span>
             {translatedGroup.items[itemIndex]}

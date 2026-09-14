@@ -11,7 +11,7 @@ export const languages: { code: Language; shortLabel: string; name: string }[] =
 
 const ptBR = {
   meta: {
-    title: "geanluca.dev | Desenvolvedor Full Stack",
+    title: "geanluca.dev │ Desenvolvedor Full Stack",
     description:
       "Aplicações web full stack. Conheça os projetos de Gean Luca, desenvolvedor com experiência em APIs, dados, segurança e interfaces responsivas.",
   },
@@ -145,7 +145,7 @@ export type Messages = DeepString<typeof ptBR>;
 
 const en: Messages = {
   meta: {
-    title: "geanluca.dev | Full Stack Developer",
+    title: "geanluca.dev │ Full Stack Developer",
     description:
       "Full stack web applications. Explore Gean Luca's work with APIs, data, security, and responsive interfaces.",
   },

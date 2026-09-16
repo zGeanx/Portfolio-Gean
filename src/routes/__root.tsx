@@ -12,7 +12,7 @@ import type { ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { profile } from "@/data/portfolio";
 
-const themeBootstrapScript = `(function(){try{var t=localStorage.getItem("portfolio-theme");var l=t==="light";document.documentElement.classList.toggle("light",l);document.documentElement.style.colorScheme=l?"light":"dark";var p=localStorage.getItem("portfolio-palette")||"indigo";document.documentElement.setAttribute("data-palette",p);var c={indigo:{d:"#0e0d16",l:"#f8f7fc"},emerald:{d:"#09140f",l:"#f4faf7"},lime:{d:"#0c1409",l:"#f7faf3"},orange:{d:"#160f09",l:"#fcf7f3"},amber:{d:"#151109",l:"#fcf8f3"},crimson:{d:"#160a0a",l:"#fdf5f5"},rose:{d:"#160a0f",l:"#fdf5f8"},magenta:{d:"#150915",l:"#fcf4fc"},mint:{d:"#091413",l:"#f3faf9"},titanium:{d:"#121214",l:"#f8f8f9"}};var m=document.querySelector('meta[name="theme-color"]');if(m&&c[p]){m.setAttribute("content",l?c[p].l:c[p].d)}}catch(e){}})();`;
+const themeBootstrapScript = `(function(){try{var t=localStorage.getItem("portfolio-theme");var l=t==="light";document.documentElement.classList.toggle("light",l);document.documentElement.style.colorScheme=l?"light":"dark";var p=localStorage.getItem("portfolio-palette")||"mint";document.documentElement.setAttribute("data-palette",p);var c={mint:{d:"#091413",l:"#f3faf9"}};var m=document.querySelector('meta[name="theme-color"]');if(m&&c[p]){m.setAttribute("content",l?c[p].l:c[p].d)}}catch(e){}})();`;
 
 function NotFoundComponent() {
   return (

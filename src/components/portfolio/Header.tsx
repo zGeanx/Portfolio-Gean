@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { Check, ChevronDown, Menu, Moon, Palette, Sun, X } from "lucide-react";
+import { ChevronDown, Menu, Moon, Sun, X } from "lucide-react";
 import { navItems, profile } from "@/data/portfolio";
 import { languages, useLanguage } from "@/i18n/LanguageProvider";
-import { useTheme, type ColorPalette, type Theme } from "@/theme/ThemeProvider";
+import { useTheme, type Theme } from "@/theme/ThemeProvider";
 import { scrollToSection } from "./internalNavigation";
 
 function ThemeToggle({
@@ -175,130 +175,6 @@ function LanguageSelector({ mobile = false }: { mobile?: boolean }) {
   );
 }
 
-function PaletteSelector({ mobile = false }: { mobile?: boolean }) {
-  const { palette, setPalette, palettes } = useTheme();
-  const { messages } = useLanguage();
-  const [open, setOpen] = useState(false);
-  const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
-  const selectorRef = useRef<HTMLDivElement>(null);
-  const selectorButton = useRef<HTMLButtonElement>(null);
-  const currentPalette = palettes.find((p) => p.id === palette) ?? palettes[0];
-
-  useEffect(() => {
-    if (!open) return;
-
-    const updateMenuPosition = () => {
-      if (!mobile || !selectorButton.current) return;
-      const rect = selectorButton.current.getBoundingClientRect();
-      const mobileNav = selectorButton.current.closest("nav");
-      const navRect = mobileNav?.getBoundingClientRect();
-      setMenuPosition({
-        top: (navRect?.bottom ?? rect.bottom) + 6,
-        right: Math.max(16, window.innerWidth - rect.right),
-      });
-    };
-
-    const closeOnPointerDown = (event: PointerEvent) => {
-      if (!selectorRef.current?.contains(event.target as Node)) setOpen(false);
-    };
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setOpen(false);
-        selectorButton.current?.focus();
-      }
-    };
-
-    document.addEventListener("pointerdown", closeOnPointerDown);
-    document.addEventListener("keydown", closeOnEscape);
-    updateMenuPosition();
-    window.addEventListener("resize", updateMenuPosition);
-    window.addEventListener("scroll", updateMenuPosition, true);
-    return () => {
-      document.removeEventListener("pointerdown", closeOnPointerDown);
-      document.removeEventListener("keydown", closeOnEscape);
-      window.removeEventListener("resize", updateMenuPosition);
-      window.removeEventListener("scroll", updateMenuPosition, true);
-    };
-  }, [mobile, open]);
-
-  const selectPalette = (nextPalette: ColorPalette) => {
-    setPalette(nextPalette);
-    setOpen(false);
-    selectorButton.current?.focus();
-  };
-
-  return (
-    <div
-      ref={selectorRef}
-      role="group"
-      aria-label={messages.header.paletteLabel}
-      className={`relative ${mobile ? "" : "ml-0.5"}`}
-    >
-      <button
-        ref={selectorButton}
-        type="button"
-        onClick={() => setOpen((value) => !value)}
-        aria-label={`${currentPalette.name} — ${messages.header.paletteLabel}`}
-        aria-haspopup="menu"
-        aria-expanded={open}
-        className={`inline-flex h-7 min-w-0 items-center justify-center gap-1.5 rounded-sm border border-transparent px-1.5 font-mono text-[10px] text-muted-foreground transition-colors duration-150 hover:border-border hover:bg-surface hover:text-primary ${mobile ? "" : "ml-0.5"}`}
-      >
-        <span
-          className="h-2.5 w-2.5 shrink-0 rounded-full border border-black/20 shadow-xs"
-          style={{ backgroundColor: currentPalette.color }}
-          aria-hidden
-        />
-        <Palette className="h-3 w-3" aria-hidden />
-        <ChevronDown
-          className={`h-3 w-3 transition-transform duration-150 ${open ? "rotate-180" : ""}`}
-          aria-hidden
-        />
-      </button>
-
-      {open && (
-        <div
-          role="menu"
-          aria-label={messages.header.paletteLabel}
-          style={
-            mobile
-              ? { position: "fixed", top: menuPosition.top, right: menuPosition.right }
-              : undefined
-          }
-          className={`${mobile ? "z-[70]" : "absolute right-0 top-[calc(100%+6px)] z-[60]"} min-w-[170px] max-h-[320px] overflow-y-auto overscroll-contain rounded-md border border-border bg-surface p-1 shadow-2xl scrollbar-none`}
-        >
-          {palettes.map((item) => {
-            const isSelected = palette === item.id;
-            return (
-              <button
-                key={item.id}
-                type="button"
-                role="menuitemradio"
-                aria-checked={isSelected}
-                onClick={() => selectPalette(item.id)}
-                className={`flex min-h-9 w-full items-center justify-between gap-2.5 rounded-sm px-2 py-1.5 text-left text-xs transition-colors duration-150 ${
-                  isSelected
-                    ? "bg-surface-2 font-medium text-primary"
-                    : "text-muted-foreground hover:bg-surface-2 hover:text-primary"
-                }`}
-              >
-                <span className="flex items-center gap-2">
-                  <span
-                    className="h-3 w-3 shrink-0 rounded-full border border-black/20 shadow-xs"
-                    style={{ backgroundColor: item.color }}
-                    aria-hidden
-                  />
-                  <span>{item.name}</span>
-                </span>
-                {isSelected && <Check className="h-3.5 w-3.5 shrink-0 text-primary" aria-hidden />}
-              </button>
-            );
-          })}
-        </div>
-      )}
-    </div>
-  );
-}
-
 export function Header() {
   const { messages } = useLanguage();
   const { theme, toggleTheme } = useTheme();
@@ -355,9 +231,6 @@ export function Header() {
               ))}
             </ul>
           </nav>
-          <div className="hidden md:block">
-            <PaletteSelector />
-          </div>
           <div className="hidden md:block">
             <LanguageSelector />
           </div>
@@ -425,7 +298,6 @@ export function Header() {
                   mobile
                 />
                 <div className="flex items-center gap-1">
-                  <PaletteSelector mobile />
                   <LanguageSelector mobile />
                 </div>
               </li>

@@ -8,11 +8,13 @@ import { Contact } from "@/components/portfolio/Contact";
 import { Footer } from "@/components/portfolio/Footer";
 import { links, profile, siteUrl } from "@/data/portfolio";
 import { LanguageProvider, useLanguage } from "@/i18n/LanguageProvider";
+import { ThemeProvider } from "@/theme/ThemeProvider";
 import { scrollToSection } from "@/components/portfolio/internalNavigation";
 
 const title = `geanluca.dev │ ${profile.role}`;
 const description =
-  "Aplicações web full stack. Conheça os projetos de Gean Luca, desenvolvedor com experiência em APIs, dados, segurança e interfaces responsivas.";
+  "Interfaces modernas e aplicações web responsivas. Conheça os projetos de Gean Luca, desenvolvedor front-end com experiência em React, TypeScript e integração de APIs.";
+const socialImage = new URL("/og-image.png", siteUrl).href;
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -24,13 +26,16 @@ export const Route = createFileRoute("/")({
       { property: "og:type", content: "website" },
       { property: "og:url", content: siteUrl },
       { property: "og:locale", content: "pt_BR" },
-      { property: "og:image", content: new URL(profile.avatar, siteUrl).href },
-      { property: "og:image:alt", content: `Foto de ${profile.name}, ${profile.role}` },
-      { name: "twitter:card", content: "summary" },
+      { property: "og:image", content: socialImage },
+      { property: "og:image:type", content: "image/png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: `${profile.name}, ${profile.role}` },
+      { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: title },
       { name: "twitter:description", content: description },
-      { name: "twitter:image", content: new URL(profile.avatar, siteUrl).href },
-      { name: "twitter:image:alt", content: `Foto de ${profile.name}, ${profile.role}` },
+      { name: "twitter:image", content: socialImage },
+      { name: "twitter:image:alt", content: `${profile.name}, ${profile.role}` },
     ],
     links: [{ rel: "canonical", href: siteUrl }],
     scripts: [
@@ -59,9 +64,11 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <LanguageProvider>
-      <PortfolioPage />
-    </LanguageProvider>
+    <ThemeProvider>
+      <LanguageProvider>
+        <PortfolioPage />
+      </LanguageProvider>
+    </ThemeProvider>
   );
 }
 

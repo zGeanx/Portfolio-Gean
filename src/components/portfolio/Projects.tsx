@@ -36,11 +36,11 @@ function ProjectCard({
       )}
 
       <div className="flex min-w-0 flex-1 flex-col p-3.5 md:p-4">
-        <p className="font-mono text-[11px] tracking-wider text-primary uppercase">
-          {project.category}
-        </p>
+        <p className="font-mono text-[11px] tracking-[0.08em] text-primary">{project.category}</p>
         <h3 className="mt-1 text-base font-medium">{project.name}</h3>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{project.description}</p>
+        <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+          {project.description}
+        </p>
         <ul className="mt-3 flex flex-wrap gap-1 md:mt-4 md:gap-1.5">
           {project.tech.map((tech) => (
             <li
@@ -121,7 +121,7 @@ export function Projects() {
     <section id="projetos" className="border-b border-border">
       <div className="mx-auto max-w-[1160px] px-4 py-12 sm:px-6 sm:py-16">
         <div ref={headingRef} className="reveal-target">
-          <p className="inline-flex items-center gap-1.5 font-mono text-xs tracking-widest text-primary uppercase">
+          <p className="inline-flex items-center gap-1.5 font-mono text-xs tracking-[0.08em] text-primary">
             <FolderGit2 className="h-3.5 w-3.5" aria-hidden /> {messages.projects.eyebrow}
           </p>
           <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">

@@ -27,7 +27,7 @@ function FactCard({ fact, index }: { fact: FactCardData; index: number }) {
       className="fact-card reveal-target border border-border bg-surface p-4 transition-[border-color,box-shadow] duration-300"
     >
       <div className="flex items-start justify-between gap-3">
-        <dt className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">
+        <dt className="font-mono text-[11px] tracking-[0.08em] text-muted-foreground">
           {fact.label}
         </dt>
         <Icon className="h-4 w-4 shrink-0 text-primary/75" aria-hidden />
@@ -50,7 +50,7 @@ export function About() {
       <div className="mx-auto max-w-[1160px] px-4 py-12 sm:px-6 sm:py-16">
         <div className="grid gap-5 lg:grid-cols-[0.72fr_1.28fr] lg:items-start lg:gap-12">
           <div ref={headingRef} className="reveal-target">
-            <p className="inline-flex items-center gap-1.5 font-mono text-xs tracking-widest text-primary uppercase">
+            <p className="inline-flex items-center gap-1.5 font-mono text-xs tracking-[0.08em] text-primary">
               <User className="h-3.5 w-3.5" aria-hidden /> {messages.about.eyebrow}
             </p>
             <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">

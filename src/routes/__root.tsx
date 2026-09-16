@@ -12,6 +12,8 @@ import type { ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { profile } from "@/data/portfolio";
 
+const themeBootstrapScript = `(function(){try{var t=localStorage.getItem("portfolio-theme");var l=t==="light";document.documentElement.classList.toggle("light",l);document.documentElement.style.colorScheme=l?"light":"dark";var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",l?"#f5faf8":"#081211")}catch(e){}})();`;
+
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -74,17 +76,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { name: "theme-color", content: "#111715" },
+      { name: "theme-color", content: "#081211" },
       { title: `geanluca.dev │ ${profile.role}` },
       {
         name: "description",
         content:
-          "Portfólio de Gean Luca, desenvolvedor frontend. Sites e aplicações web com React e TypeScript.",
+          "Portfólio de Gean Luca, desenvolvedor front-end. Interfaces modernas, aplicações web responsivas e integração de APIs.",
       },
       { name: "author", content: "Gean Luca" },
       { property: "og:site_name", content: "geanluca.dev" },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       {
@@ -99,6 +101,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "icon", href: "/favicon.png", type: "image/png", sizes: "512x512" },
     ],
+    scripts: [{ children: themeBootstrapScript }],
   }),
 
   shellComponent: RootShell,
@@ -109,7 +112,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>

@@ -2,9 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronDown, Menu, Moon, Sun, X } from "lucide-react";
 import { navItems, profile } from "@/data/portfolio";
 import { languages, useLanguage } from "@/i18n/LanguageProvider";
+import { useTheme, type Theme } from "@/theme/ThemeProvider";
 import { scrollToSection } from "./internalNavigation";
-
-type Theme = "dark" | "light";
 
 function ThemeToggle({
   theme,
@@ -178,25 +177,9 @@ function LanguageSelector({ mobile = false }: { mobile?: boolean }) {
 
 export function Header() {
   const { messages } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
   const [open, setOpen] = useState(false);
-  const [theme, setTheme] = useState<Theme>("dark");
   const menuButton = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    const savedTheme = window.localStorage.getItem("portfolio-theme");
-    const nextTheme: Theme = savedTheme === "light" ? "light" : "dark";
-    setTheme(nextTheme);
-    document.documentElement.classList.toggle("light", nextTheme === "light");
-    document.documentElement.style.colorScheme = nextTheme;
-  }, []);
-
-  const toggleTheme = () => {
-    const nextTheme: Theme = theme === "dark" ? "light" : "dark";
-    setTheme(nextTheme);
-    document.documentElement.classList.toggle("light", nextTheme === "light");
-    document.documentElement.style.colorScheme = nextTheme;
-    window.localStorage.setItem("portfolio-theme", nextTheme);
-  };
 
   useEffect(() => {
     if (!open) return;
@@ -221,11 +204,12 @@ export function Header() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-border bg-background/88 backdrop-blur-xl">
       <div className="mx-auto flex h-14 max-w-[1160px] items-center justify-between gap-4 px-4 sm:h-16 sm:px-6">
         <a
           href="#inicio"
           onClick={(event) => scrollToSection(event, "inicio")}
+          translate="no"
           className="inline-flex min-h-11 items-center font-mono text-sm tracking-tight text-foreground transition-colors duration-200 hover:text-primary"
         >
           {profile.brand}
@@ -239,7 +223,7 @@ export function Header() {
                   <a
                     href={`#${item.id}`}
                     onClick={(event) => scrollToSection(event, item.id)}
-                    className="flex min-h-11 items-center rounded-sm px-3 py-2 text-sm text-muted-foreground transition-colors duration-200 hover:text-primary"
+                    className="flex min-h-11 items-center rounded-sm px-3 py-2 text-sm text-muted-foreground transition-colors duration-200 hover:bg-surface hover:text-primary"
                   >
                     {messages.header.nav[index]}
                   </a>

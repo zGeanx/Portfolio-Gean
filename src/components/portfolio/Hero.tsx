@@ -1,4 +1,4 @@
-import { ArrowRight, Github, Linkedin, Mail, User } from "lucide-react";
+import { ArrowRight, FileDown, Github, Mail, User } from "lucide-react";
 import { links, profile } from "@/data/portfolio";
 import { useReveal } from "@/hooks/useReveal";
 import { useLanguage } from "@/i18n/LanguageProvider";
@@ -9,11 +9,13 @@ function ActionLink({
   children,
   primary,
   icon: Icon,
+  download,
 }: {
   href: string;
   children: string;
   primary?: boolean;
   icon: React.ComponentType<{ className?: string }>;
+  download?: string;
 }) {
   const base =
     "inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-sm px-3 py-2.5 text-center text-sm font-medium transition-colors duration-200 sm:w-auto sm:px-4";
@@ -26,8 +28,9 @@ function ActionLink({
       href={href}
       onClick={href.startsWith("#") ? (event) => scrollToSection(event, href.slice(1)) : undefined}
       className={cls}
-      target={href.startsWith("#") ? undefined : "_blank"}
-      rel={href.startsWith("#") ? undefined : "noreferrer noopener"}
+      download={download}
+      target={href.startsWith("#") || download ? undefined : "_blank"}
+      rel={href.startsWith("#") || download ? undefined : "noreferrer noopener"}
     >
       <Icon className="h-4 w-4 shrink-0" aria-hidden />
       {children}
@@ -42,7 +45,7 @@ export function Hero() {
 
   return (
     <section id="inicio" className="relative overflow-hidden border-b border-border">
-      <div aria-hidden className="grid-bg pointer-events-none absolute inset-0" />
+      <div aria-hidden className="hero-backdrop pointer-events-none absolute inset-0" />
       <div className="relative mx-auto grid max-w-[1160px] gap-6 px-4 py-8 sm:gap-12 sm:px-6 sm:py-14 md:py-20 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
         <div ref={contentRef} className="reveal-target order-2 min-w-0 lg:order-1">
           <h1 className="text-gradient text-[clamp(2.25rem,11vw,4.25rem)] leading-[1.05] font-semibold tracking-tight text-balance">
@@ -56,12 +59,17 @@ export function Hero() {
               aria-hidden
               key={language}
               className="typing-role"
-              style={{ "--typing-width": `${messages.hero.role.length}ch` } as React.CSSProperties}
+              style={
+                {
+                  "--typing-width": `${messages.hero.role.length}ch`,
+                  "--typing-steps": messages.hero.role.length,
+                } as React.CSSProperties
+              }
             >
               {messages.hero.role}
             </span>
           </p>
-          <p className="mt-4 sm:mt-5 max-w-[54ch] text-base leading-relaxed text-muted-foreground">
+          <p className="mt-4 max-w-[54ch] text-[15px] leading-relaxed text-muted-foreground sm:mt-5 sm:text-base">
             {messages.hero.description}
           </p>
 
@@ -75,8 +83,8 @@ export function Hero() {
             <ActionLink href={links.github} icon={Github}>
               GitHub
             </ActionLink>
-            <ActionLink href={links.linkedin} icon={Linkedin}>
-              LinkedIn
+            <ActionLink href={links.resume} download="Gean-Luca-Curriculo.pdf" icon={FileDown}>
+              {messages.hero.downloadCv}
             </ActionLink>
           </div>
         </div>
@@ -92,8 +100,8 @@ export function Hero() {
           >
             <User className="h-3 w-3 text-primary" aria-hidden /> {messages.hero.profile}
           </span>
-          <div className="aspect-[4/5] rounded-[24px] border border-primary/30 bg-surface p-2">
-            <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-[18px] bg-background">
+          <div className="aspect-[4/5] rounded-sm border border-primary/35 bg-surface p-2 shadow-[0_28px_80px_-52px_color-mix(in_oklch,var(--primary)_72%,transparent)]">
+            <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-sm bg-background">
               {profile.avatar ? (
                 <img
                   src={profile.avatar}

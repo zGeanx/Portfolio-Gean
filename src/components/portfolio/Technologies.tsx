@@ -34,6 +34,7 @@ const techIcons: Record<string, IconType> = {
   React: SiReact,
   "Next.js": SiNextdotjs,
   "Vue.js": SiVuedotjs,
+  Vinext: SiVite,
   TypeScript: SiTypescript,
   Vite: SiVite,
   "Tailwind CSS": SiTailwindcss,
@@ -108,7 +109,7 @@ export function Technologies() {
     <section id="tecnologias" className="border-b border-border">
       <div className="mx-auto max-w-[1160px] px-4 py-12 sm:px-6 sm:py-16">
         <div ref={headingRef} className="reveal-target">
-          <p className="inline-flex items-center gap-1.5 font-mono text-xs tracking-widest text-primary uppercase">
+          <p className="inline-flex items-center gap-1.5 font-mono text-xs tracking-[0.08em] text-primary">
             <Code2 className="h-3.5 w-3.5" aria-hidden /> {messages.technologies.eyebrow}
           </p>
           <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">

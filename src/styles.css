@@ -26,29 +26,29 @@
 }
 
 :root {
-  --background: oklch(0.14 0.006 170);
-  --foreground: oklch(0.97 0.003 170);
-  --surface: oklch(0.18 0.008 170);
-  --surface-2: oklch(0.23 0.01 170);
-  --muted: oklch(0.23 0.01 170);
-  --muted-foreground: oklch(0.7 0.015 170);
-  --primary: oklch(0.78 0.15 170);
-  --primary-foreground: oklch(0.13 0.03 170);
-  --border: oklch(0.29 0.012 170);
-  --border-strong: oklch(0.4 0.018 170);
+  --background: oklch(0.13 0.012 195);
+  --foreground: oklch(0.96 0.006 185);
+  --surface: oklch(0.175 0.014 192);
+  --surface-2: oklch(0.225 0.018 190);
+  --muted: oklch(0.22 0.016 190);
+  --muted-foreground: oklch(0.74 0.018 185);
+  --primary: oklch(0.75 0.115 175);
+  --primary-foreground: oklch(0.12 0.025 185);
+  --border: oklch(0.305 0.018 190);
+  --border-strong: oklch(0.45 0.026 185);
 }
 
 :root.light {
-  --background: oklch(0.97 0.012 170);
-  --foreground: oklch(0.2 0.025 170);
-  --surface: oklch(0.995 0.004 170);
-  --surface-2: oklch(0.93 0.018 170);
-  --muted: oklch(0.92 0.018 170);
-  --muted-foreground: oklch(0.43 0.025 170);
-  --primary: oklch(0.47 0.14 170);
-  --primary-foreground: oklch(0.98 0.01 170);
-  --border: oklch(0.84 0.025 170);
-  --border-strong: oklch(0.68 0.05 170);
+  --background: oklch(0.975 0.008 180);
+  --foreground: oklch(0.2 0.022 195);
+  --surface: oklch(0.995 0.004 185);
+  --surface-2: oklch(0.93 0.016 185);
+  --muted: oklch(0.925 0.014 185);
+  --muted-foreground: oklch(0.42 0.025 190);
+  --primary: oklch(0.43 0.115 175);
+  --primary-foreground: oklch(0.985 0.006 180);
+  --border: oklch(0.825 0.024 185);
+  --border-strong: oklch(0.64 0.045 180);
 }
 
 @layer base {
@@ -85,6 +85,11 @@
     padding-bottom: env(safe-area-inset-bottom);
   }
 
+  ::selection {
+    background: color-mix(in oklch, var(--primary) 38%, transparent);
+    color: var(--foreground);
+  }
+
   a,
   button {
     touch-action: manipulation;
@@ -108,18 +113,50 @@
   }
 }
 
-@utility grid-bg {
-  background-image:
-    linear-gradient(to right, var(--border) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
-  background-size: 56px 56px;
-  opacity: 0.28;
-  mask-image: radial-gradient(ellipse 70% 70% at 30% 20%, black, transparent 80%);
+@utility hero-backdrop {
+  background:
+    radial-gradient(
+      circle at 78% 26%,
+      color-mix(in oklch, var(--primary) 14%, transparent) 0,
+      transparent 34rem
+    ),
+    linear-gradient(
+      118deg,
+      transparent 12%,
+      color-mix(in oklch, var(--surface-2) 36%, transparent) 48%,
+      transparent 76%
+    );
+  mask-image: linear-gradient(to bottom, black 0%, black 78%, transparent 100%);
+}
+
+.hero-backdrop::before {
+  position: absolute;
+  top: -19rem;
+  right: -12rem;
+  width: min(52vw, 44rem);
+  aspect-ratio: 1;
+  border: 1px solid color-mix(in oklch, var(--primary) 20%, transparent);
+  content: "";
+  opacity: 0.72;
+  transform: rotate(12deg);
+}
+
+.hero-backdrop::after {
+  position: absolute;
+  bottom: 12%;
+  left: -8rem;
+  width: min(38vw, 28rem);
+  aspect-ratio: 1;
+  background: radial-gradient(
+    circle,
+    color-mix(in oklch, var(--primary) 8%, transparent),
+    transparent 68%
+  );
+  content: "";
 }
 
 @utility reveal-target {
   opacity: 0;
-  transform: translateY(12px);
 }
 
 @utility reveal {
@@ -129,7 +166,12 @@
 
 @utility text-gradient {
   color: transparent;
-  background-image: linear-gradient(105deg, var(--foreground) 18%, var(--primary) 92%);
+  background-image: linear-gradient(
+    102deg,
+    var(--foreground) 12%,
+    color-mix(in oklch, var(--foreground) 78%, var(--primary)) 58%,
+    var(--primary) 118%
+  );
   background-clip: text;
   -webkit-background-clip: text;
 }
@@ -172,7 +214,7 @@
   border-right: 1px solid var(--primary);
   white-space: nowrap;
   animation:
-    typing 1.1s steps(21, end) 0.25s forwards,
+    typing 1.1s steps(var(--typing-steps, 21), end) 0.25s forwards,
     blink-cursor 0.8s step-end 0.25s infinite;
 }
 
@@ -192,7 +234,6 @@
   }
 
   .technology-chip:hover {
-    transform: translateY(-2px);
     border-color: var(--primary);
     background-color: var(--primary);
     color: var(--primary-foreground);
@@ -204,18 +245,45 @@
   }
 
   .project-card:hover {
-    transform: translateY(-2px);
     border-color: var(--primary);
     box-shadow: 0 18px 42px -28px color-mix(in oklch, var(--primary) 80%, transparent);
   }
 
   .project-card:hover .project-image {
-    transform: scale(1.03);
+    transform: scale(1.015);
   }
 
   .fact-card:hover {
     border-color: color-mix(in oklch, var(--primary) 72%, var(--border));
     box-shadow: 0 14px 34px -28px color-mix(in oklch, var(--primary) 72%, transparent);
+  }
+}
+
+@media (max-width: 639px) {
+  .hero-backdrop::before {
+    top: -9rem;
+    right: -12rem;
+    width: 28rem;
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --muted-foreground: oklch(0.83 0.014 185);
+    --border: oklch(0.44 0.025 185);
+  }
+
+  :root.light {
+    --muted-foreground: oklch(0.31 0.025 190);
+    --border: oklch(0.66 0.035 185);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  header {
+    backdrop-filter: none !important;
+    background-color: var(--background) !important;
   }
 }
 

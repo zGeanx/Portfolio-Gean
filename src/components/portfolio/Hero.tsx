@@ -106,11 +106,11 @@ export function Hero() {
                 <img
                   src={profile.avatar}
                   alt={messages.hero.profileAlt}
-                  width={490}
-                  height={1024}
+                  width={1737}
+                  height={3088}
                   loading="eager"
                   fetchPriority="high"
-                  className="h-full w-full object-cover object-[50%_18%]"
+                  className="h-full w-full object-cover object-center"
                 />
               ) : (
                 <span className="font-mono text-6xl font-semibold text-border-strong select-none">

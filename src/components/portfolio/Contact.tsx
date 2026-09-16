@@ -6,6 +6,7 @@ import { links } from "@/data/portfolio";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useReveal } from "@/hooks/useReveal";
 import { useLanguage } from "@/i18n/LanguageProvider";
+import { useTheme } from "@/theme/ThemeProvider";
 
 const items = [
   { label: "LinkedIn", display: "Gean Luca", icon: Linkedin, href: links.linkedin },
@@ -14,6 +15,7 @@ const items = [
 
 export function Contact() {
   const { messages } = useLanguage();
+  const { theme } = useTheme();
   const isMobile = useIsMobile();
   const [copied, setCopied] = useState(false);
   const resetTimer = useRef<ReturnType<typeof setTimeout>>(null);
@@ -65,7 +67,7 @@ export function Contact() {
         <div ref={panelRef} className="reveal-target border border-border bg-surface">
           <div className="grid lg:grid-cols-[0.82fr_1.18fr]">
             <div className="p-5 sm:p-8 md:p-10 lg:border-r lg:border-border">
-              <p className="inline-flex items-center gap-1.5 font-mono text-xs tracking-widest text-primary uppercase">
+              <p className="inline-flex items-center gap-1.5 font-mono text-xs tracking-[0.08em] text-primary">
                 <Mail className="h-3.5 w-3.5" aria-hidden /> {messages.contact.eyebrow}
               </p>
               <h2 className="mt-3 text-[clamp(1.5rem,4.5vw,2.5rem)] leading-tight font-semibold tracking-tight text-balance">
@@ -81,7 +83,7 @@ export function Contact() {
                   onClick={copyEmail}
                   aria-label={`${messages.contact.copyAria}: ${links.email}`}
                   title={messages.contact.copyTitle}
-                  className="flex min-h-14 min-w-0 cursor-pointer items-center gap-3 border border-border bg-background p-3.5 text-left transition-[border-color,background-color] duration-200 hover:border-primary hover:bg-surface sm:p-4"
+                  className="flex min-h-14 min-w-0 cursor-pointer items-center gap-3 border border-border bg-background p-3.5 text-left transition-[border-color,background-color] duration-200 hover:border-primary hover:bg-surface focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:p-4"
                 >
                   <Mail className="h-4 w-4 shrink-0 text-primary" aria-hidden />
                   <span className="min-w-0 flex-1">
@@ -107,7 +109,7 @@ export function Contact() {
                     href={href}
                     target="_blank"
                     rel="noreferrer noopener"
-                    className="flex min-h-14 min-w-0 items-center gap-3 border border-border bg-background p-3.5 transition-colors duration-200 hover:border-primary sm:p-4"
+                    className="flex min-h-14 min-w-0 items-center gap-3 border border-border bg-background p-3.5 transition-colors duration-200 hover:border-primary hover:bg-surface focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:p-4"
                   >
                     <Icon className="h-4 w-4 shrink-0 text-primary" aria-hidden />
                     <span className="min-w-0 flex-1">
@@ -134,7 +136,7 @@ export function Contact() {
                     name="name"
                     autoComplete="name"
                     placeholder={messages.contact.namePlaceholder}
-                    className="min-h-12 w-full border border-border bg-background px-3.5 text-sm text-foreground placeholder:text-muted-foreground/70 transition-colors hover:border-border-strong focus:border-primary focus:outline-none"
+                    className="min-h-12 w-full rounded-sm border border-border bg-background px-3.5 text-sm text-foreground placeholder:text-muted-foreground/80 transition-[border-color,box-shadow] hover:border-border-strong focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/55 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   />
                 </label>
                 <label className="grid gap-2 text-sm font-medium text-foreground">
@@ -144,8 +146,9 @@ export function Contact() {
                     type="email"
                     name="email"
                     autoComplete="email"
+                    spellCheck={false}
                     placeholder={messages.contact.emailPlaceholder}
-                    className="min-h-12 w-full border border-border bg-background px-3.5 text-sm text-foreground placeholder:text-muted-foreground/70 transition-colors hover:border-border-strong focus:border-primary focus:outline-none"
+                    className="min-h-12 w-full rounded-sm border border-border bg-background px-3.5 text-sm text-foreground placeholder:text-muted-foreground/80 transition-[border-color,box-shadow] hover:border-border-strong focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/55 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   />
                 </label>
                 <label className="grid gap-2 text-sm font-medium text-foreground sm:col-span-2">
@@ -155,7 +158,7 @@ export function Contact() {
                     name="message"
                     rows={6}
                     placeholder={messages.contact.messagePlaceholder}
-                    className="w-full resize-y border border-border bg-background px-3.5 py-3 text-sm leading-relaxed text-foreground placeholder:text-muted-foreground/70 transition-colors hover:border-border-strong focus:border-primary focus:outline-none"
+                    className="w-full resize-y rounded-sm border border-border bg-background px-3.5 py-3 text-sm leading-relaxed text-foreground placeholder:text-muted-foreground/80 transition-[border-color,box-shadow] hover:border-border-strong focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/55 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   />
                 </label>
               </div>
@@ -167,14 +170,21 @@ export function Contact() {
                 <ArrowUpRight className="h-4 w-4" aria-hidden />
               </button>
               <p className="mt-3 max-w-[54ch] text-xs leading-relaxed text-muted-foreground">
-                {messages.contact.formHint}
+                {messages.contact.formHint} {messages.contact.formFallback}{" "}
+                <a
+                  href={`mailto:${links.email}`}
+                  className="font-medium text-foreground underline decoration-border-strong underline-offset-4 transition-colors hover:text-primary"
+                >
+                  {links.email}
+                </a>
+                .
               </p>
             </form>
           </div>
         </div>
       </div>
       <Toaster
-        theme="dark"
+        theme={theme}
         position={isMobile ? "top-center" : "bottom-center"}
         duration={4000}
         mobileOffset={{

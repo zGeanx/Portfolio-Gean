@@ -11,9 +11,9 @@ export const languages: { code: Language; shortLabel: string; name: string }[] =
 
 const ptBR = {
   meta: {
-    title: "geanluca.dev │ Desenvolvedor Full Stack",
+    title: "geanluca.dev │ Desenvolvedor Front-end",
     description:
-      "Aplicações web full stack. Conheça os projetos de Gean Luca, desenvolvedor com experiência em APIs, dados, segurança e interfaces responsivas.",
+      "Interfaces modernas e aplicações web responsivas. Conheça os projetos de Gean Luca, desenvolvedor front-end com experiência em React, TypeScript e integração de APIs.",
   },
   skipLink: "Ir para o conteúdo",
   header: {
@@ -27,24 +27,25 @@ const ptBR = {
     nav: ["Início", "Sobre", "Tecnologias", "Projetos", "Contato"],
   },
   hero: {
-    role: "Desenvolvedor Full Stack",
+    role: "Desenvolvedor Front-end",
     description:
-      "Desenvolvedor full stack com experiência em aplicações web, APIs, bancos de dados e interfaces responsivas.",
+      "Desenvolvedor front-end com foco em aplicações web modernas, interfaces responsivas, integração de APIs e experiências acessíveis.",
     viewProjects: "Ver projetos",
     contact: "Fale comigo",
+    downloadCv: "Baixar CV",
     profile: "/ perfil",
     profileAlt: "Foto de perfil de Gean Luca",
   },
   about: {
     eyebrow: "/ sobre",
     title: "Sobre mim",
-    body: "Sou desenvolvedor full stack formado em Análise e Desenvolvimento de Sistemas. Construo aplicações web da interface ao back-end, integrando APIs, regras de negócio, autenticação e bancos de dados. Minha experiência inclui projetos de gestão, catálogos, conteúdo ao vivo e processamento de dados, com atenção à organização, segurança e publicação.",
+    body: "Sou desenvolvedor front-end formado em Análise e Desenvolvimento de Sistemas. Crio interfaces modernas, responsivas e acessíveis, transformando requisitos em experiências claras e integrando aplicações a APIs e serviços. Minha experiência com back-end e bancos de dados complementa o trabalho de interface e facilita a construção de produtos web completos.",
     facts: [
       { label: "Localização", value: "Pelotas, RS · Brasil", detail: "" },
       {
         label: "Atuação",
-        value: "Desenvolvimento full stack",
-        detail: "Interfaces · APIs · Dados",
+        value: "Desenvolvimento front-end",
+        detail: "Interfaces · React · TypeScript",
       },
       {
         label: "Formação",
@@ -59,7 +60,16 @@ const ptBR = {
     groups: [
       {
         title: "Front-end",
-        items: ["React", "Next.js", "Vue.js", "TypeScript", "Vite", "Tailwind CSS", "shadcn/ui"],
+        items: [
+          "React",
+          "Next.js",
+          "Vue.js",
+          "Vinext",
+          "TypeScript",
+          "Vite",
+          "Tailwind CSS",
+          "shadcn/ui",
+        ],
       },
       {
         title: "Back-end",
@@ -101,7 +111,7 @@ const ptBR = {
       {
         category: "Conteúdo & Transmissões",
         description:
-          "Aplicação para navegação por canais e eventos ao vivo, com catálogo, agenda e páginas de reprodução. Usa rotas no servidor para integrar uma API externa e aplica políticas de origem para os players incorporados.",
+          "Aplicação para navegação por canais e eventos ao vivo, com catálogo, agenda e páginas de reprodução. Construída com Vinext sobre Vite, usa rotas no servidor para integrar uma API externa e aplica políticas de origem aos players incorporados.",
       },
       {
         category: "Catálogo & Gestão de acervo",
@@ -119,9 +129,10 @@ const ptBR = {
     namePlaceholder: "Como você se chama?",
     emailPlaceholder: "voce@empresa.com",
     message: "Mensagem",
-    messagePlaceholder: "Conte sobre a oportunidade ou projeto...",
+    messagePlaceholder: "Conte sobre a oportunidade ou projeto…",
     submit: "Preparar e-mail",
     formHint: "Ao enviar, seu aplicativo de e-mail será aberto com a mensagem preenchida.",
+    formFallback: "Se nada acontecer, envie diretamente para",
     email: "E-mail",
     copyAria: "Copiar e-mail",
     copyTitle: "Clique para copiar o e-mail",
@@ -145,9 +156,9 @@ export type Messages = DeepString<typeof ptBR>;
 
 const en: Messages = {
   meta: {
-    title: "geanluca.dev │ Full Stack Developer",
+    title: "geanluca.dev │ Front-end Developer",
     description:
-      "Full stack web applications. Explore Gean Luca's work with APIs, data, security, and responsive interfaces.",
+      "Modern interfaces and responsive web applications. Explore Gean Luca's front-end work with React, TypeScript, and API integration.",
   },
   skipLink: "Skip to content",
   header: {
@@ -161,24 +172,25 @@ const en: Messages = {
     nav: ["Home", "About", "Technologies", "Projects", "Contact"],
   },
   hero: {
-    role: "Full Stack Developer",
+    role: "Front-end Developer",
     description:
-      "Full stack developer with experience in web applications, APIs, databases, and responsive interfaces.",
+      "Front-end developer focused on modern web applications, responsive interfaces, API integration, and accessible experiences.",
     viewProjects: "View projects",
     contact: "Contact me",
+    downloadCv: "Download CV",
     profile: "/ profile",
     profileAlt: "Profile photo of Gean Luca",
   },
   about: {
     eyebrow: "/ about",
     title: "About me",
-    body: "I am a full stack developer with a degree in Systems Analysis and Development. I build web applications from the interface to the back end, integrating APIs, business rules, authentication, and databases. My experience includes management, catalog, live content, and data-processing projects, with attention to organization, security, and deployment.",
+    body: "I am a front-end developer with a degree in Systems Analysis and Development. I create modern, responsive, and accessible interfaces, turning requirements into clear experiences and integrating applications with APIs and services. My back-end and database experience complements my interface work and helps me build complete web products.",
     facts: [
       { label: "Location", value: "Pelotas, RS · Brazil", detail: "" },
       {
         label: "Role",
-        value: "Full stack development",
-        detail: "Interfaces · APIs · Data",
+        value: "Front-end development",
+        detail: "Interfaces · React · TypeScript",
       },
       {
         label: "Education",
@@ -193,7 +205,16 @@ const en: Messages = {
     groups: [
       {
         title: "Front-end",
-        items: ["React", "Next.js", "Vue.js", "TypeScript", "Vite", "Tailwind CSS", "shadcn/ui"],
+        items: [
+          "React",
+          "Next.js",
+          "Vue.js",
+          "Vinext",
+          "TypeScript",
+          "Vite",
+          "Tailwind CSS",
+          "shadcn/ui",
+        ],
       },
       {
         title: "Back-end",
@@ -235,7 +256,7 @@ const en: Messages = {
       {
         category: "Content & Streaming",
         description:
-          "Application for browsing live channels and events, with a catalog, schedule, and playback pages. It uses server routes to integrate an external API and applies origin policies to embedded players.",
+          "Application for browsing live channels and events, with a catalog, schedule, and playback pages. Built with Vinext on Vite, it uses server routes to integrate an external API and applies origin policies to embedded players.",
       },
       {
         category: "Catalog & Library Management",
@@ -253,9 +274,10 @@ const en: Messages = {
     namePlaceholder: "What is your name?",
     emailPlaceholder: "you@company.com",
     message: "Message",
-    messagePlaceholder: "Tell me about the opportunity or project...",
+    messagePlaceholder: "Tell me about the opportunity or project…",
     submit: "Prepare email",
     formHint: "Submitting opens your email app with the message ready to send.",
+    formFallback: "If nothing happens, email me directly at",
     email: "Email",
     copyAria: "Copy email",
     copyTitle: "Click to copy the email",

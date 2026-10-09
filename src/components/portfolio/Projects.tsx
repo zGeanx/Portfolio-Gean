@@ -36,16 +36,16 @@ function ProjectCard({
       )}
 
       <div className="flex min-w-0 flex-1 flex-col p-3.5 md:p-4">
-        <p className="font-mono text-[11px] tracking-[0.08em] text-primary">{project.category}</p>
+        <p className="font-mono text-xs tracking-[0.06em] text-primary">{project.category}</p>
         <h3 className="mt-1 text-base font-medium">{project.name}</h3>
-        <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+        <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground text-pretty">
           {project.description}
         </p>
         <ul className="mt-3 flex flex-wrap gap-1 md:mt-4 md:gap-1.5">
           {project.tech.map((tech) => (
             <li
               key={tech}
-              className="rounded-sm border border-border bg-background px-1.5 py-0.5 font-mono text-[11px] text-muted-foreground"
+              className="rounded-sm border border-border bg-background px-2 py-0.5 font-mono text-xs text-muted-foreground"
             >
               {tech}
             </li>
@@ -58,7 +58,7 @@ function ProjectCard({
               target="_blank"
               rel="noreferrer noopener"
               aria-label={`${labels.viewProject} ${project.name} (${labels.opensNewTab})`}
-              className="inline-flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-sm bg-primary px-3 py-2 text-sm font-medium text-primary-foreground transition-colors duration-200 hover:bg-primary/85 sm:flex-none sm:text-xs"
+              className="inline-flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-sm bg-primary px-3 py-2 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/85 active:scale-[0.98] sm:flex-none sm:text-xs"
             >
               <ExternalLink className="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden />
               {labels.viewProject}
@@ -70,7 +70,7 @@ function ProjectCard({
               target="_blank"
               rel="noreferrer noopener"
               aria-label={`${labels.viewCode}: ${project.name} (${labels.opensNewTab})`}
-              className="inline-flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-sm border border-border px-3 py-2 text-xs font-medium transition-colors duration-200 hover:border-primary hover:text-primary sm:flex-none"
+              className="inline-flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-sm border border-border px-3 py-2 text-xs font-medium transition-all duration-200 hover:border-primary hover:text-primary active:scale-[0.98] sm:flex-none"
             >
               <Github className="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden />
               {labels.viewCode}
@@ -124,7 +124,7 @@ export function Projects() {
           <p className="inline-flex items-center gap-1.5 font-mono text-xs tracking-[0.08em] text-primary">
             <FolderGit2 className="h-3.5 w-3.5" aria-hidden /> {messages.projects.eyebrow}
           </p>
-          <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
+          <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl lg:text-[2rem]">
             {messages.projects.title}
           </h2>
         </div>

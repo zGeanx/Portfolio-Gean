@@ -132,7 +132,7 @@ function LanguageSelector({ mobile = false }: { mobile?: boolean }) {
         aria-label={`${currentLanguage.name} — ${messages.header.languageLabel}`}
         aria-haspopup="menu"
         aria-expanded={open}
-        className={`inline-flex h-7 min-w-0 items-center justify-center gap-1 rounded-sm border border-transparent px-1.5 font-mono text-[10px] text-muted-foreground transition-colors duration-150 hover:border-border hover:bg-surface hover:text-primary ${mobile ? "" : "ml-0.5"}`}
+        className={`inline-flex h-8 min-w-0 items-center justify-center gap-1 rounded-sm border border-transparent px-2 font-mono text-xs text-muted-foreground transition-colors duration-150 hover:border-border hover:bg-surface hover:text-primary ${mobile ? "" : "ml-0.5"}`}
       >
         {currentLanguage.shortLabel}
         <ChevronDown
@@ -150,7 +150,7 @@ function LanguageSelector({ mobile = false }: { mobile?: boolean }) {
               ? { position: "fixed", top: menuPosition.top, right: menuPosition.right }
               : undefined
           }
-          className={`${mobile ? "z-[70]" : "absolute right-0 top-[calc(100%+6px)] z-[60]"} min-w-[128px] rounded-md border border-border bg-surface p-1 shadow-2xl`}
+          className={`${mobile ? "z-[70]" : "absolute right-0 top-[calc(100%+6px)] z-[60]"} min-w-[130px] rounded-md border border-border bg-surface p-1 shadow-2xl animate-in fade-in-0 zoom-in-95 duration-150`}
         >
           {languages.map((item) => (
             <button
@@ -160,9 +160,9 @@ function LanguageSelector({ mobile = false }: { mobile?: boolean }) {
               aria-checked={language === item.code}
               lang={item.code}
               onClick={() => selectLanguage(item.code)}
-              className={`flex min-h-9 w-full items-center justify-between gap-2 rounded-sm px-2 py-1.5 text-left text-xs transition-colors duration-150 ${
+              className={`flex min-h-9 w-full items-center justify-between gap-2 rounded-sm px-2.5 py-1.5 text-left text-xs transition-colors duration-150 ${
                 language === item.code
-                  ? "bg-surface-2 text-primary"
+                  ? "bg-surface-2 font-medium text-primary"
                   : "text-muted-foreground hover:bg-surface-2 hover:text-primary"
               }`}
             >
@@ -263,7 +263,7 @@ export function Header() {
             type="button"
             aria-label={messages.header.closeMenu}
             tabIndex={-1}
-            className="absolute inset-x-0 top-full z-40 h-[calc(100dvh-3.5rem)] cursor-default bg-background/40 sm:h-[calc(100dvh-4rem)] md:hidden"
+            className="absolute inset-x-0 top-full z-40 h-[calc(100dvh-3.5rem)] cursor-default bg-background/50 backdrop-blur-xs sm:h-[calc(100dvh-4rem)] md:hidden animate-in fade-in-0 duration-200"
             onClick={() => {
               setOpen(false);
               menuButton.current?.focus();
@@ -272,7 +272,7 @@ export function Header() {
           <nav
             id="mobile-nav"
             aria-label={messages.header.mobileNavLabel}
-            className="absolute top-[calc(100%+6px)] right-4 left-auto z-50 w-[min(16rem,calc(100vw-2rem))] max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain rounded-md border border-border bg-surface p-1.5 shadow-2xl sm:max-h-[calc(100dvh-5.5rem)] md:hidden"
+            className="absolute top-[calc(100%+6px)] right-4 left-auto z-50 w-[min(16rem,calc(100vw-2rem))] max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain rounded-md border border-border bg-surface p-1.5 shadow-2xl sm:max-h-[calc(100dvh-5.5rem)] md:hidden animate-in fade-in-0 zoom-in-95 duration-150"
           >
             <ul className="flex flex-col">
               {navItems.map((item, index) => (

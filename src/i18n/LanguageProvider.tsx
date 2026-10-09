@@ -13,7 +13,7 @@ const ptBR = {
   meta: {
     title: "geanluca.dev │ Desenvolvedor Front-end",
     description:
-      "Interfaces modernas e aplicações web responsivas. Conheça os projetos de Gean Luca, desenvolvedor front-end com experiência em React, TypeScript e integração de APIs.",
+      "Construo interfaces em React e TypeScript conectadas a APIs reais. Conheça os projetos de Gean Luca, desenvolvedor front-end com foco em performance e usabilidade.",
   },
   skipLink: "Ir para o conteúdo",
   header: {
@@ -22,7 +22,6 @@ const ptBR = {
     openMenu: "Abrir menu",
     closeMenu: "Fechar menu",
     languageLabel: "Selecionar idioma",
-    paletteLabel: "Selecionar cor",
     lightMode: "Ativar light mode",
     darkMode: "Ativar dark mode",
     nav: ["Início", "Sobre", "Tecnologias", "Projetos", "Contato"],
@@ -30,7 +29,7 @@ const ptBR = {
   hero: {
     role: "Desenvolvedor Front-end",
     description:
-      "Desenvolvedor front-end com foco em aplicações web modernas, interfaces responsivas, integração de APIs e experiências acessíveis.",
+      "Construo interfaces em React e TypeScript conectadas a APIs reais, unindo precisão visual, performance e código limpo do formulário ao banco de dados.",
     viewProjects: "Ver projetos",
     contact: "Fale comigo",
     downloadCv: "Baixar CV",
@@ -40,17 +39,17 @@ const ptBR = {
   about: {
     eyebrow: "/ sobre",
     title: "Sobre mim",
-    body: "Sou desenvolvedor front-end formado em Análise e Desenvolvimento de Sistemas. Crio interfaces modernas, responsivas e acessíveis, transformando requisitos em experiências claras e integrando aplicações a APIs e serviços. Minha experiência com back-end e bancos de dados complementa o trabalho de interface e facilita a construção de produtos web completos.",
+    body: "Sou desenvolvedor formado em Análise e Desenvolvimento de Sistemas (Senac RS). Minha atuação principal é no front-end com React e TypeScript, mas meu domínio de back-end (Python, APIs REST) e bancos de dados me dá uma visão completa da aplicação: entendo o ciclo de ponta a ponta, antecipo gargalos de integração e entrego produtos rápidos, consistentes e fáceis de usar.",
     facts: [
-      { label: "Localização", value: "Pelotas, RS · Brasil", detail: "" },
+      { label: "Localização", value: "Pelotas, RS · Brasil", detail: "Disponível para trabalho remoto" },
       {
-        label: "Atuação",
-        value: "Desenvolvimento front-end",
-        detail: "Interfaces · React · TypeScript",
+        label: "Foco técnico",
+        value: "React · TypeScript · Next.js",
+        detail: "Interfaces, integrações & APIs",
       },
       {
         label: "Formação",
-        value: "Análise e Desenvolvimento de Sistemas",
+        value: "Análise e Desenv. de Sistemas",
         detail: "Senac RS · concluído em 2026",
       },
     ],
@@ -107,31 +106,31 @@ const ptBR = {
       {
         category: "Gestão & Produtividade",
         description:
-          "Aplicação full stack para solicitações de folga, com portal público, painel administrativo protegido por JWT e fluxo de aprovação. A API em Django centraliza regras de negócio e persiste dados no PostgreSQL do Supabase.",
+          "Plataforma full stack para solicitação e aprovação de folgas com portal público e painel com JWT. API em Django com PostgreSQL no Supabase.",
       },
       {
         category: "Conteúdo & Transmissões",
         description:
-          "Aplicação para navegação por canais e eventos ao vivo, com catálogo, agenda e páginas de reprodução. Construída com Vinext sobre Vite, usa rotas no servidor para integrar uma API externa e aplica políticas de origem aos players incorporados.",
+          "Catálogo de canais e transmissões ao vivo com programação e player integrado, utilizando rotas seguras no servidor e deploys na Cloudflare.",
       },
       {
         category: "Catálogo & Gestão de acervo",
         description:
-          "Sistema full stack para consulta e gerenciamento de livros. Conecta uma interface em Next.js a uma API Flask, com busca por título e autor, armazenamento em SQLite e ambiente local padronizado com Docker.",
+          "Sistema de gerenciamento e busca de acervo bibliográfico por título e autor. Interface em Next.js conectada a API Flask com SQLite e Docker.",
       },
     ],
   },
   contact: {
     eyebrow: "/ contato",
     title: "Vamos conversar sobre seu próximo projeto?",
-    text: "Estou aberto a oportunidades, colaborações e novos projetos. Preencha o formulário e me conte brevemente como posso contribuir.",
+    text: "Estou aberto a oportunidades profissionais, projetos freelance e colaborações técnicas. Preencha o formulário ou entre em contato diretamente.",
     formTitle: "Envie uma mensagem",
     name: "Nome",
     namePlaceholder: "Como você se chama?",
     emailPlaceholder: "voce@empresa.com",
     message: "Mensagem",
     messagePlaceholder: "Conte sobre a oportunidade ou projeto…",
-    submit: "Preparar e-mail",
+    submit: "Abrir no e-mail",
     formHint: "Ao enviar, seu aplicativo de e-mail será aberto com a mensagem preenchida.",
     formFallback: "Se nada acontecer, envie diretamente para",
     email: "E-mail",
@@ -159,7 +158,7 @@ const en: Messages = {
   meta: {
     title: "geanluca.dev │ Front-end Developer",
     description:
-      "Modern interfaces and responsive web applications. Explore Gean Luca's front-end work with React, TypeScript, and API integration.",
+      "Building interfaces in React and TypeScript integrated with real APIs. Explore projects by Gean Luca, front-end developer focused on performance and usability.",
   },
   skipLink: "Skip to content",
   header: {
@@ -168,7 +167,6 @@ const en: Messages = {
     openMenu: "Open menu",
     closeMenu: "Close menu",
     languageLabel: "Select language",
-    paletteLabel: "Select color",
     lightMode: "Enable light mode",
     darkMode: "Enable dark mode",
     nav: ["Home", "About", "Technologies", "Projects", "Contact"],
@@ -176,7 +174,7 @@ const en: Messages = {
   hero: {
     role: "Front-end Developer",
     description:
-      "Front-end developer focused on modern web applications, responsive interfaces, API integration, and accessible experiences.",
+      "Building interfaces in React and TypeScript integrated with real APIs, bringing visual polish, performance, and clean code from form to database.",
     viewProjects: "View projects",
     contact: "Contact me",
     downloadCv: "Download CV",
@@ -186,17 +184,17 @@ const en: Messages = {
   about: {
     eyebrow: "/ about",
     title: "About me",
-    body: "I am a front-end developer with a degree in Systems Analysis and Development. I create modern, responsive, and accessible interfaces, turning requirements into clear experiences and integrating applications with APIs and services. My back-end and database experience complements my interface work and helps me build complete web products.",
+    body: "I am a developer with a degree in Systems Analysis and Development (Senac RS). My core focus is front-end with React and TypeScript, but hands-on experience in back-end (Python, REST APIs) and databases gives me end-to-end perspective: I understand the full application lifecycle, prevent integration bottlenecks, and ship fast, accessible web products.",
     facts: [
-      { label: "Location", value: "Pelotas, RS · Brazil", detail: "" },
+      { label: "Location", value: "Pelotas, RS · Brazil", detail: "Available for remote work" },
       {
-        label: "Role",
-        value: "Front-end development",
-        detail: "Interfaces · React · TypeScript",
+        label: "Core stack",
+        value: "React · TypeScript · Next.js",
+        detail: "Interfaces, integrations & APIs",
       },
       {
         label: "Education",
-        value: "Systems Analysis and Development",
+        value: "Systems Analysis & Dev.",
         detail: "Senac RS · completed in 2026",
       },
     ],
@@ -253,31 +251,31 @@ const en: Messages = {
       {
         category: "Management & Productivity",
         description:
-          "Full stack leave-request application with a public portal, JWT-protected admin panel, and approval flow. Its Django API centralizes business rules and persists data in Supabase PostgreSQL.",
+          "Full-stack leave request and approval portal with JWT authentication. Powered by a Django API and Supabase PostgreSQL.",
       },
       {
         category: "Content & Streaming",
         description:
-          "Application for browsing live channels and events, with a catalog, schedule, and playback pages. Built with Vinext on Vite, it uses server routes to integrate an external API and applies origin policies to embedded players.",
+          "Live streaming catalog and broadcast schedule with an embedded player, server routes, and Cloudflare deployment.",
       },
       {
         category: "Catalog & Library Management",
         description:
-          "Full stack system for searching and managing books. It connects a Next.js interface to a Flask API, supports title and author search, stores data in SQLite, and provides a Docker-standardized local environment.",
+          "Library management system featuring dynamic book and author search. Next.js interface connected to a Flask API with SQLite and Docker.",
       },
     ],
   },
   contact: {
     eyebrow: "/ contact",
     title: "Shall we talk about your next project?",
-    text: "I am open to opportunities, collaborations, and new projects. Fill out the form and briefly tell me how I can contribute.",
+    text: "I am open to new career opportunities, freelance projects, and technical collaborations. Send a message below or reach out directly.",
     formTitle: "Send a message",
     name: "Name",
     namePlaceholder: "What is your name?",
     emailPlaceholder: "you@company.com",
     message: "Message",
     messagePlaceholder: "Tell me about the opportunity or project…",
-    submit: "Prepare email",
+    submit: "Open in email",
     formHint: "Submitting opens your email app with the message ready to send.",
     formFallback: "If nothing happens, email me directly at",
     email: "Email",

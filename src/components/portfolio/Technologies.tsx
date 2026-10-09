@@ -78,25 +78,27 @@ function TechnologyGroup({
     <div
       ref={ref}
       data-delay={String(index * 80)}
-      className="reveal-target border border-border bg-surface p-4 sm:p-5"
+      className="reveal-target flex flex-col justify-between h-full border border-border bg-surface p-4 sm:p-5"
     >
-      <h3 className="flex items-center gap-2 border-b border-border pb-3 text-sm font-medium">
-        <Icon className="h-4 w-4 shrink-0 text-primary" aria-hidden />
-        {translatedGroup.title}
-      </h3>
-      <ul className="mt-4 flex flex-wrap gap-2">
-        {group.items.map((item, itemIndex) => (
-          <li
-            key={item}
-            className="technology-chip inline-flex items-center gap-1.5 rounded-sm border border-border bg-background px-2.5 py-1 font-mono text-xs text-muted-foreground"
-          >
-            <span className="technology-chip-icon text-primary/80">
-              <TechIcon name={item} />
-            </span>
-            {translatedGroup.items[itemIndex]}
-          </li>
-        ))}
-      </ul>
+      <div>
+        <h3 className="flex items-center gap-2 border-b border-border pb-3 text-sm font-medium">
+          <Icon className="h-4 w-4 shrink-0 text-primary" aria-hidden />
+          {translatedGroup.title}
+        </h3>
+        <ul className="mt-4 flex flex-wrap gap-2">
+          {group.items.map((item, itemIndex) => (
+            <li
+              key={item}
+              className="technology-chip inline-flex items-center gap-1.5 rounded-sm border border-border bg-background px-2.5 py-1 font-mono text-xs text-muted-foreground"
+            >
+              <span className="technology-chip-icon text-primary/80">
+                <TechIcon name={item} />
+              </span>
+              {translatedGroup.items[itemIndex]}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
@@ -112,7 +114,7 @@ export function Technologies() {
           <p className="inline-flex items-center gap-1.5 font-mono text-xs tracking-[0.08em] text-primary">
             <Code2 className="h-3.5 w-3.5" aria-hidden /> {messages.technologies.eyebrow}
           </p>
-          <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
+          <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl lg:text-[2rem]">
             {messages.technologies.title}
           </h2>
         </div>

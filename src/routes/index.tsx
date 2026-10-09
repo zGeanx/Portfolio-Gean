@@ -13,7 +13,7 @@ import { scrollToSection } from "@/components/portfolio/internalNavigation";
 
 const title = `geanluca.dev │ ${profile.role}`;
 const description =
-  "Interfaces modernas e aplicações web responsivas. Conheça os projetos de Gean Luca, desenvolvedor front-end com experiência em React, TypeScript e integração de APIs.";
+  "Construo interfaces em React e TypeScript conectadas a APIs reais. Conheça os projetos de Gean Luca, desenvolvedor front-end com foco em performance e usabilidade.";
 const socialImage = new URL("/og-image.png", siteUrl).href;
 
 export const Route = createFileRoute("/")({

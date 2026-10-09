@@ -12,7 +12,7 @@ import type { ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { profile } from "@/data/portfolio";
 
-const themeBootstrapScript = `(function(){try{var t=localStorage.getItem("portfolio-theme");var l=t==="light";document.documentElement.classList.toggle("light",l);document.documentElement.style.colorScheme=l?"light":"dark";var p=localStorage.getItem("portfolio-palette")||"mint";document.documentElement.setAttribute("data-palette",p);var c={mint:{d:"#091413",l:"#f3faf9"}};var m=document.querySelector('meta[name="theme-color"]');if(m&&c[p]){m.setAttribute("content",l?c[p].l:c[p].d)}}catch(e){}})();`;
+const themeBootstrapScript = `(function(){try{var t=localStorage.getItem("portfolio-theme");var l=t==="light";document.documentElement.classList.toggle("light",l);document.documentElement.style.colorScheme=l?"light":"dark";var m=document.querySelector('meta[name="theme-color"]');if(m){m.setAttribute("content",l?"#f3faf9":"#091413")}}catch(e){}})();`;
 
 function NotFoundComponent() {
   return (
@@ -76,12 +76,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { name: "theme-color", content: "#0e0d16" },
+      { name: "theme-color", content: "#091413" },
       { title: `geanluca.dev │ ${profile.role}` },
       {
         name: "description",
         content:
-          "Portfólio de Gean Luca, desenvolvedor front-end. Interfaces modernas, aplicações web responsivas e integração de APIs.",
+          "Construo interfaces em React e TypeScript conectadas a APIs reais. Conheça os projetos de Gean Luca, desenvolvedor front-end com foco em performance e usabilidade.",
       },
       { name: "author", content: "Gean Luca" },
       { property: "og:site_name", content: "geanluca.dev" },

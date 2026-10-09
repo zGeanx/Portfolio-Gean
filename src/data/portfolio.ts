@@ -1,7 +1,7 @@
-import booksLibraryShot from "@/assets/books-library.jpg";
-import profileShot from "@/assets/profile.jpg";
-import pulsoTvShot from "@/assets/pulso-tv.png";
-import sistemaFolgasShot from "@/assets/sistema-de-folgas.png";
+import booksLibraryShot from "@/assets/books-library.webp";
+import profileShot from "@/assets/profile.webp";
+import pulsoTvShot from "@/assets/pulso-tv.webp";
+import sistemaFolgasShot from "@/assets/sistema-de-folgas.webp";
 
 export const siteUrl = "https://geanluca.dev/";
 
@@ -12,9 +12,9 @@ export const profile = {
   initials: "GL",
   avatar: profileShot,
   description:
-    "Desenvolvedor front-end com foco em aplicações web modernas, interfaces responsivas, integração de APIs e experiências acessíveis.",
+    "Construo interfaces em React e TypeScript conectadas a APIs reais, unindo precisão visual, performance e código limpo do formulário ao banco de dados.",
   about:
-    "Sou desenvolvedor front-end formado em Análise e Desenvolvimento de Sistemas. Crio interfaces modernas, responsivas e acessíveis, transformando requisitos em experiências claras e integrando aplicações a APIs e serviços. Minha experiência com back-end e bancos de dados complementa o trabalho de interface e facilita a construção de produtos web completos.",
+    "Sou desenvolvedor formado em Análise e Desenvolvimento de Sistemas (Senac RS). Minha atuação principal é no front-end com React e TypeScript, complementada por experiência com back-end em Python e banco de dados, entregando soluções consistentes e de alta usabilidade.",
 };
 
 export const facts = [
@@ -100,7 +100,7 @@ export const projects: Project[] = [
     category: "Gestão & Produtividade",
     name: "Sistema de Folgas",
     description:
-      "Aplicação full stack para solicitações de folga, com portal público, painel administrativo protegido por JWT e fluxo de aprovação. A API em Django centraliza regras de negócio e persiste dados no PostgreSQL do Supabase.",
+      "Plataforma full stack para solicitação e aprovação de folgas com portal público e painel com JWT. API em Django com PostgreSQL no Supabase.",
     tech: ["React", "Vite", "Django", "Django REST Framework", "JWT", "PostgreSQL", "Supabase"],
     demo: "https://sistema-de-folgas.pages.dev",
     repo: "https://github.com/zGeanx/Sistema_De_Folgas",
@@ -110,7 +110,7 @@ export const projects: Project[] = [
     category: "Conteúdo & Transmissões",
     name: "Pulso TV",
     description:
-      "Aplicação para navegação por canais e eventos ao vivo, com catálogo, agenda e páginas de reprodução. Construída com Vinext sobre Vite, usa rotas no servidor para integrar uma API externa e aplica políticas de origem aos players incorporados.",
+      "Catálogo de canais e transmissões ao vivo com programação e player integrado, utilizando rotas seguras no servidor e deploys na Cloudflare.",
     tech: ["React", "Vinext", "Vite", "TypeScript", "Tailwind CSS", "Cloudflare Workers"],
     demo: "https://www.pulso-tv.online/",
     repo: "https://github.com/zGeanx/pulso-tv",
@@ -120,17 +120,10 @@ export const projects: Project[] = [
     category: "Catálogo & Gestão de acervo",
     name: "Books Library",
     description:
-      "Sistema full stack para consulta e gerenciamento de livros. Conecta uma interface em Next.js a uma API Flask, com busca por título e autor, armazenamento em SQLite e ambiente local padronizado com Docker.",
+      "Sistema de gerenciamento e busca de acervo bibliográfico por título e autor. Interface em Next.js conectada a API Flask com SQLite e Docker.",
     tech: ["Next.js", "TypeScript", "Flask", "SQLite", "Docker", "shadcn/ui"],
     demo: "https://books-library.geanlucadias12.workers.dev/",
     repo: "https://github.com/zGeanx/Books-Library",
     image: booksLibraryShot,
   },
 ];
-
-export const contact = {
-  title: "Vamos conversar sobre seu próximo projeto?",
-  text: "Tem uma ideia, precisa de uma interface para seu negócio ou quer conversar sobre uma oportunidade? Entre em contato por e-mail ou LinkedIn e me conte o que você precisa.",
-};
-
-export const footerText = "© 2026 Gean Luca. Todos os direitos reservados.";

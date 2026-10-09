@@ -164,7 +164,7 @@ export function Contact() {
               </div>
               <button
                 type="submit"
-                className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/85 sm:w-auto"
+                className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/85 active:scale-[0.98] sm:w-auto"
               >
                 {messages.contact.submit}
                 <ArrowUpRight className="h-4 w-4" aria-hidden />

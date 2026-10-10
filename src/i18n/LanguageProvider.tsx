@@ -114,6 +114,11 @@ const ptBR = {
           "Catálogo de canais e transmissões ao vivo com programação e player integrado, utilizando rotas seguras no servidor e deploys na Cloudflare.",
       },
       {
+        category: "API & Transmissões",
+        description:
+          "API de canais e jogos com painel de administração, autenticação JWT e player público. Publicada em Cloudflare Workers com Hono e D1, sincronizando a grade do dia automaticamente.",
+      },
+      {
         category: "Catálogo & Gestão de acervo",
         description:
           "Sistema de gerenciamento e busca de acervo bibliográfico por título e autor. Interface em Next.js conectada a API Flask com SQLite e Docker.",
@@ -257,6 +262,11 @@ const en: Messages = {
         category: "Content & Streaming",
         description:
           "Live streaming catalog and broadcast schedule with an embedded player, server routes, and Cloudflare deployment.",
+      },
+      {
+        category: "API & Broadcasts",
+        description:
+          "API for channels and matches, with an admin panel, JWT authentication, and a public player. Deployed on Cloudflare Workers with Hono and D1, syncing the daily schedule automatically.",
       },
       {
         category: "Catalog & Library Management",

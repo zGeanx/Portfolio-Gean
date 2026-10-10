@@ -1,5 +1,6 @@
 import booksLibraryShot from "@/assets/books-library.webp";
 import profileShot from "@/assets/profile.webp";
+import pulsoApiShot from "@/assets/pulso-api.webp";
 import pulsoTvShot from "@/assets/pulso-tv.webp";
 import sistemaFolgasShot from "@/assets/sistema-de-folgas.webp";
 
@@ -115,6 +116,16 @@ export const projects: Project[] = [
     demo: "https://www.pulso-tv.online/",
     repo: "https://github.com/zGeanx/pulso-tv",
     image: pulsoTvShot,
+  },
+  {
+    category: "API & Transmissões",
+    name: "API Pulso",
+    description:
+      "API de canais e jogos com painel de administração, autenticação JWT e player público. Publicada em Cloudflare Workers com Hono e D1, sincronizando a grade do dia automaticamente.",
+    tech: ["Hono", "Cloudflare Workers", "D1", "React", "TypeScript", "JWT", "Zod"],
+    demo: "https://api.pulso-tv.online/",
+    repo: "https://github.com/zGeanx/api",
+    image: pulsoApiShot,
   },
   {
     category: "Catálogo & Gestão de acervo",

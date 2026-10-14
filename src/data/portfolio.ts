@@ -114,7 +114,7 @@ export const projects: Project[] = [
       "Catálogo de canais e transmissões ao vivo com programação e player integrado, utilizando rotas seguras no servidor e deploys na Cloudflare.",
     tech: ["React", "Vinext", "Vite", "TypeScript", "Tailwind CSS", "Cloudflare Workers"],
     demo: "https://www.pulso-tv.online/",
-    repo: "https://github.com/zGeanx/pulso-tv",
+    repo: "https://github.com/zGeanx/pulso-tv/tree/v2",
     image: pulsoTvShot,
   },
   {

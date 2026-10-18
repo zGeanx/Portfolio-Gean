@@ -70,24 +70,12 @@ function ThemeToggle({
 function LanguageSelector({ mobile = false }: { mobile?: boolean }) {
   const { language, setLanguage, messages } = useLanguage();
   const [open, setOpen] = useState(false);
-  const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
   const selectorRef = useRef<HTMLDivElement>(null);
   const selectorButton = useRef<HTMLButtonElement>(null);
   const currentLanguage = languages.find((item) => item.code === language) ?? languages[0]!;
 
   useEffect(() => {
     if (!open) return;
-
-    const updateMenuPosition = () => {
-      if (!mobile || !selectorButton.current) return;
-      const rect = selectorButton.current.getBoundingClientRect();
-      const mobileNav = selectorButton.current.closest("nav");
-      const navRect = mobileNav?.getBoundingClientRect();
-      setMenuPosition({
-        top: (navRect?.bottom ?? rect.bottom) + 6,
-        right: Math.max(16, window.innerWidth - rect.right),
-      });
-    };
 
     const closeOnPointerDown = (event: PointerEvent) => {
       if (!selectorRef.current?.contains(event.target as Node)) setOpen(false);
@@ -101,16 +89,11 @@ function LanguageSelector({ mobile = false }: { mobile?: boolean }) {
 
     document.addEventListener("pointerdown", closeOnPointerDown);
     document.addEventListener("keydown", closeOnEscape);
-    updateMenuPosition();
-    window.addEventListener("resize", updateMenuPosition);
-    window.addEventListener("scroll", updateMenuPosition, true);
     return () => {
       document.removeEventListener("pointerdown", closeOnPointerDown);
       document.removeEventListener("keydown", closeOnEscape);
-      window.removeEventListener("resize", updateMenuPosition);
-      window.removeEventListener("scroll", updateMenuPosition, true);
     };
-  }, [mobile, open]);
+  }, [open]);
 
   const selectLanguage = (nextLanguage: (typeof languages)[number]["code"]) => {
     setLanguage(nextLanguage);
@@ -145,12 +128,11 @@ function LanguageSelector({ mobile = false }: { mobile?: boolean }) {
         <div
           role="menu"
           aria-label={messages.header.languageLabel}
-          style={
+          className={`absolute right-0 ${
             mobile
-              ? { position: "fixed", top: menuPosition.top, right: menuPosition.right }
-              : undefined
-          }
-          className={`${mobile ? "z-[70]" : "absolute right-0 top-[calc(100%+6px)] z-[60]"} min-w-[130px] rounded-md border border-border bg-surface p-1 shadow-2xl animate-in fade-in-0 zoom-in-95 duration-150`}
+              ? "bottom-[calc(100%+6px)] z-20 origin-bottom-right"
+              : "top-[calc(100%+6px)] z-[60] origin-top-right"
+          } min-w-[130px] rounded-md border border-border bg-surface p-1 shadow-2xl animate-in fade-in-0 zoom-in-95 duration-150`}
         >
           {languages.map((item) => (
             <button

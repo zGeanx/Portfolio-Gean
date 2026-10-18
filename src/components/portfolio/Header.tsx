@@ -128,11 +128,7 @@ function LanguageSelector({ mobile = false }: { mobile?: boolean }) {
         <div
           role="menu"
           aria-label={messages.header.languageLabel}
-          className={`absolute right-0 ${
-            mobile
-              ? "bottom-[calc(100%+6px)] z-20 origin-bottom-right"
-              : "top-[calc(100%+6px)] z-[60] origin-top-right"
-          } min-w-[130px] rounded-md border border-border bg-surface p-1 shadow-2xl animate-in fade-in-0 zoom-in-95 duration-150`}
+          className="absolute right-0 top-[calc(100%+6px)] z-[60] min-w-[130px] rounded-md border border-border bg-surface p-1 shadow-2xl animate-in fade-in-0 zoom-in-95 origin-top-right duration-150"
         >
           {languages.map((item) => (
             <button
@@ -245,16 +241,15 @@ export function Header() {
             type="button"
             aria-label={messages.header.closeMenu}
             tabIndex={-1}
-            className="absolute inset-x-0 top-full z-40 h-[calc(100dvh-3.5rem)] cursor-default bg-background/50 backdrop-blur-xs sm:h-[calc(100dvh-4rem)] md:hidden animate-in fade-in-0 duration-200"
+            className="absolute inset-x-0 top-full z-40 h-[calc(100dvh-3.5rem)] cursor-default select-none bg-background/50 backdrop-blur-xs outline-none [-webkit-tap-highlight-color:transparent] focus:outline-none sm:h-[calc(100dvh-4rem)] md:hidden animate-in fade-in-0 duration-200"
             onClick={() => {
               setOpen(false);
-              menuButton.current?.focus();
             }}
           />
           <nav
             id="mobile-nav"
             aria-label={messages.header.mobileNavLabel}
-            className="absolute top-[calc(100%+6px)] right-4 left-auto z-50 w-[min(16rem,calc(100vw-2rem))] max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain rounded-md border border-border bg-surface p-1.5 shadow-2xl sm:max-h-[calc(100dvh-5.5rem)] md:hidden animate-in fade-in-0 zoom-in-95 duration-150"
+            className="absolute top-[calc(100%+6px)] right-4 left-auto z-50 w-[min(16rem,calc(100vw-2rem))] rounded-md border border-border bg-surface p-1.5 shadow-2xl md:hidden animate-in fade-in-0 zoom-in-95 duration-150"
           >
             <ul className="flex flex-col">
               {navItems.map((item, index) => (

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  ArrowUpRight,
   Check,
   CheckCircle2,
   Copy,
@@ -35,7 +34,6 @@ export function Contact() {
   const panelRef = useReveal<HTMLDivElement>();
 
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
-  const [lastSubmission, setLastSubmission] = useState<ContactFormData | null>(null);
 
   const {
     register,
@@ -54,7 +52,6 @@ export function Contact() {
   const onSubmit = async (data: ContactFormData) => {
     console.log("[Contact] onSubmit acionado com:", data);
     setFormStatus("submitting");
-    setLastSubmission(data);
     try {
       await sendContactMessage({ data });
       console.log("[Contact] sendContactMessage sucesso!");
@@ -64,15 +61,6 @@ export function Contact() {
       console.error("[Contact] Erro ao enviar:", err);
       setFormStatus("error");
     }
-  };
-
-  const openMailtoFallback = () => {
-    if (!lastSubmission) return;
-    const subject = encodeURIComponent(`Contato pelo portfólio — ${lastSubmission.name}`);
-    const body = encodeURIComponent(
-      `${lastSubmission.message}\n\nNome: ${lastSubmission.name}\nE-mail: ${lastSubmission.email}`,
-    );
-    window.location.href = `mailto:${links.email}?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -170,26 +158,12 @@ export function Contact() {
                   })}
                   noValidate
                 >
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-medium text-foreground">
-                      {messages.contact.formTitle}
-                    </h3>
-                    <span className="font-mono text-xs text-muted-foreground">API Serverless</span>
-                  </div>
+                  <h3 className="text-lg font-medium text-foreground">{messages.contact.formTitle}</h3>
 
                   {formStatus === "error" && (
                     <div className="mt-4 rounded-sm border border-destructive/30 bg-destructive/10 p-3.5 text-xs text-destructive flex flex-col gap-2 animate-in fade-in-0">
                       <p className="font-medium">{messages.contact.errorTitle}</p>
                       <p className="text-muted-foreground">{messages.contact.errorDescription}</p>
-                      {lastSubmission && (
-                        <button
-                          type="button"
-                          onClick={openMailtoFallback}
-                          className="w-fit underline underline-offset-4 hover:text-foreground font-medium"
-                        >
-                          {messages.contact.sendMailtoFallback} →
-                        </button>
-                      )}
                     </div>
                   )}
 
@@ -279,7 +253,7 @@ export function Contact() {
                     </div>
                   </div>
 
-                  <div className="mt-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <div className="mt-5">
                     <button
                       type="submit"
                       disabled={formStatus === "submitting"}
@@ -296,17 +270,6 @@ export function Contact() {
                           <Send className="h-4 w-4" aria-hidden />
                         </>
                       )}
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        window.location.href = `mailto:${links.email}`;
-                      }}
-                      className="inline-flex min-h-10 items-center justify-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      <span>{messages.contact.sendMailtoFallback}</span>
-                      <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
                     </button>
                   </div>
 

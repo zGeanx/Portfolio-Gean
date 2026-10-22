@@ -149,7 +149,6 @@ const ptBR = {
     successTitle: "Mensagem enviada com sucesso!",
     successText: "Obrigado pelo contato. Recebi sua mensagem e retornarei o mais breve possível.",
     sendAnother: "Enviar outra mensagem",
-    sendMailtoFallback: "Abrir no cliente de e-mail",
     email: "E-mail",
     copyAria: "Copiar e-mail",
     copyTitle: "Clique para copiar o e-mail",
@@ -309,7 +308,6 @@ const en: Messages = {
     successText:
       "Thank you for reaching out. I have received your message and will get back to you shortly.",
     sendAnother: "Send another message",
-    sendMailtoFallback: "Open in email app",
     email: "Email",
     copyAria: "Copy email",
     copyTitle: "Click to copy the email",

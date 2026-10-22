@@ -111,14 +111,14 @@ const ptBR = {
     opensNewTab: "abre em nova aba",
     entries: [
       {
-        category: "Gestão & Produtividade",
-        description:
-          "Plataforma full stack para solicitação e aprovação de folgas com portal público e painel com JWT. API em Django com PostgreSQL no Supabase.",
-      },
-      {
         category: "Conteúdo & Transmissões",
         description:
           "Catálogo de canais e transmissões ao vivo com programação e player integrado, utilizando rotas seguras no servidor e deploys na Cloudflare.",
+      },
+      {
+        category: "Gestão & Produtividade",
+        description:
+          "Plataforma full stack para solicitação e aprovação de folgas com portal público e painel com JWT. API em Django com PostgreSQL no Supabase.",
       },
       {
         category: "API & Transmissões",
@@ -270,19 +270,19 @@ const en: Messages = {
     opensNewTab: "opens in a new tab",
     entries: [
       {
-        category: "Management & Productivity",
-        description:
-          "Full-stack leave request and approval portal with JWT authentication. Powered by a Django API and Supabase PostgreSQL.",
-      },
-      {
         category: "Content & Streaming",
         description:
           "Live streaming catalog and broadcast schedule with an embedded player, server routes, and Cloudflare deployment.",
       },
       {
+        category: "Management & Productivity",
+        description:
+          "Full-stack leave request and approval portal with JWT authentication. Powered by a Django API and Supabase PostgreSQL.",
+      },
+      {
         category: "API & Broadcasts",
         description:
-          "API for channels and matches, with an admin panel, JWT authentication, and a public player. Deployed on Cloudflare Workers with Hono and D1, syncing the daily schedule automatically.",
+          "API for channels and matches, with an admin panel, JWT authentication, and a public player. Deployed on Cloudflare Workers with Hono e D1, syncing the daily schedule automatically.",
       },
       {
         category: "Catalog & Library Management",

@@ -98,16 +98,6 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    category: "Gestão & Produtividade",
-    name: "Sistema de Folgas",
-    description:
-      "Plataforma full stack para solicitação e aprovação de folgas com portal público e painel com JWT. API em Django com PostgreSQL no Supabase.",
-    tech: ["React", "Vite", "Django", "Django REST Framework", "JWT", "PostgreSQL", "Supabase"],
-    demo: "https://sistema-de-folgas.pages.dev",
-    repo: "https://github.com/zGeanx/Sistema_De_Folgas",
-    image: sistemaFolgasShot,
-  },
-  {
     category: "Conteúdo & Transmissões",
     name: "Pulso TV",
     description:
@@ -116,6 +106,16 @@ export const projects: Project[] = [
     demo: "https://www.pulso-tv.online/",
     repo: "https://github.com/zGeanx/pulso-tv/tree/v2",
     image: pulsoTvShot,
+  },
+  {
+    category: "Gestão & Produtividade",
+    name: "Sistema de Folgas",
+    description:
+      "Plataforma full stack para solicitação e aprovação de folgas com portal público e painel com JWT. API em Django com PostgreSQL no Supabase.",
+    tech: ["React", "Vite", "Django", "Django REST Framework", "JWT", "PostgreSQL", "Supabase"],
+    demo: "https://sistema-de-folgas.pages.dev",
+    repo: "https://github.com/zGeanx/Sistema_De_Folgas",
+    image: sistemaFolgasShot,
   },
   {
     category: "API & Transmissões",

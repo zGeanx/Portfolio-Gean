@@ -5,7 +5,8 @@ const RESEND_ENDPOINT = "https://api.resend.com/emails";
 const DEFAULT_FROM = "Portfolio <onboarding@resend.dev>";
 
 function readEnv(name: string): string | undefined {
-  const value = process.env[name];
+  const runtimeEnv = (globalThis as { __env__?: Record<string, unknown> }).__env__;
+  const value = runtimeEnv?.[name] ?? process.env[name];
   return typeof value === "string" && value.trim() ? value.trim() : undefined;
 }
 

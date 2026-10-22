@@ -1,119 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, ExternalLink, Github, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLink, Github } from "lucide-react";
 import { projects, type Project } from "@/data/portfolio";
 import { useReveal } from "@/hooks/useReveal";
 import { useLanguage, type Messages } from "@/i18n/LanguageProvider";
 
 type ProjectLabels = Pick<
   Messages["projects"],
-  "screenshotAlt" | "viewProject" | "viewCode" | "opensNewTab" | "featuredTag"
+  "screenshotAlt" | "viewProject" | "viewCode" | "opensNewTab"
 >;
-
-function FeaturedProjectCard({ project, labels }: { project: Project; labels: ProjectLabels }) {
-  const ref = useReveal<HTMLElement>();
-
-  return (
-    <article
-      ref={ref}
-      data-delay="0"
-      className="reveal-target group overflow-hidden border border-border bg-surface transition-all duration-300 hover:border-primary/50 hover:shadow-xl"
-    >
-      <div className="grid lg:grid-cols-[1.2fr_1fr]">
-        {/* Mockup de navegador realista */}
-        <div className="relative flex flex-col overflow-hidden border-b border-border bg-background/90 lg:border-r lg:border-b-0">
-          <div className="flex h-9 items-center justify-between border-b border-border/80 bg-surface/80 px-4">
-            <div className="flex items-center gap-1.5" aria-hidden>
-              <span className="h-2.5 w-2.5 rounded-full bg-border-strong/60" />
-              <span className="h-2.5 w-2.5 rounded-full bg-border-strong/60" />
-              <span className="h-2.5 w-2.5 rounded-full bg-border-strong/60" />
-            </div>
-            <div className="mx-auto flex h-5 max-w-[220px] flex-1 items-center justify-center rounded-sm border border-border/60 bg-background/50 px-2 font-mono text-[11px] text-muted-foreground/80 truncate">
-              {project.demo?.replace("https://", "") ?? "sistema-de-folgas.pages.dev"}
-            </div>
-            <div className="w-8" aria-hidden />
-          </div>
-
-          <div className="relative aspect-video overflow-hidden bg-background lg:h-full lg:aspect-auto">
-            {project.image && (
-              <img
-                src={project.image}
-                alt={`${labels.screenshotAlt} ${project.name}`}
-                width={1280}
-                height={800}
-                loading="lazy"
-                decoding="async"
-                className="h-full w-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-              />
-            )}
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/30 via-transparent to-transparent" />
-          </div>
-        </div>
-
-        {/* Informações técnicas e narrativa do projeto */}
-        <div className="flex flex-col p-6 sm:p-8">
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-2.5 py-0.5 font-mono text-xs font-medium text-primary">
-              <Sparkles className="h-3 w-3" aria-hidden />
-              {labels.featuredTag}
-            </span>
-            <span className="font-mono text-xs text-muted-foreground/70">• {project.category}</span>
-          </div>
-
-          <h3 className="mt-3 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-            {project.name}
-          </h3>
-
-          <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base text-pretty">
-            {project.description}
-          </p>
-
-          <div className="mt-5">
-            <p className="font-mono text-xs font-medium uppercase tracking-wider text-muted-foreground/70">
-              Stack & Arquitetura
-            </p>
-            <ul className="mt-2.5 flex flex-wrap gap-1.5">
-              {project.tech.map((tech) => (
-                <li
-                  key={tech}
-                  className="rounded-sm border border-border bg-background px-2.5 py-1 font-mono text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
-                >
-                  {tech}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="mt-auto flex flex-wrap items-center gap-3 pt-6 sm:pt-8">
-            {project.demo && (
-              <a
-                href={project.demo}
-                target="_blank"
-                rel="noreferrer noopener"
-                aria-label={`${labels.viewProject} ${project.name} (${labels.opensNewTab})`}
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-sm bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/85 active:scale-[0.98]"
-              >
-                <ExternalLink className="h-4 w-4" aria-hidden />
-                <span>{labels.viewProject}</span>
-              </a>
-            )}
-            {project.repo && (
-              <a
-                href={project.repo}
-                target="_blank"
-                rel="noreferrer noopener"
-                aria-label={`${labels.viewCode}: ${project.name} (${labels.opensNewTab})`}
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-sm border border-border bg-background px-5 py-2.5 text-sm font-medium text-foreground transition-all duration-200 hover:border-primary hover:text-primary active:scale-[0.98]"
-              >
-                <Github className="h-4 w-4" aria-hidden />
-                <span>{labels.viewCode}</span>
-              </a>
-            )}
-          </div>
-        </div>
-      </div>
-    </article>
-  );
-}
 
 function ProjectCard({
   project,
@@ -254,10 +148,9 @@ export function Projects() {
     });
   };
 
-  const flagshipProject = { ...projects[0], ...messages.projects.entries[0] };
-  const secondaryProjects = projects.slice(1).map((p, idx) => ({
-    ...p,
-    ...messages.projects.entries[idx + 1],
+  const projectList = projects.map((project, index) => ({
+    ...project,
+    ...messages.projects.entries[index],
   }));
 
   return (
@@ -349,32 +242,26 @@ export function Projects() {
           }}
           className="scrollbar-none -mx-4 mt-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto overscroll-x-contain px-4 pb-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:hidden"
         >
-          {projects.map((project, index) => (
+          {projectList.map((project, index) => (
             <ProjectCard
               key={project.name}
-              project={{ ...project, ...messages.projects.entries[index] }}
+              project={project}
               index={index}
               labels={messages.projects}
             />
           ))}
         </div>
 
-        {/* Visão Desktop / Tablet: Bento Grid Arquitetural */}
-        <div className="hidden md:mt-8 md:flex md:flex-col md:gap-5">
-          {/* Projeto Flagship em Destaque */}
-          <FeaturedProjectCard project={flagshipProject} labels={messages.projects} />
-
-          {/* Projetos Secundários em Grade de 3 Colunas */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {secondaryProjects.map((project, index) => (
-              <ProjectCard
-                key={project.name}
-                project={project}
-                index={index + 1}
-                labels={messages.projects}
-              />
-            ))}
-          </div>
+        {/* Visão Desktop / Tablet: Grade Regular de Projetos */}
+        <div className="hidden md:mt-8 md:grid md:grid-cols-2 gap-5">
+          {projectList.map((project, index) => (
+            <ProjectCard
+              key={project.name}
+              project={project}
+              index={index}
+              labels={messages.projects}
+            />
+          ))}
         </div>
       </div>
     </section>

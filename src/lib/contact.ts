@@ -24,16 +24,6 @@ export type ContactFormData = z.infer<typeof contactSchema>;
 export const sendContactMessage = createServerFn({ method: "POST" })
   .validator((data: unknown) => contactSchema.parse(data))
   .handler(async ({ data }) => {
-    // Sanitização e log seguro no servidor (Cloudflare Worker / Node)
-    console.info(
-      `[CONTATO] De: ${data.name} <${data.email}> | Mensagem: ${data.message.slice(0, 80)}...`,
-    );
-
-    // Simula tempo de resposta de rede realística caso local
-    await new Promise((resolve) => setTimeout(resolve, 600));
-
-    return {
-      success: true,
-      timestamp: new Date().toISOString(),
-    };
+    const { deliverContactMessage } = await import("./contact-mail.server");
+    return deliverContactMessage(data);
   });

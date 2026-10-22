@@ -34,7 +34,7 @@
   --muted-foreground: oklch(0.72 0.025 165);
   --primary: oklch(0.78 0.13 165);
   --primary-foreground: oklch(0.12 0.04 165);
-  --border: oklch(0.30 0.025 165);
+  --border: oklch(0.3 0.025 165);
   --border-strong: oklch(0.44 0.035 165);
 }
 
@@ -45,7 +45,7 @@
   --surface: oklch(0.998 0.004 165);
   --surface-2: oklch(0.935 0.018 165);
   --muted: oklch(0.93 0.016 165);
-  --muted-foreground: oklch(0.44 0.03 165);
+  --muted-foreground: oklch(0.36 0.03 165);
   --primary: oklch(0.46 0.13 165);
   --primary-foreground: oklch(0.99 0.005 165);
   --border: oklch(0.84 0.025 165);
@@ -325,5 +325,15 @@
   .typing-role {
     width: auto !important;
     border-right-color: transparent !important;
+  }
+}
+
+@media print {
+  .hero-enter,
+  .reveal-target,
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
   }
 }

@@ -1,8 +1,119 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, ExternalLink, FolderGit2, Github } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLink, Github, Sparkles } from "lucide-react";
 import { projects, type Project } from "@/data/portfolio";
 import { useReveal } from "@/hooks/useReveal";
 import { useLanguage, type Messages } from "@/i18n/LanguageProvider";
+
+type ProjectLabels = Pick<
+  Messages["projects"],
+  "screenshotAlt" | "viewProject" | "viewCode" | "opensNewTab" | "featuredTag"
+>;
+
+function FeaturedProjectCard({ project, labels }: { project: Project; labels: ProjectLabels }) {
+  const ref = useReveal<HTMLElement>();
+
+  return (
+    <article
+      ref={ref}
+      data-delay="0"
+      className="reveal-target group overflow-hidden border border-border bg-surface transition-all duration-300 hover:border-primary/50 hover:shadow-xl"
+    >
+      <div className="grid lg:grid-cols-[1.2fr_1fr]">
+        {/* Mockup de navegador realista */}
+        <div className="relative flex flex-col overflow-hidden border-b border-border bg-background/90 lg:border-r lg:border-b-0">
+          <div className="flex h-9 items-center justify-between border-b border-border/80 bg-surface/80 px-4">
+            <div className="flex items-center gap-1.5" aria-hidden>
+              <span className="h-2.5 w-2.5 rounded-full bg-border-strong/60" />
+              <span className="h-2.5 w-2.5 rounded-full bg-border-strong/60" />
+              <span className="h-2.5 w-2.5 rounded-full bg-border-strong/60" />
+            </div>
+            <div className="mx-auto flex h-5 max-w-[220px] flex-1 items-center justify-center rounded-sm border border-border/60 bg-background/50 px-2 font-mono text-[11px] text-muted-foreground/80 truncate">
+              {project.demo?.replace("https://", "") ?? "sistema-de-folgas.pages.dev"}
+            </div>
+            <div className="w-8" aria-hidden />
+          </div>
+
+          <div className="relative aspect-video overflow-hidden bg-background lg:h-full lg:aspect-auto">
+            {project.image && (
+              <img
+                src={project.image}
+                alt={`${labels.screenshotAlt} ${project.name}`}
+                width={1280}
+                height={800}
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+              />
+            )}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/30 via-transparent to-transparent" />
+          </div>
+        </div>
+
+        {/* Informações técnicas e narrativa do projeto */}
+        <div className="flex flex-col p-6 sm:p-8">
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-2.5 py-0.5 font-mono text-xs font-medium text-primary">
+              <Sparkles className="h-3 w-3" aria-hidden />
+              {labels.featuredTag}
+            </span>
+            <span className="font-mono text-xs text-muted-foreground/70">• {project.category}</span>
+          </div>
+
+          <h3 className="mt-3 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+            {project.name}
+          </h3>
+
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base text-pretty">
+            {project.description}
+          </p>
+
+          <div className="mt-5">
+            <p className="font-mono text-xs font-medium uppercase tracking-wider text-muted-foreground/70">
+              Stack & Arquitetura
+            </p>
+            <ul className="mt-2.5 flex flex-wrap gap-1.5">
+              {project.tech.map((tech) => (
+                <li
+                  key={tech}
+                  className="rounded-sm border border-border bg-background px-2.5 py-1 font-mono text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+                >
+                  {tech}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="mt-auto flex flex-wrap items-center gap-3 pt-6 sm:pt-8">
+            {project.demo && (
+              <a
+                href={project.demo}
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label={`${labels.viewProject} ${project.name} (${labels.opensNewTab})`}
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-sm bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/85 active:scale-[0.98]"
+              >
+                <ExternalLink className="h-4 w-4" aria-hidden />
+                <span>{labels.viewProject}</span>
+              </a>
+            )}
+            {project.repo && (
+              <a
+                href={project.repo}
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label={`${labels.viewCode}: ${project.name} (${labels.opensNewTab})`}
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-sm border border-border bg-background px-5 py-2.5 text-sm font-medium text-foreground transition-all duration-200 hover:border-primary hover:text-primary active:scale-[0.98]"
+              >
+                <Github className="h-4 w-4" aria-hidden />
+                <span>{labels.viewCode}</span>
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}
 
 function ProjectCard({
   project,
@@ -11,7 +122,7 @@ function ProjectCard({
 }: {
   project: Project;
   index: number;
-  labels: Pick<Messages["projects"], "screenshotAlt" | "viewProject" | "viewCode" | "opensNewTab">;
+  labels: ProjectLabels;
 }) {
   const ref = useReveal<HTMLElement>();
 
@@ -19,10 +130,10 @@ function ProjectCard({
     <article
       ref={ref}
       data-delay={String(index * 70)}
-      className="project-card reveal-target flex w-[min(86vw,340px)] min-w-0 shrink-0 snap-start flex-col overflow-hidden border border-border bg-surface transition-[transform,border-color,box-shadow] duration-300 md:w-auto"
+      className="project-card reveal-target group flex w-[min(86vw,340px)] min-w-0 shrink-0 snap-start flex-col overflow-hidden border border-border bg-surface transition-all duration-300 hover:border-primary/50 hover:shadow-lg md:w-auto"
     >
       {project.image && (
-        <div className="aspect-video overflow-hidden border-b border-border bg-background">
+        <div className="relative aspect-video overflow-hidden border-b border-border bg-background">
           <img
             src={project.image}
             alt={`${labels.screenshotAlt} ${project.name}`}
@@ -30,15 +141,19 @@ function ProjectCard({
             height={800}
             loading="lazy"
             decoding="async"
-            className="project-image h-full w-full object-cover object-top transition-transform duration-500 ease-out"
+            className="project-image h-full w-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.03]"
           />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/20 via-transparent to-transparent" />
         </div>
       )}
 
-      <div className="flex min-w-0 flex-1 flex-col p-3.5 md:p-4">
-        <p className="font-mono text-xs tracking-[0.06em] text-primary">{project.category}</p>
-        <h3 className="mt-1 text-base font-medium">{project.name}</h3>
-        <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground text-pretty">
+      <div className="flex min-w-0 flex-1 flex-col p-4 sm:p-5">
+        <div className="flex items-center justify-between gap-2">
+          <p className="font-mono text-xs tracking-[0.06em] text-primary">{project.category}</p>
+          <span className="font-mono text-xs text-muted-foreground/60">0{index + 1} //</span>
+        </div>
+        <h3 className="mt-1.5 text-lg font-medium text-foreground">{project.name}</h3>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground text-pretty">
           {project.description}
         </p>
         <ul className="mt-3 flex flex-wrap gap-1 md:mt-4 md:gap-1.5">
@@ -58,9 +173,9 @@ function ProjectCard({
               target="_blank"
               rel="noreferrer noopener"
               aria-label={`${labels.viewProject} ${project.name} (${labels.opensNewTab})`}
-              className="inline-flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-sm bg-primary px-3 py-2 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/85 active:scale-[0.98] sm:flex-none sm:text-xs"
+              className="inline-flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-sm bg-primary px-3 py-2 text-xs font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/85 active:scale-[0.98]"
             >
-              <ExternalLink className="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden />
+              <ExternalLink className="h-3.5 w-3.5" aria-hidden />
               {labels.viewProject}
             </a>
           )}
@@ -70,9 +185,9 @@ function ProjectCard({
               target="_blank"
               rel="noreferrer noopener"
               aria-label={`${labels.viewCode}: ${project.name} (${labels.opensNewTab})`}
-              className="inline-flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-sm border border-border px-3 py-2 text-xs font-medium transition-all duration-200 hover:border-primary hover:text-primary active:scale-[0.98] sm:flex-none"
+              className="inline-flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-sm border border-border bg-background px-3 py-2 text-xs font-medium text-foreground transition-all duration-200 hover:border-primary hover:text-primary active:scale-[0.98]"
             >
-              <Github className="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden />
+              <Github className="h-3.5 w-3.5" aria-hidden />
               {labels.viewCode}
             </a>
           )}
@@ -86,10 +201,19 @@ export function Projects() {
   const { messages } = useLanguage();
   const carousel = useRef<HTMLDivElement>(null);
   const [edges, setEdges] = useState({ start: true, end: false });
+  const [currentIndex, setCurrentIndex] = useState(0);
   const headingRef = useReveal<HTMLDivElement>();
+
   const updateEdges = useCallback(() => {
     const element = carousel.current;
     if (!element) return;
+    const card = element.firstElementChild as HTMLElement | null;
+    const cardWidth = card ? card.getBoundingClientRect().width + 12 : 300;
+    const idx = Math.min(
+      projects.length - 1,
+      Math.max(0, Math.round(element.scrollLeft / cardWidth)),
+    );
+    setCurrentIndex(idx);
     setEdges({
       start: element.scrollLeft <= 1,
       end: element.scrollLeft + element.clientWidth >= element.scrollWidth - 1,
@@ -117,20 +241,67 @@ export function Projects() {
     });
   };
 
+  const scrollToIndex = (index: number) => {
+    const element = carousel.current;
+    const card = element?.firstElementChild as HTMLElement | null;
+    if (!element || !card) return;
+    const cardWidth = card.getBoundingClientRect().width + 12;
+    element.scrollTo({
+      left: index * cardWidth,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "instant"
+        : "smooth",
+    });
+  };
+
+  const flagshipProject = { ...projects[0], ...messages.projects.entries[0] };
+  const secondaryProjects = projects.slice(1).map((p, idx) => ({
+    ...p,
+    ...messages.projects.entries[idx + 1],
+  }));
+
   return (
     <section id="projetos" className="border-b border-border">
       <div className="mx-auto max-w-[1160px] px-4 py-12 sm:px-6 sm:py-16">
         <div ref={headingRef} className="reveal-target">
-          <p className="inline-flex items-center gap-1.5 font-mono text-xs tracking-[0.08em] text-primary">
-            <FolderGit2 className="h-3.5 w-3.5" aria-hidden /> {messages.projects.eyebrow}
+          <p className="inline-flex items-center gap-2 font-mono text-xs font-medium tracking-[0.12em] text-primary uppercase">
+            <span className="text-primary/70">03 //</span>{" "}
+            {messages.projects.eyebrow.replace(/^\/\s*/, "")}
           </p>
-          <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl lg:text-[2rem]">
+          <h2 className="mt-2.5 text-2xl font-semibold tracking-tight sm:text-3xl lg:text-[2rem]">
             {messages.projects.title}
           </h2>
         </div>
 
-        <div className="mt-3 flex items-center justify-between gap-3 md:hidden">
-          <p className="font-mono text-xs text-muted-foreground">{messages.projects.dragHint}</p>
+        {/* Controles de navegação para Mobile */}
+        <div className="mt-4 flex items-center justify-between gap-3 md:hidden">
+          <div className="flex items-center gap-2.5">
+            <span className="font-mono text-xs font-semibold text-primary">
+              0{currentIndex + 1}
+              <span className="font-normal text-muted-foreground/60"> / 0{projects.length}</span>
+            </span>
+            <div
+              className="flex items-center gap-1.5"
+              role="tablist"
+              aria-label="Indicadores de projetos"
+            >
+              {projects.map((p, idx) => (
+                <button
+                  key={p.name}
+                  type="button"
+                  role="tab"
+                  aria-selected={currentIndex === idx}
+                  aria-label={`Ir para projeto ${idx + 1}: ${p.name}`}
+                  onClick={() => scrollToIndex(idx)}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    currentIndex === idx
+                      ? "w-6 bg-primary"
+                      : "w-2 bg-border hover:bg-muted-foreground/50"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
           <div className="flex shrink-0 gap-2">
             {[
               {
@@ -161,6 +332,7 @@ export function Projects() {
           </div>
         </div>
 
+        {/* Visão Mobile: Carrossel Snap Fluido */}
         <div
           ref={carousel}
           id="project-list"
@@ -175,7 +347,7 @@ export function Projects() {
               scrollProject(event.key === "ArrowLeft" ? -1 : 1);
             }
           }}
-          className="scrollbar-none -mx-4 mt-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto overscroll-x-contain px-4 pb-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:mx-0 md:mt-8 md:grid md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0"
+          className="scrollbar-none -mx-4 mt-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto overscroll-x-contain px-4 pb-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:hidden"
         >
           {projects.map((project, index) => (
             <ProjectCard
@@ -185,6 +357,24 @@ export function Projects() {
               labels={messages.projects}
             />
           ))}
+        </div>
+
+        {/* Visão Desktop / Tablet: Bento Grid Arquitetural */}
+        <div className="hidden md:mt-8 md:flex md:flex-col md:gap-5">
+          {/* Projeto Flagship em Destaque */}
+          <FeaturedProjectCard project={flagshipProject} labels={messages.projects} />
+
+          {/* Projetos Secundários em Grade de 3 Colunas */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {secondaryProjects.map((project, index) => (
+              <ProjectCard
+                key={project.name}
+                project={project}
+                index={index + 1}
+                labels={messages.projects}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -52,10 +52,11 @@ export function About() {
       <div className="mx-auto max-w-[1160px] px-4 py-12 sm:px-6 sm:py-16">
         <div className="grid gap-5 lg:grid-cols-[0.72fr_1.28fr] lg:items-start lg:gap-12">
           <div ref={headingRef} className="reveal-target">
-            <p className="inline-flex items-center gap-1.5 font-mono text-xs tracking-[0.08em] text-primary">
-              <User className="h-3.5 w-3.5" aria-hidden /> {messages.about.eyebrow}
+            <p className="inline-flex items-center gap-2 font-mono text-xs font-medium tracking-[0.12em] text-primary uppercase">
+              <span className="text-primary/70">01 //</span>{" "}
+              {messages.about.eyebrow.replace(/^\/\s*/, "")}
             </p>
-            <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl lg:text-[2rem]">
+            <h2 className="mt-2.5 text-2xl font-semibold tracking-tight sm:text-3xl lg:text-[2rem]">
               {messages.about.title}
             </h2>
           </div>

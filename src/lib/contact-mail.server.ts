@@ -32,12 +32,7 @@ export async function deliverContactMessage(data: ContactFormData) {
   const to = readEnv("CONTACT_TO_EMAIL") ?? links.email;
   const from = readEnv("CONTACT_FROM_EMAIL") ?? DEFAULT_FROM;
   const subject = singleLine(`Contato pelo portfólio — ${data.name}`).slice(0, 180);
-  const text = [
-    data.message,
-    "",
-    `Nome: ${data.name}`,
-    `E-mail: ${data.email}`,
-  ].join("\n");
+  const text = [data.message, "", `Nome: ${data.name}`, `E-mail: ${data.email}`].join("\n");
 
   const response = await fetch(RESEND_ENDPOINT, {
     method: "POST",

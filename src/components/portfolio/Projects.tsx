@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, ExternalLink, Github } from "lucide-react";
 import { projects, type Project } from "@/data/portfolio";
-import { useReveal } from "@/hooks/useReveal";
 import { useLanguage, type Messages } from "@/i18n/LanguageProvider";
+import { gsap, useGSAP } from "@/lib/gsap";
 
 type ProjectLabels = Pick<
   Messages["projects"],
@@ -13,18 +13,16 @@ function ProjectCard({
   project,
   index,
   labels,
+  isDesktop = false,
 }: {
   project: Project;
   index: number;
   labels: ProjectLabels;
+  isDesktop?: boolean;
 }) {
-  const ref = useReveal<HTMLElement>();
-
   return (
     <article
-      ref={ref}
-      data-delay={String(index * 70)}
-      className="project-card reveal-target group flex w-[min(86vw,340px)] min-w-0 shrink-0 snap-start flex-col overflow-hidden border border-border bg-surface transition-all duration-300 hover:border-primary/50 hover:shadow-lg md:w-auto"
+      className={`project-card ${isDesktop ? "desktop-project-card" : ""} group flex w-[min(86vw,340px)] min-w-0 shrink-0 snap-start flex-col overflow-hidden border border-border bg-surface md:w-auto`}
     >
       {project.image && (
         <div className="relative aspect-video overflow-hidden border-b border-border bg-background">
@@ -67,7 +65,7 @@ function ProjectCard({
               target="_blank"
               rel="noreferrer noopener"
               aria-label={`${labels.viewProject} ${project.name} (${labels.opensNewTab})`}
-              className="inline-flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-sm bg-primary px-3 py-2 text-xs font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/85 active:scale-[0.98]"
+              className="inline-flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-sm bg-primary px-3 py-2 text-xs font-medium text-primary-foreground transition-[transform,background-color] duration-150 ease-out hover:bg-primary/85 active:scale-[0.97]"
             >
               <ExternalLink className="h-3.5 w-3.5" aria-hidden />
               {labels.viewProject}
@@ -79,7 +77,7 @@ function ProjectCard({
               target="_blank"
               rel="noreferrer noopener"
               aria-label={`${labels.viewCode}: ${project.name} (${labels.opensNewTab})`}
-              className="inline-flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-sm border border-border bg-background px-3 py-2 text-xs font-medium text-foreground transition-all duration-200 hover:border-primary hover:text-primary active:scale-[0.98]"
+              className="inline-flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-sm border border-border bg-background px-3 py-2 text-xs font-medium text-foreground transition-[transform,border-color,color] duration-150 ease-out hover:border-primary hover:text-primary active:scale-[0.97]"
             >
               <Github className="h-3.5 w-3.5" aria-hidden />
               {labels.viewCode}
@@ -94,9 +92,42 @@ function ProjectCard({
 export function Projects() {
   const { messages } = useLanguage();
   const carousel = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const [edges, setEdges] = useState({ start: true, end: false });
   const [currentIndex, setCurrentIndex] = useState(0);
-  const headingRef = useReveal<HTMLDivElement>();
+
+  useGSAP(
+    () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      gsap.from(".projects-header", {
+        opacity: 0,
+        y: 18,
+        duration: 0.45,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 85%",
+          once: true,
+        },
+      });
+
+      gsap.from(".desktop-project-card", {
+        opacity: 0,
+        y: 24,
+        scale: 0.98,
+        duration: 0.45,
+        stagger: 0.08,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".desktop-projects-grid",
+          start: "top 85%",
+          once: true,
+        },
+      });
+    },
+    { scope: sectionRef },
+  );
 
   const updateEdges = useCallback(() => {
     const element = carousel.current;
@@ -154,9 +185,9 @@ export function Projects() {
   }));
 
   return (
-    <section id="projetos" className="border-b border-border">
+    <section ref={sectionRef} id="projetos" className="border-b border-border">
       <div className="mx-auto max-w-[1160px] px-4 py-12 sm:px-6 sm:py-16">
-        <div ref={headingRef} className="reveal-target">
+        <div className="projects-header">
           <p className="inline-flex items-center gap-2 font-mono text-xs font-medium tracking-[0.12em] text-primary uppercase">
             <span className="text-primary/70">03 //</span>{" "}
             {messages.projects.eyebrow.replace(/^\/\s*/, "")}
@@ -186,7 +217,7 @@ export function Projects() {
                   aria-selected={currentIndex === idx}
                   aria-label={`Ir para projeto ${idx + 1}: ${p.name}`}
                   onClick={() => scrollToIndex(idx)}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                  className={`h-1.5 rounded-full transition-[width,background-color] duration-200 ease-out ${
                     currentIndex === idx
                       ? "w-6 bg-primary"
                       : "w-2 bg-border hover:bg-muted-foreground/50"
@@ -253,13 +284,14 @@ export function Projects() {
         </div>
 
         {/* Visão Desktop / Tablet: Grade Regular de Projetos */}
-        <div className="hidden md:mt-8 md:grid md:grid-cols-2 gap-5">
+        <div className="desktop-projects-grid hidden md:mt-8 md:grid md:grid-cols-2 gap-5">
           {projectList.map((project, index) => (
             <ProjectCard
               key={project.name}
               project={project}
               index={index}
               labels={messages.projects}
+              isDesktop
             />
           ))}
         </div>

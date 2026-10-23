@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -16,10 +16,10 @@ import { Toaster } from "@/components/ui/sonner";
 import { links } from "@/data/portfolio";
 import { useCopyEmail } from "@/hooks/useCopyEmail";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useReveal } from "@/hooks/useReveal";
 import { useLanguage } from "@/i18n/LanguageProvider";
 import { contactSchema, sendContactMessage, type ContactFormData } from "@/lib/contact";
 import { useTheme } from "@/theme/ThemeProvider";
+import { gsap, useGSAP } from "@/lib/gsap";
 
 const items = [
   { label: "LinkedIn", display: "Gean Luca", icon: Linkedin, href: links.linkedin },
@@ -31,7 +31,26 @@ export function Contact() {
   const { theme } = useTheme();
   const isMobile = useIsMobile();
   const { copied, copyEmail } = useCopyEmail();
-  const panelRef = useReveal<HTMLDivElement>();
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      gsap.from(".contact-panel", {
+        opacity: 0,
+        y: 22,
+        duration: 0.5,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 85%",
+          once: true,
+        },
+      });
+    },
+    { scope: sectionRef },
+  );
 
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
@@ -64,9 +83,9 @@ export function Contact() {
   };
 
   return (
-    <section id="contato" className="border-b border-border">
+    <section ref={sectionRef} id="contato" className="border-b border-border">
       <div className="mx-auto max-w-[1160px] px-4 py-12 sm:px-6 sm:py-16">
-        <div ref={panelRef} className="reveal-target border border-border bg-surface">
+        <div className="contact-panel border border-border bg-surface">
           <div className="grid lg:grid-cols-[0.82fr_1.18fr]">
             {/* Bloco de canais diretos */}
             <div className="p-5 sm:p-8 md:p-10 lg:border-r lg:border-border">
@@ -100,10 +119,10 @@ export function Contact() {
                   </span>
                   <span className="relative h-4 w-4 shrink-0" aria-hidden>
                     <Copy
-                      className={`absolute inset-0 h-4 w-4 transition-all duration-200 ${copied ? "scale-75 opacity-0" : "scale-100 opacity-100"}`}
+                      className={`absolute inset-0 h-4 w-4 transition-[transform,opacity] duration-200 ease-out ${copied ? "scale-75 opacity-0" : "scale-100 opacity-100"}`}
                     />
                     <Check
-                      className={`absolute inset-0 h-4 w-4 text-primary transition-all duration-200 ${copied ? "scale-100 opacity-100" : "scale-75 opacity-0"}`}
+                      className={`absolute inset-0 h-4 w-4 text-primary transition-[transform,opacity] duration-200 ease-out ${copied ? "scale-100 opacity-100" : "scale-75 opacity-0"}`}
                     />
                   </span>
                 </button>
@@ -145,7 +164,7 @@ export function Contact() {
                   <button
                     type="button"
                     onClick={() => setFormStatus("idle")}
-                    className="mt-2 inline-flex min-h-11 items-center gap-2 rounded-sm border border-border bg-background px-4 py-2.5 text-xs font-mono font-medium text-foreground transition-all duration-150 hover:border-primary hover:bg-surface active:scale-[0.98]"
+                    className="mt-2 inline-flex min-h-11 items-center gap-2 rounded-sm border border-border bg-background px-4 py-2.5 text-xs font-mono font-medium text-foreground transition-[transform,border-color,background-color] duration-150 hover:border-primary hover:bg-surface active:scale-[0.98]"
                   >
                     <RotateCcw className="h-3.5 w-3.5" aria-hidden />
                     {messages.contact.sendAnother}
@@ -158,7 +177,9 @@ export function Contact() {
                   })}
                   noValidate
                 >
-                  <h3 className="text-lg font-medium text-foreground">{messages.contact.formTitle}</h3>
+                  <h3 className="text-lg font-medium text-foreground">
+                    {messages.contact.formTitle}
+                  </h3>
 
                   {formStatus === "error" && (
                     <div className="mt-4 rounded-sm border border-destructive/30 bg-destructive/10 p-3.5 text-xs text-destructive flex flex-col gap-2 animate-in fade-in-0">
@@ -181,7 +202,7 @@ export function Contact() {
                         aria-invalid={Boolean(errors.name)}
                         aria-describedby={errors.name ? "name-error" : undefined}
                         {...register("name")}
-                        className={`min-h-12 w-full rounded-sm border bg-background px-3.5 text-sm text-foreground placeholder:text-muted-foreground/60 transition-[border-color,box-shadow] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                        className={`min-h-12 w-full rounded-sm border bg-background px-3.5 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/60 transition-[border-color,box-shadow] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
                           errors.name
                             ? "border-destructive focus-visible:ring-destructive"
                             : "border-border hover:border-border-strong focus:border-primary focus-visible:ring-primary/55"
@@ -211,7 +232,7 @@ export function Contact() {
                         aria-invalid={Boolean(errors.email)}
                         aria-describedby={errors.email ? "email-error" : undefined}
                         {...register("email")}
-                        className={`min-h-12 w-full rounded-sm border bg-background px-3.5 text-sm text-foreground placeholder:text-muted-foreground/60 transition-[border-color,box-shadow] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                        className={`min-h-12 w-full rounded-sm border bg-background px-3.5 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/60 transition-[border-color,box-shadow] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
                           errors.email
                             ? "border-destructive focus-visible:ring-destructive"
                             : "border-border hover:border-border-strong focus:border-primary focus-visible:ring-primary/55"
@@ -239,7 +260,7 @@ export function Contact() {
                         aria-invalid={Boolean(errors.message)}
                         aria-describedby={errors.message ? "message-error" : undefined}
                         {...register("message")}
-                        className={`w-full resize-y rounded-sm border bg-background px-3.5 py-3 text-sm leading-relaxed text-foreground placeholder:text-muted-foreground/60 transition-[border-color,box-shadow] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                        className={`w-full resize-y rounded-sm border bg-background px-3.5 py-3 text-base sm:text-sm leading-relaxed text-foreground placeholder:text-muted-foreground/60 transition-[border-color,box-shadow] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
                           errors.message
                             ? "border-destructive focus-visible:ring-destructive"
                             : "border-border hover:border-border-strong focus:border-primary focus-visible:ring-primary/55"
@@ -257,7 +278,7 @@ export function Contact() {
                     <button
                       type="submit"
                       disabled={formStatus === "submitting"}
-                      className="inline-flex min-h-12 w-full items-center justify-center gap-2 bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/85 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed sm:w-auto"
+                      className="inline-flex min-h-12 w-full items-center justify-center gap-2 bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-[transform,background-color,opacity] duration-150 hover:bg-primary/85 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed sm:w-auto"
                     >
                       {formStatus === "submitting" ? (
                         <>

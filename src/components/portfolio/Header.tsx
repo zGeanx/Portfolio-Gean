@@ -29,26 +29,26 @@ function ThemeToggle({
           onClick={() => theme === "dark" && onToggle()}
           aria-label={lightLabel}
           aria-pressed={theme === "light"}
-          className={`inline-flex h-8 w-8 items-center justify-center rounded-sm transition-colors duration-150 ${
+          className={`inline-flex h-8 w-8 items-center justify-center rounded-sm transition-[color,background-color,transform] duration-150 active:scale-[0.95] ${
             theme === "light"
               ? "bg-surface-2 text-primary"
               : "text-muted-foreground hover:text-primary"
           }`}
         >
-          <Sun className="h-3.5 w-3.5" aria-hidden />
+          <Sun className="h-3.5 w-3.5 transition-transform duration-200" aria-hidden />
         </button>
         <button
           type="button"
           onClick={() => theme === "light" && onToggle()}
           aria-label={darkLabel}
           aria-pressed={theme === "dark"}
-          className={`inline-flex h-8 w-8 items-center justify-center rounded-sm transition-colors duration-150 ${
+          className={`inline-flex h-8 w-8 items-center justify-center rounded-sm transition-[color,background-color,transform] duration-150 active:scale-[0.95] ${
             theme === "dark"
               ? "bg-surface-2 text-primary"
               : "text-muted-foreground hover:text-primary"
           }`}
         >
-          <Moon className="h-3.5 w-3.5" aria-hidden />
+          <Moon className="h-3.5 w-3.5 transition-transform duration-200" aria-hidden />
         </button>
       </div>
     );
@@ -60,9 +60,9 @@ function ThemeToggle({
       onClick={onToggle}
       aria-label={label}
       title={label}
-      className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-sm px-2.5 text-sm text-muted-foreground transition-colors duration-200 hover:bg-surface hover:text-primary"
+      className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-sm px-2.5 text-sm text-muted-foreground transition-[color,background-color,transform] duration-150 hover:bg-surface hover:text-primary active:scale-[0.95]"
     >
-      <Icon className="h-4 w-4 shrink-0" aria-hidden />
+      <Icon className="h-4 w-4 shrink-0 transition-transform duration-200" aria-hidden />
     </button>
   );
 }
@@ -229,7 +229,7 @@ export function Header() {
           aria-expanded={open}
           aria-controls="mobile-nav"
           aria-label={open ? messages.header.closeMenu : messages.header.openMenu}
-          className="inline-flex h-11 w-11 shrink-0 items-center justify-center text-foreground transition-colors duration-200 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:hidden"
+          className="inline-flex h-11 w-11 shrink-0 items-center justify-center text-foreground transition-[color,transform] duration-150 hover:text-primary active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:hidden"
         >
           {open ? <X className="h-4 w-4" aria-hidden /> : <Menu className="h-4 w-4" aria-hidden />}
         </button>

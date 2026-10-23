@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { Code2, CodeXml, Database, Workflow } from "lucide-react";
 import type { IconType } from "react-icons";
 import { FaJava } from "react-icons/fa";
@@ -25,8 +26,8 @@ import {
 } from "react-icons/si";
 import { TbApi } from "react-icons/tb";
 import { techGroups } from "@/data/portfolio";
-import { useReveal } from "@/hooks/useReveal";
 import { useLanguage, type Messages } from "@/i18n/LanguageProvider";
+import { gsap, useGSAP } from "@/lib/gsap";
 
 const icons = { code: Code2, database: Database, workflow: Workflow } as const;
 
@@ -65,21 +66,14 @@ function TechIcon({ name }: { name: string }) {
 function TechnologyGroup({
   group,
   translatedGroup,
-  index,
 }: {
   group: (typeof techGroups)[number];
   translatedGroup: Messages["technologies"]["groups"][number];
-  index: number;
 }) {
-  const ref = useReveal<HTMLDivElement>();
   const Icon = icons[group.icon as keyof typeof icons];
 
   return (
-    <div
-      ref={ref}
-      data-delay={String(index * 80)}
-      className="reveal-target flex flex-col justify-between h-full border border-border bg-surface p-4 sm:p-5"
-    >
+    <div className="tech-group flex flex-col justify-between h-full border border-border bg-surface p-4 sm:p-5">
       <div>
         <h3 className="flex items-center gap-2 border-b border-border pb-3 text-sm font-medium">
           <Icon className="h-4 w-4 shrink-0 text-primary" aria-hidden />
@@ -105,12 +99,44 @@ function TechnologyGroup({
 
 export function Technologies() {
   const { messages } = useLanguage();
-  const headingRef = useReveal<HTMLDivElement>();
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      gsap.from(".tech-header", {
+        opacity: 0,
+        y: 18,
+        duration: 0.45,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 85%",
+          once: true,
+        },
+      });
+
+      gsap.from(".tech-group", {
+        opacity: 0,
+        y: 20,
+        duration: 0.45,
+        stagger: 0.08,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".tech-groups",
+          start: "top 88%",
+          once: true,
+        },
+      });
+    },
+    { scope: sectionRef },
+  );
 
   return (
-    <section id="tecnologias" className="border-b border-border">
+    <section ref={sectionRef} id="tecnologias" className="border-b border-border">
       <div className="mx-auto max-w-[1160px] px-4 py-12 sm:px-6 sm:py-16">
-        <div ref={headingRef} className="reveal-target">
+        <div className="tech-header">
           <p className="inline-flex items-center gap-2 font-mono text-xs font-medium tracking-[0.12em] text-primary uppercase">
             <span className="text-primary/70">02 //</span>{" "}
             {messages.technologies.eyebrow.replace(/^\/\s*/, "")}
@@ -120,13 +146,12 @@ export function Technologies() {
           </h2>
         </div>
 
-        <div className="mt-6 grid gap-2.5 sm:mt-8 sm:gap-3 md:grid-cols-3">
+        <div className="tech-groups mt-6 grid gap-2.5 sm:mt-8 sm:gap-3 md:grid-cols-3">
           {techGroups.map((group, index) => (
             <TechnologyGroup
               key={group.title}
               group={group}
               translatedGroup={messages.technologies.groups[index]!}
-              index={index}
             />
           ))}
         </div>

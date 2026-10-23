@@ -57,7 +57,7 @@ export function Footer() {
                     download={download}
                     target={download ? undefined : "_blank"}
                     rel={download ? undefined : "noreferrer noopener"}
-                    className="inline-flex h-11 w-11 items-center justify-center rounded-sm border border-border text-muted-foreground transition-all duration-200 hover:border-primary hover:bg-primary/5 hover:text-primary active:scale-[0.96] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                    className="inline-flex h-11 w-11 items-center justify-center rounded-sm border border-border text-muted-foreground transition-[transform,border-color,background-color,color] duration-150 ease-out hover:border-primary hover:bg-primary/5 hover:text-primary active:scale-[0.96] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                   >
                     <Icon className="h-4 w-4" aria-hidden />
                   </a>
@@ -72,14 +72,14 @@ export function Footer() {
                   type="button"
                   onClick={copyEmail}
                   aria-label={`${messages.contact.copyAria}: ${links.email}`}
-                  className="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-sm border border-border text-muted-foreground transition-all duration-200 hover:border-primary hover:bg-primary/5 hover:text-primary active:scale-[0.96] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                  className="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-sm border border-border text-muted-foreground transition-[transform,border-color,background-color,color] duration-150 ease-out hover:border-primary hover:bg-primary/5 hover:text-primary active:scale-[0.96] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                 >
                   <span className="relative h-4 w-4" aria-hidden>
                     <Mail
-                      className={`absolute inset-0 h-4 w-4 transition-all duration-200 ${copied ? "scale-75 opacity-0" : "scale-100 opacity-100"}`}
+                      className={`absolute inset-0 h-4 w-4 transition-[transform,opacity] duration-200 ease-out ${copied ? "scale-75 opacity-0" : "scale-100 opacity-100"}`}
                     />
                     <Check
-                      className={`absolute inset-0 h-4 w-4 text-primary transition-all duration-200 ${copied ? "scale-100 opacity-100" : "scale-75 opacity-0"}`}
+                      className={`absolute inset-0 h-4 w-4 text-primary transition-[transform,opacity] duration-200 ease-out ${copied ? "scale-100 opacity-100" : "scale-75 opacity-0"}`}
                     />
                   </span>
                 </button>
@@ -97,7 +97,7 @@ export function Footer() {
                   type="button"
                   onClick={(event) => scrollToSection(event, "inicio")}
                   aria-label={messages.backToTop}
-                  className="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-sm border border-border text-muted-foreground transition-all duration-200 hover:border-primary hover:bg-primary/5 hover:text-primary active:scale-[0.96] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                  className="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-sm border border-border text-muted-foreground transition-[transform,border-color,background-color,color] duration-150 ease-out hover:border-primary hover:bg-primary/5 hover:text-primary active:scale-[0.96] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                 >
                   <ArrowUp className="h-4 w-4" aria-hidden />
                 </button>

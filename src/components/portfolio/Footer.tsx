@@ -10,7 +10,7 @@ export function Footer() {
   const { copied, copyEmail } = useCopyEmail();
 
   return (
-    <TooltipProvider delayDuration={250}>
+    <TooltipProvider delayDuration={250} skipDelayDuration={300}>
       <footer className="w-full border-t border-border bg-background">
         <div className="mx-auto flex max-w-[1160px] flex-col gap-6 px-4 py-8 sm:grid sm:grid-cols-[1fr_auto] sm:items-center sm:gap-x-6 sm:gap-y-3 sm:px-6 sm:py-10">
           <div className="flex flex-col gap-1 sm:col-start-1">
@@ -39,7 +39,7 @@ export function Footer() {
                 href: links.linkedin,
                 Icon: Linkedin,
                 download: undefined,
-                tooltip: "linkedin.com/in/geanluca",
+                tooltip: "linkedin.com/in/gean-luca-a758b5215",
               },
               {
                 label: messages.hero.downloadCv,

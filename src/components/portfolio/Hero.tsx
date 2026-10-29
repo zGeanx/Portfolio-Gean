@@ -1,9 +1,7 @@
-import { useRef } from "react";
 import { ArrowRight, FileDown, Github, Mail } from "lucide-react";
 import { links, profile } from "@/data/portfolio";
 import { useLanguage } from "@/i18n/LanguageProvider";
 import { scrollToSection } from "./internalNavigation";
-import { gsap, useGSAP } from "@/lib/gsap";
 
 function ActionLink({
   href,
@@ -40,67 +38,10 @@ function ActionLink({
 }
 
 export function Hero() {
-  const { language, messages } = useLanguage();
-  const containerRef = useRef<HTMLElement>(null);
-
-  useGSAP(
-    () => {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-      const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
-
-      tl.from(".hero-title", {
-        opacity: 0,
-        y: 18,
-        duration: 0.5,
-      })
-        .from(
-          ".hero-role",
-          {
-            opacity: 0,
-            y: 10,
-            duration: 0.35,
-          },
-          "-=0.3",
-        )
-        .from(
-          ".hero-desc",
-          {
-            opacity: 0,
-            y: 12,
-            duration: 0.4,
-          },
-          "-=0.25",
-        )
-        .from(
-          ".hero-cta",
-          {
-            opacity: 0,
-            y: 10,
-            duration: 0.35,
-            stagger: 0.05,
-          },
-          "-=0.2",
-        )
-        .from(
-          ".hero-avatar",
-          {
-            opacity: 0,
-            scale: 0.94,
-            duration: 0.5,
-          },
-          0.05,
-        );
-    },
-    { scope: containerRef },
-  );
+  const { messages } = useLanguage();
 
   return (
-    <section
-      ref={containerRef}
-      id="inicio"
-      className="relative overflow-hidden border-b border-border"
-    >
+    <section id="inicio" className="relative overflow-hidden border-b border-border">
       <div aria-hidden className="hero-backdrop pointer-events-none absolute inset-0" />
       <div className="relative mx-auto grid max-w-[1160px] gap-6 px-4 py-8 sm:gap-12 sm:px-6 sm:py-14 md:py-20 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
         <div className="order-2 min-w-0 lg:order-1">
@@ -113,7 +54,6 @@ export function Hero() {
           >
             <span
               aria-hidden
-              key={language}
               className="typing-role"
               style={
                 {
@@ -145,7 +85,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="hero-avatar order-1 mx-auto w-full max-w-[260px] sm:max-w-[300px] lg:order-2 lg:max-w-[340px]">
+        <div className="hero-avatar order-1 mx-auto w-full max-w-[190px] sm:max-w-[260px] lg:order-2 lg:max-w-[340px]">
           <div className="aspect-[4/5] rounded-sm border border-primary/35 bg-surface p-2 shadow-[0_28px_80px_-52px_color-mix(in_oklch,var(--primary)_72%,transparent)]">
             <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-sm bg-background">
               {profile.avatar ? (

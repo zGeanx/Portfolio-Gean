@@ -2,12 +2,15 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, ExternalLink, Github } from "lucide-react";
 import { projects, type Project } from "@/data/portfolio";
 import { useLanguage, type Messages } from "@/i18n/LanguageProvider";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { canRevealBelowFold, gsap, useGSAP } from "@/lib/gsap";
+import { TechIcon } from "./TechIcon";
 
 type ProjectLabels = Pick<
   Messages["projects"],
   "screenshotAlt" | "viewProject" | "viewCode" | "opensNewTab"
 >;
+
+type ProjectView = Project & { highlight?: string };
 
 function ProjectCard({
   project,
@@ -15,14 +18,14 @@ function ProjectCard({
   labels,
   isDesktop = false,
 }: {
-  project: Project;
+  project: ProjectView;
   index: number;
   labels: ProjectLabels;
   isDesktop?: boolean;
 }) {
   return (
     <article
-      className={`project-card ${isDesktop ? "desktop-project-card" : ""} group flex w-[min(86vw,340px)] min-w-0 shrink-0 snap-start flex-col overflow-hidden border border-border bg-surface md:w-auto`}
+      className={`project-card ${isDesktop ? "desktop-project-card" : ""} group flex w-[min(84vw,330px)] min-w-0 shrink-0 snap-start flex-col overflow-hidden border border-border bg-surface md:w-auto`}
     >
       {project.image && (
         <div className="relative aspect-video overflow-hidden border-b border-border bg-background">
@@ -33,18 +36,22 @@ function ProjectCard({
             height={800}
             loading="lazy"
             decoding="async"
-            className="project-image h-full w-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+            className="project-image h-full w-full object-cover object-top transition-transform duration-500 ease-out"
           />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/20 via-transparent to-transparent" />
+          <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-foreground/10" />
         </div>
       )}
 
       <div className="flex min-w-0 flex-1 flex-col p-4 sm:p-5">
         <div className="flex items-center justify-between gap-2">
           <p className="font-mono text-xs tracking-[0.06em] text-primary">{project.category}</p>
-          <span className="font-mono text-xs text-muted-foreground/60">0{index + 1} //</span>
+          <span className="font-mono text-xs text-muted-foreground/75">0{index + 1} //</span>
         </div>
         <h3 className="mt-1.5 text-lg font-medium text-foreground">{project.name}</h3>
+        {project.highlight && (
+          <p className="mt-1 font-mono text-xs text-muted-foreground">{project.highlight}</p>
+        )}
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground text-pretty">
           {project.description}
         </p>
@@ -52,8 +59,9 @@ function ProjectCard({
           {project.tech.map((tech) => (
             <li
               key={tech}
-              className="rounded-sm border border-border bg-background px-2 py-0.5 font-mono text-xs text-muted-foreground"
+              className="inline-flex items-center gap-1 rounded-sm border border-border bg-background px-2 py-0.5 font-mono text-xs text-muted-foreground"
             >
+              <TechIcon name={tech} className="h-3 w-3 text-primary/80" />
               {tech}
             </li>
           ))}
@@ -98,33 +106,49 @@ export function Projects() {
 
   useGSAP(
     () => {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (canRevealBelowFold(sectionRef.current, ".projects-header")) {
+        gsap.from(".projects-header", {
+          opacity: 0,
+          y: 16,
+          duration: 0.4,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".projects-header",
+            start: "top 88%",
+            once: true,
+          },
+        });
+      }
 
-      gsap.from(".projects-header", {
-        opacity: 0,
-        y: 18,
-        duration: 0.45,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 85%",
-          once: true,
-        },
-      });
+      if (canRevealBelowFold(sectionRef.current, "#project-list")) {
+        gsap.from("#project-list", {
+          opacity: 0,
+          y: 18,
+          duration: 0.4,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: "#project-list",
+            start: "top 88%",
+            once: true,
+          },
+        });
+      }
 
-      gsap.from(".desktop-project-card", {
-        opacity: 0,
-        y: 24,
-        scale: 0.98,
-        duration: 0.45,
-        stagger: 0.08,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: ".desktop-projects-grid",
-          start: "top 85%",
-          once: true,
-        },
-      });
+      if (canRevealBelowFold(sectionRef.current, ".desktop-projects-grid")) {
+        gsap.from(".desktop-project-card", {
+          opacity: 0,
+          y: 20,
+          scale: 0.98,
+          duration: 0.4,
+          stagger: 0.07,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".desktop-projects-grid",
+            start: "top 88%",
+            once: true,
+          },
+        });
+      }
     },
     { scope: sectionRef },
   );
@@ -197,17 +221,16 @@ export function Projects() {
           </h2>
         </div>
 
-        {/* Controles de navegação para Mobile */}
         <div className="mt-4 flex items-center justify-between gap-3 md:hidden">
           <div className="flex items-center gap-2.5">
             <span className="font-mono text-xs font-semibold text-primary">
               0{currentIndex + 1}
-              <span className="font-normal text-muted-foreground/60"> / 0{projects.length}</span>
+              <span className="font-normal text-muted-foreground/75"> / 0{projects.length}</span>
             </span>
             <div
-              className="flex items-center gap-1.5"
+              className="flex items-center"
               role="tablist"
-              aria-label="Indicadores de projetos"
+              aria-label={messages.projects.indicatorsLabel}
             >
               {projects.map((p, idx) => (
                 <button
@@ -215,14 +238,19 @@ export function Projects() {
                   type="button"
                   role="tab"
                   aria-selected={currentIndex === idx}
-                  aria-label={`Ir para projeto ${idx + 1}: ${p.name}`}
+                  aria-label={`${messages.projects.goToProject} ${idx + 1}: ${p.name}`}
                   onClick={() => scrollToIndex(idx)}
-                  className={`h-1.5 rounded-full transition-[width,background-color] duration-200 ease-out ${
-                    currentIndex === idx
-                      ? "w-6 bg-primary"
-                      : "w-2 bg-border hover:bg-muted-foreground/50"
-                  }`}
-                />
+                  className="group/dot inline-flex h-11 items-center justify-center px-1"
+                >
+                  <span
+                    aria-hidden
+                    className={`dot-pill h-1.5 rounded-full ${
+                      currentIndex === idx
+                        ? "w-6 bg-primary"
+                        : "w-2 bg-muted-foreground/40 group-hover/dot:bg-muted-foreground/70"
+                    }`}
+                  />
+                </button>
               ))}
             </div>
           </div>
@@ -256,7 +284,6 @@ export function Projects() {
           </div>
         </div>
 
-        {/* Visão Mobile: Carrossel Snap Fluido */}
         <div
           ref={carousel}
           id="project-list"
@@ -283,7 +310,6 @@ export function Projects() {
           ))}
         </div>
 
-        {/* Visão Desktop / Tablet: Grade Regular de Projetos */}
         <div className="desktop-projects-grid hidden md:mt-8 md:grid md:grid-cols-2 gap-5">
           {projectList.map((project, index) => (
             <ProjectCard

@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { Briefcase, GraduationCap, MapPin } from "lucide-react";
 import { facts } from "@/data/portfolio";
 import { useLanguage } from "@/i18n/LanguageProvider";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { canRevealBelowFold, gsap, useGSAP } from "@/lib/gsap";
 
 const factIcons = {
   "map-pin": MapPin,
@@ -21,7 +21,7 @@ function FactCard({ fact }: { fact: FactCardData }) {
   const Icon = factIcons[fact.icon];
 
   return (
-    <div className="fact-card flex flex-col justify-between border border-border bg-surface p-4.5">
+    <div className="fact-card flex flex-col justify-between rounded-sm border border-border bg-surface p-4.5 transition-colors duration-200 hover:border-border-strong">
       <div>
         <div className="flex items-start justify-between gap-3">
           <dt className="font-mono text-xs tracking-[0.06em] text-muted-foreground">
@@ -44,32 +44,34 @@ export function About() {
 
   useGSAP(
     () => {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (canRevealBelowFold(sectionRef.current, ".about-header")) {
+        gsap.from(".about-header", {
+          opacity: 0,
+          y: 16,
+          duration: 0.4,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".about-header",
+            start: "top 88%",
+            once: true,
+          },
+        });
+      }
 
-      gsap.from(".about-header", {
-        opacity: 0,
-        y: 18,
-        duration: 0.45,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 85%",
-          once: true,
-        },
-      });
-
-      gsap.from(".fact-card", {
-        opacity: 0,
-        y: 20,
-        duration: 0.4,
-        stagger: 0.08,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: ".about-facts",
-          start: "top 88%",
-          once: true,
-        },
-      });
+      if (canRevealBelowFold(sectionRef.current, ".about-facts")) {
+        gsap.from(".fact-card", {
+          opacity: 0,
+          y: 16,
+          duration: 0.38,
+          stagger: 0.06,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".about-facts",
+            start: "top 90%",
+            once: true,
+          },
+        });
+      }
     },
     { scope: sectionRef },
   );
@@ -77,24 +79,20 @@ export function About() {
   return (
     <section ref={sectionRef} id="sobre" className="border-b border-border">
       <div className="mx-auto max-w-[1160px] px-4 py-12 sm:px-6 sm:py-16">
-        <div className="about-header grid gap-5 lg:grid-cols-[0.72fr_1.28fr] lg:items-start lg:gap-12">
-          <div>
-            <p className="inline-flex items-center gap-2 font-mono text-xs font-medium tracking-[0.12em] text-primary uppercase">
-              <span className="text-primary/70">01 //</span>{" "}
-              {messages.about.eyebrow.replace(/^\/\s*/, "")}
-            </p>
-            <h2 className="mt-2.5 text-2xl font-semibold tracking-tight sm:text-3xl lg:text-[2rem]">
-              {messages.about.title}
-            </h2>
-          </div>
-          <div>
-            <p className="max-w-[70ch] text-sm leading-relaxed text-muted-foreground sm:text-base text-pretty">
-              {messages.about.body}
-            </p>
-          </div>
+        <div className="about-header max-w-[68ch]">
+          <p className="inline-flex items-center gap-2 font-mono text-xs font-medium tracking-[0.12em] text-primary uppercase">
+            <span className="text-primary/70">01 //</span>{" "}
+            {messages.about.eyebrow.replace(/^\/\s*/, "")}
+          </p>
+          <h2 className="mt-2.5 text-2xl font-semibold tracking-tight sm:text-3xl lg:text-[2rem]">
+            {messages.about.title}
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:mt-4 sm:text-base text-pretty">
+            {messages.about.body}
+          </p>
         </div>
 
-        <dl className="about-facts mt-6 grid gap-2.5 sm:mt-8 sm:grid-cols-3 sm:gap-3">
+        <dl className="about-facts mt-8 grid gap-2.5 sm:mt-10 sm:grid-cols-3 sm:gap-3.5">
           {facts.map((fact, index) => (
             <FactCard key={fact.icon} fact={{ icon: fact.icon, ...messages.about.facts[index]! }} />
           ))}

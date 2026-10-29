@@ -20,6 +20,8 @@
   --color-accent-foreground: var(--primary-foreground);
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
+  --color-destructive: var(--destructive);
+  --color-success: var(--success);
   --color-ring: var(--primary);
   --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
@@ -44,6 +46,8 @@
   --primary-foreground: oklch(0.12 0.04 165);
   --border: oklch(0.3 0.025 165);
   --border-strong: oklch(0.44 0.035 165);
+  --destructive: oklch(0.7 0.18 25);
+  --success: oklch(0.78 0.15 160);
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
@@ -68,6 +72,8 @@
   --primary-foreground: oklch(0.99 0.005 165);
   --border: oklch(0.84 0.025 165);
   --border-strong: oklch(0.66 0.05 165);
+  --destructive: oklch(0.5 0.2 25);
+  --success: oklch(0.48 0.14 160);
 }
 
 @layer base {
@@ -109,10 +115,23 @@
     color: var(--foreground);
   }
 
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
   a,
   button {
     touch-action: manipulation;
-    -webkit-tap-highlight-color: color-mix(in oklch, var(--primary) 22%, transparent);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button,
+  [role="button"],
+  [role="tab"] {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
   }
 
   section[id],
@@ -174,11 +193,7 @@
   content: "";
 }
 
-.hero-enter {
-  animation: hero-fade-in 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes hero-fade-in {
+@keyframes hero-fade-up {
   from {
     opacity: 0;
     transform: translateY(10px);
@@ -189,14 +204,51 @@
   }
 }
 
-@utility reveal-target {
-  opacity: 0;
-  transform: translateY(10px);
+@keyframes hero-avatar-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-@utility reveal {
-  animation: reveal-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  animation-delay: var(--reveal-delay, 0ms);
+.hero-avatar {
+  animation: hero-avatar-in 420ms var(--ease-out) both;
+}
+
+.hero-title {
+  animation: hero-fade-up 380ms var(--ease-out) 40ms both;
+}
+
+.hero-role {
+  animation: hero-fade-up 320ms var(--ease-out) 80ms both;
+}
+
+.hero-desc {
+  animation: hero-fade-up 360ms var(--ease-out) 120ms both;
+}
+
+.hero-cta {
+  animation: hero-fade-up 340ms var(--ease-out) both;
+}
+
+.hero-cta:nth-child(1) {
+  animation-delay: 160ms;
+}
+
+.hero-cta:nth-child(2) {
+  animation-delay: 200ms;
+}
+
+.hero-cta:nth-child(3) {
+  animation-delay: 240ms;
+}
+
+.hero-cta:nth-child(4) {
+  animation-delay: 280ms;
 }
 
 @utility text-gradient {
@@ -219,13 +271,6 @@
   }
 }
 
-@keyframes reveal-in {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 @keyframes typing {
   from {
     width: 0;
@@ -241,16 +286,122 @@
   }
 }
 
+@keyframes cursor-off {
+  to {
+    border-color: transparent;
+  }
+}
+
 .typing-role {
   display: inline-block;
   width: 0;
   max-width: 100%;
   overflow: hidden;
+  padding-right: 3px;
   border-right: 1px solid var(--primary);
   white-space: nowrap;
   animation:
     typing 1.1s steps(var(--typing-steps, 21), end) 0.25s forwards,
-    blink-cursor 0.8s step-end 0.25s infinite;
+    blink-cursor 0.8s step-end 0.25s 5,
+    cursor-off 0.01s linear 4.25s forwards;
+}
+
+.menu-pop {
+  transform-origin: top right;
+  transition:
+    opacity var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+
+  @starting-style {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+.menu-pop[data-state="closed"] {
+  opacity: 0;
+  transform: scale(0.96);
+  transition-duration: 120ms;
+  pointer-events: none;
+}
+
+@keyframes tooltip-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+@keyframes tooltip-out {
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+.tooltip-content {
+  transform-origin: var(--radix-tooltip-content-transform-origin);
+  animation: tooltip-in 140ms var(--ease-out);
+}
+
+.tooltip-content[data-state="closed"] {
+  animation: tooltip-out 100ms var(--ease-out) forwards;
+}
+
+.tooltip-content[data-state="instant-open"] {
+  animation: none;
+}
+
+.icon-swap {
+  position: relative;
+  display: inline-block;
+  height: 1rem;
+  width: 1rem;
+}
+
+.icon-swap > svg {
+  position: absolute;
+  inset: 0;
+  transition:
+    opacity 200ms var(--ease-out),
+    transform 200ms var(--ease-out),
+    filter 200ms var(--ease-out);
+}
+
+.icon-swap > svg[data-active="false"] {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.75);
+  filter: blur(2px);
+}
+
+.icon-swap > svg[data-active="true"] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+.project-card,
+.fact-card,
+.tech-group {
+  box-shadow: inset 0 1px 0 0 color-mix(in oklch, var(--foreground) 6%, transparent);
+}
+
+.dot-pill {
+  transition:
+    width var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+}
+
+@keyframes swap-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+    filter: blur(2px);
+  }
+}
+
+.fade-swap {
+  animation: swap-in 200ms var(--ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -349,9 +500,11 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
-  .hero-enter,
-  .reveal-target,
-  .reveal,
+  .hero-avatar,
+  .hero-title,
+  .hero-role,
+  .hero-desc,
+  .hero-cta,
   .project-card,
   .fact-card,
   .technology-chip {
@@ -363,12 +516,23 @@
     width: auto !important;
     border-right-color: transparent !important;
   }
+  .menu-pop,
+  .icon-swap > svg {
+    transition-property: opacity !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  .tooltip-content {
+    animation: none !important;
+  }
 }
 
 @media print {
-  .hero-enter,
-  .reveal-target,
-  .reveal {
+  .hero-avatar,
+  .hero-title,
+  .hero-role,
+  .hero-desc,
+  .hero-cta {
     opacity: 1 !important;
     transform: none !important;
     animation: none !important;

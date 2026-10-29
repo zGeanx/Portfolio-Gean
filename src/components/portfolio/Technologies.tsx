@@ -7,16 +7,6 @@ import { TechIcon } from "./TechIcon";
 
 const icons = { code: Code2, database: Database, workflow: Workflow } as const;
 
-const coreStack = new Set([
-  "React",
-  "TypeScript",
-  "Next.js",
-  "Tailwind CSS",
-  "Python",
-  "Django",
-  "PostgreSQL",
-]);
-
 function TechnologyGroup({
   group,
   translatedGroup,
@@ -37,11 +27,7 @@ function TechnologyGroup({
           {group.items.map((item, itemIndex) => (
             <li
               key={item}
-              className={`technology-chip inline-flex items-center gap-1.5 rounded-sm border px-2.5 py-1 font-mono text-xs ${
-                coreStack.has(item)
-                  ? "border-primary/40 bg-primary/5 text-foreground"
-                  : "border-border bg-background text-muted-foreground"
-              }`}
+              className="technology-chip inline-flex items-center gap-1.5 rounded-sm border border-border bg-background px-2.5 py-1 font-mono text-xs text-muted-foreground"
             >
               <span className="technology-chip-icon text-primary/80">
                 <TechIcon name={item} />

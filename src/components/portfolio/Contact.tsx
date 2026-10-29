@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -17,9 +17,9 @@ import { links } from "@/data/portfolio";
 import { useCopyEmail } from "@/hooks/useCopyEmail";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLanguage } from "@/i18n/LanguageProvider";
-import { contactSchema, sendContactMessage, type ContactFormData } from "@/lib/contact";
+import { createContactSchema, sendContactMessage, type ContactFormData } from "@/lib/contact";
 import { useTheme } from "@/theme/ThemeProvider";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { canRevealBelowFold, gsap, useGSAP } from "@/lib/gsap";
 
 const items = [
   { label: "LinkedIn", display: "Gean Luca", icon: Linkedin, href: links.linkedin },
@@ -35,24 +35,28 @@ export function Contact() {
 
   useGSAP(
     () => {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-      gsap.from(".contact-panel", {
-        opacity: 0,
-        y: 22,
-        duration: 0.5,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 85%",
-          once: true,
-        },
-      });
+      if (canRevealBelowFold(sectionRef.current, ".contact-panel")) {
+        gsap.from(".contact-panel", {
+          opacity: 0,
+          y: 18,
+          duration: 0.4,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".contact-panel",
+            start: "top 88%",
+            once: true,
+          },
+        });
+      }
     },
     { scope: sectionRef },
   );
 
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const schema = useMemo(
+    () => createContactSchema(messages.contact.validation),
+    [messages.contact.validation],
+  );
 
   const {
     register,
@@ -60,7 +64,7 @@ export function Contact() {
     reset,
     formState: { errors },
   } = useForm<ContactFormData>({
-    resolver: zodResolver(contactSchema),
+    resolver: zodResolver(schema),
     defaultValues: {
       name: "",
       email: "",
@@ -69,11 +73,9 @@ export function Contact() {
   });
 
   const onSubmit = async (data: ContactFormData) => {
-    console.log("[Contact] onSubmit acionado com:", data);
     setFormStatus("submitting");
     try {
       await sendContactMessage({ data });
-      console.log("[Contact] sendContactMessage sucesso!");
       setFormStatus("success");
       reset();
     } catch (err) {
@@ -82,12 +84,18 @@ export function Contact() {
     }
   };
 
+  const submitOnShortcut = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter" && (event.ctrlKey || event.metaKey) && formStatus !== "submitting") {
+      event.preventDefault();
+      void handleSubmit(onSubmit)();
+    }
+  };
+
   return (
     <section ref={sectionRef} id="contato" className="border-b border-border">
       <div className="mx-auto max-w-[1160px] px-4 py-12 sm:px-6 sm:py-16">
         <div className="contact-panel border border-border bg-surface">
           <div className="grid lg:grid-cols-[0.82fr_1.18fr]">
-            {/* Bloco de canais diretos */}
             <div className="p-5 sm:p-8 md:p-10 lg:border-r lg:border-border">
               <p className="inline-flex items-center gap-2 font-mono text-xs font-medium tracking-[0.12em] text-primary uppercase">
                 <span className="text-primary/70">04 //</span>{" "}
@@ -146,10 +154,12 @@ export function Contact() {
               </div>
             </div>
 
-            {/* Painel do Formulário */}
             <div className="border-t border-border p-5 sm:p-8 md:p-10 lg:border-t-0 flex flex-col justify-center">
               {formStatus === "success" ? (
-                <div className="flex flex-col items-start gap-4 rounded-md border border-primary/30 bg-primary/5 p-6 sm:p-8 animate-in fade-in-0 zoom-in-95 duration-200">
+                <div
+                  key="success"
+                  className="fade-swap flex flex-col items-start gap-4 rounded-md border border-primary/30 bg-primary/5 p-6 sm:p-8"
+                >
                   <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
                     <CheckCircle2 className="h-6 w-6" aria-hidden />
                   </div>
@@ -171,18 +181,16 @@ export function Contact() {
                   </button>
                 </div>
               ) : (
-                <form
-                  onSubmit={handleSubmit(onSubmit, (errs) => {
-                    console.warn("[Contact] Erros de validação:", errs);
-                  })}
-                  noValidate
-                >
+                <form key="form" onSubmit={handleSubmit(onSubmit)} noValidate>
                   <h3 className="text-lg font-medium text-foreground">
                     {messages.contact.formTitle}
                   </h3>
 
                   {formStatus === "error" && (
-                    <div className="mt-4 rounded-sm border border-destructive/30 bg-destructive/10 p-3.5 text-xs text-destructive flex flex-col gap-2 animate-in fade-in-0">
+                    <div
+                      role="alert"
+                      className="mt-4 flex flex-col gap-2 rounded-sm border border-destructive/40 bg-destructive/10 p-3.5 text-xs text-destructive fade-swap"
+                    >
                       <p className="font-medium">{messages.contact.errorTitle}</p>
                       <p className="text-muted-foreground">{messages.contact.errorDescription}</p>
                     </div>
@@ -197,6 +205,7 @@ export function Contact() {
                         id="contact-name"
                         type="text"
                         autoComplete="name"
+                        enterKeyHint="next"
                         disabled={formStatus === "submitting"}
                         placeholder={messages.contact.namePlaceholder}
                         aria-invalid={Boolean(errors.name)}
@@ -226,6 +235,9 @@ export function Contact() {
                         id="contact-email"
                         type="email"
                         autoComplete="email"
+                        inputMode="email"
+                        autoCapitalize="none"
+                        enterKeyHint="next"
                         spellCheck={false}
                         disabled={formStatus === "submitting"}
                         placeholder={messages.contact.emailPlaceholder}
@@ -255,6 +267,8 @@ export function Contact() {
                       <textarea
                         id="contact-message"
                         rows={5}
+                        enterKeyHint="send"
+                        onKeyDown={submitOnShortcut}
                         disabled={formStatus === "submitting"}
                         placeholder={messages.contact.messagePlaceholder}
                         aria-invalid={Boolean(errors.message)}
@@ -274,24 +288,36 @@ export function Contact() {
                     </div>
                   </div>
 
-                  <div className="mt-5">
+                  <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2">
                     <button
                       type="submit"
                       disabled={formStatus === "submitting"}
                       className="inline-flex min-h-12 w-full items-center justify-center gap-2 bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-[transform,background-color,opacity] duration-150 hover:bg-primary/85 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed sm:w-auto"
                     >
-                      {formStatus === "submitting" ? (
-                        <>
-                          <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                          <span>{messages.contact.sending}</span>
-                        </>
-                      ) : (
-                        <>
-                          <span>{messages.contact.submit}</span>
-                          <Send className="h-4 w-4" aria-hidden />
-                        </>
-                      )}
+                      <span
+                        key={formStatus === "submitting" ? "sending" : "idle"}
+                        className={
+                          formStatus === "submitting"
+                            ? "fade-swap inline-flex items-center gap-2"
+                            : "inline-flex items-center gap-2"
+                        }
+                      >
+                        {formStatus === "submitting" ? (
+                          <>
+                            <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                            <span>{messages.contact.sending}</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>{messages.contact.submit}</span>
+                            <Send className="h-4 w-4" aria-hidden />
+                          </>
+                        )}
+                      </span>
                     </button>
+                    <span className="hidden font-mono text-xs text-muted-foreground md:inline">
+                      {messages.contact.shortcutHint}
+                    </span>
                   </div>
 
                   <p className="mt-3 max-w-[54ch] text-xs leading-relaxed text-muted-foreground">

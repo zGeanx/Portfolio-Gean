@@ -2,8 +2,6 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 
 export type Language = "pt-BR" | "en";
 
-// Shared with the header's compact selector.
-// eslint-disable-next-line react-refresh/only-export-components
 export const languages: { code: Language; shortLabel: string; name: string }[] = [
   { code: "pt-BR", shortLabel: "PT-BR", name: "Português" },
   { code: "en", shortLabel: "ENG", name: "English" },
@@ -66,6 +64,7 @@ const ptBR = {
     groups: [
       {
         title: "Front-end",
+        summary: "Interfaces rápidas, acessíveis e responsivas.",
         items: [
           "React",
           "Next.js",
@@ -79,10 +78,12 @@ const ptBR = {
       },
       {
         title: "Back-end",
+        summary: "APIs REST, autenticação e regras de negócio.",
         items: ["Python", "Django", "Django REST Framework", "Flask", "Java", "REST API", "JWT"],
       },
       {
         title: "Dados e entrega",
+        summary: "Bancos relacionais, containers e deploy na borda.",
         items: [
           "PostgreSQL",
           "MySQL",
@@ -109,24 +110,30 @@ const ptBR = {
     viewCode: "Código",
     featuredTag: "Destaque // Full Stack",
     opensNewTab: "abre em nova aba",
+    indicatorsLabel: "Indicadores de projetos",
+    goToProject: "Ir para projeto",
     entries: [
       {
         category: "Conteúdo & Transmissões",
+        highlight: "SSR na borda · Streaming ao vivo",
         description:
           "Catálogo de canais e transmissões ao vivo com programação e player integrado, utilizando rotas seguras no servidor e deploys na Cloudflare.",
       },
       {
         category: "Gestão & Produtividade",
+        highlight: "Full stack · Auth JWT",
         description:
           "Plataforma full stack para solicitação e aprovação de folgas com portal público e painel com JWT. API em Django com PostgreSQL no Supabase.",
       },
       {
         category: "API & Transmissões",
+        highlight: "Serverless · Sync diário com D1",
         description:
           "API de canais e jogos com painel de administração, autenticação JWT e player público. Publicada em Cloudflare Workers com Hono e D1, sincronizando a grade do dia automaticamente.",
       },
       {
         category: "Catálogo & Gestão de acervo",
+        highlight: "Containers · Next.js + Flask",
         description:
           "Sistema de gerenciamento e busca de acervo bibliográfico por título e autor. Interface em Next.js conectada a API Flask com SQLite e Docker.",
       },
@@ -156,6 +163,15 @@ const ptBR = {
     copiedDescription: "Agora é só colar onde preferir.",
     errorTitle: "Não foi possível enviar a mensagem.",
     errorDescription: "Tente novamente ou envie diretamente por e-mail.",
+    shortcutHint: "Ctrl + Enter para enviar",
+    validation: {
+      nameMin: "O nome deve ter pelo menos 2 caracteres.",
+      nameMax: "O nome é muito longo.",
+      emailInvalid: "Digite um endereço de e-mail válido.",
+      emailMax: "O e-mail é muito longo.",
+      messageMin: "A mensagem deve ter pelo menos 10 caracteres.",
+      messageMax: "A mensagem é muito longa.",
+    },
   },
   backToTop: "Voltar ao topo",
   footer: "© 2026 Gean Luca. Todos os direitos reservados.",
@@ -224,6 +240,7 @@ const en: Messages = {
     groups: [
       {
         title: "Front-end",
+        summary: "Fast, accessible and responsive interfaces.",
         items: [
           "React",
           "Next.js",
@@ -237,10 +254,12 @@ const en: Messages = {
       },
       {
         title: "Back-end",
+        summary: "REST APIs, authentication and business rules.",
         items: ["Python", "Django", "Django REST Framework", "Flask", "Java", "REST API", "JWT"],
       },
       {
         title: "Data & delivery",
+        summary: "Relational databases, containers and edge deployment.",
         items: [
           "PostgreSQL",
           "MySQL",
@@ -267,24 +286,30 @@ const en: Messages = {
     viewCode: "Code",
     featuredTag: "Featured // Full Stack",
     opensNewTab: "opens in a new tab",
+    indicatorsLabel: "Project indicators",
+    goToProject: "Go to project",
     entries: [
       {
         category: "Content & Streaming",
+        highlight: "Edge SSR · Live streaming",
         description:
           "Live streaming catalog and broadcast schedule with an embedded player, server routes, and Cloudflare deployment.",
       },
       {
         category: "Management & Productivity",
+        highlight: "Full stack · JWT auth",
         description:
           "Full-stack leave request and approval portal with JWT authentication. Powered by a Django API and Supabase PostgreSQL.",
       },
       {
         category: "API & Broadcasts",
+        highlight: "Serverless · Daily sync with D1",
         description:
-          "API for channels and matches, with an admin panel, JWT authentication, and a public player. Deployed on Cloudflare Workers with Hono e D1, syncing the daily schedule automatically.",
+          "API for channels and matches, with an admin panel, JWT authentication, and a public player. Deployed on Cloudflare Workers with Hono and D1, syncing the daily schedule automatically.",
       },
       {
         category: "Catalog & Library Management",
+        highlight: "Containers · Next.js + Flask",
         description:
           "Library management system featuring dynamic book and author search. Next.js interface connected to a Flask API with SQLite and Docker.",
       },
@@ -315,6 +340,15 @@ const en: Messages = {
     copiedDescription: "You can paste it wherever you prefer.",
     errorTitle: "The message could not be sent.",
     errorDescription: "Please try again or email me directly.",
+    shortcutHint: "Ctrl + Enter to send",
+    validation: {
+      nameMin: "Name must be at least 2 characters.",
+      nameMax: "Name is too long.",
+      emailInvalid: "Enter a valid email address.",
+      emailMax: "Email is too long.",
+      messageMin: "Message must be at least 10 characters.",
+      messageMax: "Message is too long.",
+    },
   },
   backToTop: "Back to top",
   footer: "© 2026 Gean Luca. All rights reserved.",
@@ -363,8 +397,6 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// Components consume the provider through this colocated hook.
-// eslint-disable-next-line react-refresh/only-export-components
 export function useLanguage() {
   const context = useContext(LanguageContext);
   if (!context) throw new Error("useLanguage must be used within LanguageProvider");

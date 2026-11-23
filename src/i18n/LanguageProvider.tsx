@@ -1,168 +1,147 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+﻿import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
 export type Language = "pt-BR" | "en";
 
 export const languages: { code: Language; shortLabel: string; name: string }[] = [
-  { code: "pt-BR", shortLabel: "PT-BR", name: "Português" },
-  { code: "en", shortLabel: "ENG", name: "English" },
+  { code: "pt-BR", shortLabel: "PT", name: "Português" },
+  { code: "en", shortLabel: "EN", name: "English" },
 ];
 
 const ptBR = {
   meta: {
-    title: "geanluca.dev │ Desenvolvedor Front-end",
+    title: "Gean Luca - Desenvolvedor Front-end | React e TypeScript",
     description:
-      "Construo interfaces em React e TypeScript conectadas a APIs reais. Conheça os projetos de Gean Luca, desenvolvedor front-end com foco em performance e usabilidade.",
+      "Portfólio de Gean Luca, desenvolvedor front-end em Pelotas, RS. Interfaces em React e TypeScript conectadas a APIs reais, com projetos publicados e código aberto.",
   },
-  skipLink: "Ir para o conteúdo",
+  skipLink: "Pular para o conteúdo",
+  opensNewTab: "abre em nova aba",
   header: {
     navLabel: "Navegação principal",
-    mobileNavLabel: "Navegação mobile",
     openMenu: "Abrir menu",
     closeMenu: "Fechar menu",
-    menuTitle: "Navegação",
-    menuDescription: "Navegue pelas seções e preferências do portfólio",
-    languageLabel: "Selecionar idioma",
-    lightMode: "Ativar light mode",
-    darkMode: "Ativar dark mode",
-    nav: ["Início", "Sobre", "Tecnologias", "Projetos", "Contato"],
+    languageLabel: "Idioma",
+    lightMode: "Ativar tema claro",
+    darkMode: "Ativar tema escuro",
+    nav: {
+      inicio: "Início",
+      sobre: "Sobre",
+      tecnologias: "Stack",
+      projetos: "Projetos",
+      contato: "Contato",
+    },
+    cta: "Fale comigo",
   },
   hero: {
     role: "Desenvolvedor Front-end",
+    focus: "React, TypeScript e Next.js",
     description:
-      "Construo interfaces em React e TypeScript conectadas a APIs reais, unindo precisão visual, performance e código limpo do formulário ao banco de dados.",
+      "Construo interfaces em React e TypeScript conectadas a APIs reais, com atenção a responsividade, acessibilidade e código bem organizado.",
     viewProjects: "Ver projetos",
-    contact: "Fale comigo",
-    downloadCv: "Baixar CV",
-    profile: "/ perfil",
-    profileAlt: "Foto de perfil de Gean Luca",
+    downloadCv: "Baixar currículo",
+    profileAlt: "Retrato de Gean Luca",
+    factsLabel: "Resumo profissional",
+    facts: {
+      projects: { label: "Projetos publicados", detail: "Com demo e código aberto" },
+      focus: { label: "Foco", value: "React + TypeScript", detail: "Next.js, Vite e Tailwind CSS" },
+      education: { label: "Formação", value: "ADS · Senac RS", detail: "Concluída em 2026" },
+      location: { label: "Base", value: "Pelotas, RS", detail: "Aberto a trabalho remoto" },
+    },
   },
   about: {
-    eyebrow: "/ sobre",
-    title: "Sobre mim",
-    body: "Sou desenvolvedor formado em Análise e Desenvolvimento de Sistemas (Senac RS). Minha atuação principal é no front-end com React e TypeScript, mas meu domínio de back-end (Python, APIs REST) e bancos de dados me dá uma visão completa da aplicação: entendo o ciclo de ponta a ponta, antecipo gargalos de integração e entrego produtos rápidos, consistentes e fáceis de usar.",
-    facts: [
-      {
-        label: "Localização",
-        value: "Pelotas, RS · Brasil",
-        detail: "Disponível para trabalho remoto",
-      },
-      {
-        label: "Foco técnico",
-        value: "React · TypeScript · Next.js",
-        detail: "Interfaces, integrações & APIs",
-      },
-      {
-        label: "Formação",
-        value: "Análise e Desenv. de Sistemas",
-        detail: "Senac RS · concluído em 2026",
-      },
+    title: "Front-end com visão de ponta a ponta.",
+    paragraphs: [
+      "Sou desenvolvedor formado em Análise e Desenvolvimento de Sistemas pelo Senac RS. Meu foco é o front-end: transformar requisitos em interfaces claras, responsivas e fáceis de usar, com React, TypeScript e Tailwind CSS.",
+      "Também tenho experiência com back-end em Python (Django e Flask), APIs REST e bancos de dados relacionais. Isso me ajuda a integrar a interface com a API com menos atrito e a entender a aplicação como um todo, do formulário ao banco de dados.",
     ],
+    pillarsLabel: "O que eu faço",
+    evidenceLabel: "Aplicado em",
+    pillars: {
+      interfaces: {
+        title: "Interfaces em React",
+        text: "Componentes tipados com TypeScript, layouts responsivos e cuidado com acessibilidade.",
+      },
+      apis: {
+        title: "Integração com APIs",
+        text: "Consumo e construção de APIs REST, com autenticação JWT e validação de dados.",
+      },
+      delivery: {
+        title: "Deploy e entrega",
+        text: "Aplicações publicadas em Cloudflare Workers e Pages, com Docker no ambiente quando necessário.",
+      },
+    },
   },
   technologies: {
-    eyebrow: "/ stack",
-    title: "Tecnologias",
-    groups: [
-      {
-        title: "Front-end",
-        summary: "Interfaces rápidas, acessíveis e responsivas.",
-        items: [
-          "React",
-          "Next.js",
-          "Vue.js",
-          "Vinext",
-          "TypeScript",
-          "Vite",
-          "Tailwind CSS",
-          "shadcn/ui",
-        ],
-      },
-      {
-        title: "Back-end",
-        summary: "APIs REST, autenticação e regras de negócio.",
-        items: ["Python", "Django", "Django REST Framework", "Flask", "Java", "REST API", "JWT"],
-      },
-      {
+    title: "Tecnologias com que trabalho.",
+    intro:
+      "O foco principal está no ecossistema React e TypeScript. No back-end e na infraestrutura, uso o que cada projeto pede.",
+    groups: {
+      frontend: { title: "Front-end", summary: "Interfaces rápidas, acessíveis e responsivas." },
+      backend: { title: "Back-end", summary: "APIs REST, autenticação e regras de negócio." },
+      delivery: {
         title: "Dados e entrega",
         summary: "Bancos relacionais, containers e deploy na borda.",
-        items: [
-          "PostgreSQL",
-          "MySQL",
-          "SQLite",
-          "Docker",
-          "Supabase",
-          "Cloudflare Workers",
-          "Cloudflare Pages",
-          "Render",
-          "Git",
-        ],
       },
-    ],
+    },
   },
   projects: {
-    eyebrow: "/ trabalhos",
-    title: "Projetos",
-    dragHint: "Arraste ou use as setas",
-    previous: "Projeto anterior",
-    next: "Próximo projeto",
-    regionLabel: "Projetos desenvolvidos",
+    title: "Trabalhos selecionados.",
+    intro: "Todos com demo publicada e código aberto no GitHub.",
+    moreOnGithub: "Ver todos no GitHub",
     screenshotAlt: "Captura de tela do projeto",
     viewProject: "Ver projeto",
     viewCode: "Código",
-    featuredTag: "Destaque // Full Stack",
-    opensNewTab: "abre em nova aba",
-    indicatorsLabel: "Indicadores de projetos",
-    goToProject: "Ir para projeto",
-    entries: [
-      {
-        category: "Conteúdo & Transmissões",
+    stackLabel: "Tecnologias utilizadas",
+    entries: {
+      "pulso-tv": {
+        category: "Conteúdo e transmissões",
         highlight: "SSR na borda · Streaming ao vivo",
         description:
-          "Catálogo de canais e transmissões ao vivo com programação e player integrado, utilizando rotas seguras no servidor e deploys na Cloudflare.",
+          "Catálogo de canais e transmissões ao vivo com grade de programação e player integrado. As rotas sensíveis rodam no servidor, e o deploy é feito na borda com Cloudflare Workers.",
       },
-      {
-        category: "Gestão & Produtividade",
-        highlight: "Full stack · Auth JWT",
+      "sistema-de-folgas": {
+        category: "Gestão e produtividade",
+        highlight: "Full stack · Autenticação JWT",
         description:
-          "Plataforma full stack para solicitação e aprovação de folgas com portal público e painel com JWT. API em Django com PostgreSQL no Supabase.",
+          "Plataforma full stack para solicitar e aprovar folgas, com portal público e painel protegido por JWT. A API foi feita em Django REST Framework, com PostgreSQL hospedado no Supabase.",
       },
-      {
-        category: "API & Transmissões",
-        highlight: "Serverless · Sync diário com D1",
+      "api-pulso": {
+        category: "API e transmissões",
+        highlight: "Serverless · Sincronização diária com D1",
         description:
-          "API de canais e jogos com painel de administração, autenticação JWT e player público. Publicada em Cloudflare Workers com Hono e D1, sincronizando a grade do dia automaticamente.",
+          "API de canais e jogos com painel de administração, autenticação JWT e player público. Roda em Cloudflare Workers com Hono e banco D1, e sincroniza a grade do dia automaticamente.",
       },
-      {
-        category: "Catálogo & Gestão de acervo",
-        highlight: "Containers · Next.js + Flask",
+      "books-library": {
+        category: "Catálogo e gestão de acervo",
+        highlight: "Next.js + Flask · Docker",
         description:
-          "Sistema de gerenciamento e busca de acervo bibliográfico por título e autor. Interface em Next.js conectada a API Flask com SQLite e Docker.",
+          "Sistema para gerenciar e buscar um acervo de livros por título e autor. Interface em Next.js e TypeScript consumindo uma API em Flask com SQLite, em ambiente com Docker.",
       },
-    ],
+    },
   },
   contact: {
-    eyebrow: "/ contato",
-    title: "Vamos conversar sobre seu próximo projeto?",
-    text: "Estou aberto a oportunidades profissionais, projetos freelance e colaborações técnicas. Preencha o formulário ou entre em contato diretamente.",
+    title: "Vamos conversar?",
+    text: "Estou em busca de oportunidades de estágio e vagas júnior em front-end, inclusive remotas, e aberto a projetos e colaborações. Escreva pelo formulário ou pelo canal que preferir.",
+    channelsLabel: "Canais diretos",
     formTitle: "Envie uma mensagem",
     name: "Nome",
-    namePlaceholder: "Como você se chama?",
+    namePlaceholder: "Seu nome",
     emailPlaceholder: "voce@empresa.com",
     message: "Mensagem",
-    messagePlaceholder: "Conte sobre a oportunidade ou projeto…",
+    messagePlaceholder: "Conte sobre a vaga, o projeto ou a ideia…",
     submit: "Enviar mensagem",
-    sending: "Enviando...",
-    formHint: "Sua mensagem será entregue diretamente na minha caixa de entrada.",
-    formFallback: "Se preferir, envie diretamente para",
-    successTitle: "Mensagem enviada com sucesso!",
-    successText: "Obrigado pelo contato. Recebi sua mensagem e retornarei o mais breve possível.",
+    sending: "Enviando…",
+    formHint: "A mensagem chega direto na minha caixa de entrada. Se preferir, escreva para",
+    successTitle: "Mensagem enviada.",
+    successText: "Obrigado pelo contato! Recebi sua mensagem e retorno assim que possível.",
     sendAnother: "Enviar outra mensagem",
     email: "E-mail",
     copyAria: "Copiar e-mail",
-    copyTitle: "Clique para copiar o e-mail",
     copiedTitle: "E-mail copiado!",
     copiedDescription: "Agora é só colar onde preferir.",
+    resume: "Currículo",
+    resumeDetail: "PDF para download",
     errorTitle: "Não foi possível enviar a mensagem.",
-    errorDescription: "Tente novamente ou envie diretamente por e-mail.",
+    errorDescription: "Tente novamente ou escreva diretamente por e-mail.",
     shortcutHint: "Ctrl + Enter para enviar",
     validation: {
       nameMin: "O nome deve ter pelo menos 2 caracteres.",
@@ -173,8 +152,13 @@ const ptBR = {
       messageMax: "A mensagem é muito longa.",
     },
   },
-  backToTop: "Voltar ao topo",
-  footer: "© 2026 Gean Luca. Todos os direitos reservados.",
+  footer: {
+    tagline: "Desenvolvedor Front-end · Pelotas, RS",
+    rightsReserved: "Todos os direitos reservados.",
+    builtWith: "Feito com TanStack Start, React e Tailwind CSS.",
+    copyEmail: "Copiar e-mail",
+    backToTop: "Voltar ao topo",
+  },
 };
 
 type DeepString<T> = T extends string
@@ -189,155 +173,146 @@ export type Messages = DeepString<typeof ptBR>;
 
 const en: Messages = {
   meta: {
-    title: "geanluca.dev │ Front-end Developer",
+    title: "Gean Luca - Front-end Developer | React and TypeScript",
     description:
-      "Building interfaces in React and TypeScript integrated with real APIs. Explore projects by Gean Luca, front-end developer focused on performance and usability.",
+      "Portfolio of Gean Luca, a front-end developer based in Pelotas, Brazil. React and TypeScript interfaces connected to real APIs, with live projects and open-source code.",
   },
   skipLink: "Skip to content",
+  opensNewTab: "opens in a new tab",
   header: {
     navLabel: "Main navigation",
-    mobileNavLabel: "Mobile navigation",
     openMenu: "Open menu",
     closeMenu: "Close menu",
-    menuTitle: "Navigation",
-    menuDescription: "Navigate through portfolio sections and preferences",
-    languageLabel: "Select language",
-    lightMode: "Enable light mode",
-    darkMode: "Enable dark mode",
-    nav: ["Home", "About", "Technologies", "Projects", "Contact"],
+    languageLabel: "Language",
+    lightMode: "Switch to light theme",
+    darkMode: "Switch to dark theme",
+    nav: {
+      inicio: "Home",
+      sobre: "About",
+      tecnologias: "Stack",
+      projetos: "Projects",
+      contato: "Contact",
+    },
+    cta: "Get in touch",
   },
   hero: {
     role: "Front-end Developer",
+    focus: "React, TypeScript and Next.js",
     description:
-      "Building interfaces in React and TypeScript integrated with real APIs, bringing visual polish, performance, and clean code from form to database.",
+      "I build React and TypeScript interfaces connected to real APIs, with care for responsiveness, accessibility and well-organized code.",
     viewProjects: "View projects",
-    contact: "Contact me",
-    downloadCv: "Download CV",
-    profile: "/ profile",
-    profileAlt: "Profile photo of Gean Luca",
+    downloadCv: "Download résumé",
+    profileAlt: "Portrait of Gean Luca",
+    factsLabel: "Professional summary",
+    facts: {
+      projects: { label: "Live projects", detail: "With demo and open-source code" },
+      focus: {
+        label: "Focus",
+        value: "React + TypeScript",
+        detail: "Next.js, Vite and Tailwind CSS",
+      },
+      education: {
+        label: "Education",
+        value: "Systems Dev. · Senac RS",
+        detail: "Completed in 2026",
+      },
+      location: { label: "Based in", value: "Pelotas, Brazil", detail: "Open to remote work" },
+    },
   },
   about: {
-    eyebrow: "/ about",
-    title: "About me",
-    body: "I am a developer with a degree in Systems Analysis and Development (Senac RS). My core focus is front-end with React and TypeScript, but hands-on experience in back-end (Python, REST APIs) and databases gives me end-to-end perspective: I understand the full application lifecycle, prevent integration bottlenecks, and ship fast, accessible web products.",
-    facts: [
-      { label: "Location", value: "Pelotas, RS · Brazil", detail: "Available for remote work" },
-      {
-        label: "Core stack",
-        value: "React · TypeScript · Next.js",
-        detail: "Interfaces, integrations & APIs",
-      },
-      {
-        label: "Education",
-        value: "Systems Analysis & Dev.",
-        detail: "Senac RS · completed in 2026",
-      },
+    title: "Front-end with an end-to-end view.",
+    paragraphs: [
+      "I'm a developer with a degree in Systems Analysis and Development from Senac RS. My focus is front-end: turning requirements into clear, responsive and easy-to-use interfaces with React, TypeScript and Tailwind CSS.",
+      "I also have experience with back-end in Python (Django and Flask), REST APIs and relational databases. That helps me connect the interface to the API with less friction and understand the application as a whole, from the form to the database.",
     ],
+    pillarsLabel: "What I do",
+    evidenceLabel: "Applied in",
+    pillars: {
+      interfaces: {
+        title: "React interfaces",
+        text: "Components typed with TypeScript, responsive layouts and attention to accessibility.",
+      },
+      apis: {
+        title: "API integration",
+        text: "Consuming and building REST APIs, with JWT authentication and data validation.",
+      },
+      delivery: {
+        title: "Deployment and delivery",
+        text: "Applications deployed to Cloudflare Workers and Pages, using Docker for the environment when needed.",
+      },
+    },
   },
   technologies: {
-    eyebrow: "/ stack",
-    title: "Technologies",
-    groups: [
-      {
-        title: "Front-end",
-        summary: "Fast, accessible and responsive interfaces.",
-        items: [
-          "React",
-          "Next.js",
-          "Vue.js",
-          "Vinext",
-          "TypeScript",
-          "Vite",
-          "Tailwind CSS",
-          "shadcn/ui",
-        ],
-      },
-      {
-        title: "Back-end",
-        summary: "REST APIs, authentication and business rules.",
-        items: ["Python", "Django", "Django REST Framework", "Flask", "Java", "REST API", "JWT"],
-      },
-      {
-        title: "Data & delivery",
+    title: "Technologies I work with.",
+    intro:
+      "My main focus is the React and TypeScript ecosystem. On the back-end and infrastructure side, I use what each project needs.",
+    groups: {
+      frontend: { title: "Front-end", summary: "Fast, accessible and responsive interfaces." },
+      backend: { title: "Back-end", summary: "REST APIs, authentication and business rules." },
+      delivery: {
+        title: "Data and delivery",
         summary: "Relational databases, containers and edge deployment.",
-        items: [
-          "PostgreSQL",
-          "MySQL",
-          "SQLite",
-          "Docker",
-          "Supabase",
-          "Cloudflare Workers",
-          "Cloudflare Pages",
-          "Render",
-          "Git",
-        ],
       },
-    ],
+    },
   },
   projects: {
-    eyebrow: "/ work",
-    title: "Projects",
-    dragHint: "Swipe or use the arrows",
-    previous: "Previous project",
-    next: "Next project",
-    regionLabel: "Developed projects",
+    title: "Selected work.",
+    intro: "Every project has a live demo and open-source code on GitHub.",
+    moreOnGithub: "See everything on GitHub",
     screenshotAlt: "Screenshot of the project",
     viewProject: "View project",
     viewCode: "Code",
-    featuredTag: "Featured // Full Stack",
-    opensNewTab: "opens in a new tab",
-    indicatorsLabel: "Project indicators",
-    goToProject: "Go to project",
-    entries: [
-      {
-        category: "Content & Streaming",
+    stackLabel: "Technologies used",
+    entries: {
+      "pulso-tv": {
+        category: "Content and streaming",
         highlight: "Edge SSR · Live streaming",
         description:
-          "Live streaming catalog and broadcast schedule with an embedded player, server routes, and Cloudflare deployment.",
+          "Catalog of channels and live broadcasts with a programming schedule and an embedded player. Sensitive routes run on the server, and it is deployed at the edge with Cloudflare Workers.",
       },
-      {
-        category: "Management & Productivity",
-        highlight: "Full stack · JWT auth",
+      "sistema-de-folgas": {
+        category: "Management and productivity",
+        highlight: "Full stack · JWT authentication",
         description:
-          "Full-stack leave request and approval portal with JWT authentication. Powered by a Django API and Supabase PostgreSQL.",
+          "Full-stack platform to request and approve days off, with a public portal and a JWT-protected dashboard. The API is built with Django REST Framework and PostgreSQL hosted on Supabase.",
       },
-      {
-        category: "API & Broadcasts",
+      "api-pulso": {
+        category: "API and broadcasts",
         highlight: "Serverless · Daily sync with D1",
         description:
-          "API for channels and matches, with an admin panel, JWT authentication, and a public player. Deployed on Cloudflare Workers with Hono and D1, syncing the daily schedule automatically.",
+          "API for channels and matches with an admin panel, JWT authentication and a public player. Runs on Cloudflare Workers with Hono and a D1 database, and syncs the daily schedule automatically.",
       },
-      {
-        category: "Catalog & Library Management",
-        highlight: "Containers · Next.js + Flask",
+      "books-library": {
+        category: "Catalog and library management",
+        highlight: "Next.js + Flask · Docker",
         description:
-          "Library management system featuring dynamic book and author search. Next.js interface connected to a Flask API with SQLite and Docker.",
+          "System to manage and search a book collection by title and author. Next.js and TypeScript interface consuming a Flask API with SQLite, in a Docker environment.",
       },
-    ],
+    },
   },
   contact: {
-    eyebrow: "/ contact",
-    title: "Shall we talk about your next project?",
-    text: "I am open to new career opportunities, freelance projects, and technical collaborations. Send a message below or reach out directly.",
+    title: "Let's talk?",
+    text: "I'm looking for front-end internships and junior roles, including remote positions, and I'm open to projects and collaborations. Use the form or the channel you prefer.",
+    channelsLabel: "Direct channels",
     formTitle: "Send a message",
     name: "Name",
-    namePlaceholder: "What is your name?",
+    namePlaceholder: "Your name",
     emailPlaceholder: "you@company.com",
     message: "Message",
-    messagePlaceholder: "Tell me about the opportunity or project…",
+    messagePlaceholder: "Tell me about the role, the project or the idea…",
     submit: "Send message",
-    sending: "Sending...",
-    formHint: "Your message will be delivered directly to my inbox.",
-    formFallback: "Or email me directly at",
-    successTitle: "Message sent successfully!",
+    sending: "Sending…",
+    formHint: "Your message goes straight to my inbox. If you prefer, email me at",
+    successTitle: "Message sent.",
     successText:
-      "Thank you for reaching out. I have received your message and will get back to you shortly.",
+      "Thanks for reaching out! I received your message and will reply as soon as I can.",
     sendAnother: "Send another message",
     email: "Email",
     copyAria: "Copy email",
-    copyTitle: "Click to copy the email",
     copiedTitle: "Email copied!",
     copiedDescription: "You can paste it wherever you prefer.",
+    resume: "Résumé",
+    resumeDetail: "PDF download",
     errorTitle: "The message could not be sent.",
     errorDescription: "Please try again or email me directly.",
     shortcutHint: "Ctrl + Enter to send",
@@ -350,8 +325,13 @@ const en: Messages = {
       messageMax: "Message is too long.",
     },
   },
-  backToTop: "Back to top",
-  footer: "© 2026 Gean Luca. All rights reserved.",
+  footer: {
+    tagline: "Front-end Developer · Pelotas, Brazil",
+    rightsReserved: "All rights reserved.",
+    builtWith: "Built with TanStack Start, React and Tailwind CSS.",
+    copyEmail: "Copy email",
+    backToTop: "Back to top",
+  },
 };
 
 const messages: Record<Language, Messages> = { "pt-BR": ptBR, en };

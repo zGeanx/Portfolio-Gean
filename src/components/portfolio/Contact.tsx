@@ -1,10 +1,13 @@
-import { useMemo, useRef, useState } from "react";
+﻿import { useEffect, useMemo, useRef, useState, type ComponentType } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
+  ArrowDown,
+  ArrowUpRight,
   Check,
   CheckCircle2,
   Copy,
+  FileDown,
   Github,
   Linkedin,
   Loader2,
@@ -12,51 +15,56 @@ import {
   RotateCcw,
   Send,
 } from "lucide-react";
-import { Toaster } from "@/components/ui/sonner";
+import { buttonClasses, buttonIconNudge } from "@/components/ui/button-styles";
 import { links } from "@/data/portfolio";
 import { useCopyEmail } from "@/hooks/useCopyEmail";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { useLanguage } from "@/i18n/LanguageProvider";
 import { createContactSchema, sendContactMessage, type ContactFormData } from "@/lib/contact";
-import { useTheme } from "@/theme/ThemeProvider";
-import { canRevealBelowFold, gsap, useGSAP } from "@/lib/gsap";
+import { cn } from "@/lib/utils";
+import { SectionHeading } from "./SectionHeading";
 
-const items = [
-  { label: "LinkedIn", display: "Gean Luca", icon: Linkedin, href: links.linkedin },
-  { label: "GitHub", display: "@zGeanx", icon: Github, href: links.github },
-];
+type FormStatus = "idle" | "submitting" | "success" | "error";
+
+const channelRow =
+  "group flex min-h-[4.5rem] w-full min-w-0 items-center gap-4 border-b border-border py-4 text-left transition-colors duration-150";
+
+function ChannelContent({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: ComponentType<{ className?: string }>;
+  label: string;
+  value: string;
+}) {
+  return (
+    <>
+      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-sm border border-border text-muted-foreground transition-colors duration-150 group-hover:border-primary group-hover:text-primary">
+        <Icon className="h-4 w-4" aria-hidden />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block font-mono text-xs text-muted-foreground">{label}</span>
+        <span className="mt-1 block truncate text-[15px] font-medium text-foreground">{value}</span>
+      </span>
+    </>
+  );
+}
+
+const fieldClasses = (hasError: boolean) =>
+  cn(
+    "w-full rounded-sm border bg-background px-3.5 text-base text-foreground transition-[border-color,box-shadow] duration-150 placeholder:text-muted-foreground/70 focus:outline-none focus-visible:outline-none disabled:opacity-60 sm:text-[15px]",
+    hasError
+      ? "border-destructive focus:ring-2 focus:ring-destructive/40"
+      : "border-border-strong hover:border-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/30",
+  );
 
 export function Contact() {
   const { messages } = useLanguage();
-  const { theme } = useTheme();
-  const isMobile = useIsMobile();
+  const { contact } = messages;
   const { copied, copyEmail } = useCopyEmail();
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useGSAP(
-    () => {
-      if (canRevealBelowFold(sectionRef.current, ".contact-panel")) {
-        gsap.from(".contact-panel", {
-          opacity: 0,
-          y: 18,
-          duration: 0.4,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: ".contact-panel",
-            start: "top 88%",
-            once: true,
-          },
-        });
-      }
-    },
-    { scope: sectionRef },
-  );
-
-  const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
-  const schema = useMemo(
-    () => createContactSchema(messages.contact.validation),
-    [messages.contact.validation],
-  );
+  const [formStatus, setFormStatus] = useState<FormStatus>("idle");
+  const successHeading = useRef<HTMLHeadingElement>(null);
+  const schema = useMemo(() => createContactSchema(contact.validation), [contact.validation]);
 
   const {
     register,
@@ -65,12 +73,12 @@ export function Contact() {
     formState: { errors },
   } = useForm<ContactFormData>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      name: "",
-      email: "",
-      message: "",
-    },
+    defaultValues: { name: "", email: "", message: "" },
   });
+
+  useEffect(() => {
+    if (formStatus === "success") successHeading.current?.focus();
+  }, [formStatus]);
 
   const onSubmit = async (data: ContactFormData) => {
     setFormStatus("submitting");
@@ -78,8 +86,8 @@ export function Contact() {
       await sendContactMessage({ data });
       setFormStatus("success");
       reset();
-    } catch (err) {
-      console.error("[Contact] Erro ao enviar:", err);
+    } catch (error) {
+      console.error("[Contact] Erro ao enviar:", error);
       setFormStatus("error");
     }
   };
@@ -91,260 +99,239 @@ export function Contact() {
     }
   };
 
-  return (
-    <section ref={sectionRef} id="contato" className="border-b border-border">
-      <div className="mx-auto max-w-[1160px] px-4 py-12 sm:px-6 sm:py-16">
-        <div className="contact-panel border border-border bg-surface">
-          <div className="grid lg:grid-cols-[0.82fr_1.18fr]">
-            <div className="p-5 sm:p-8 md:p-10 lg:border-r lg:border-border">
-              <p className="inline-flex items-center gap-2 font-mono text-xs font-medium tracking-[0.12em] text-primary uppercase">
-                <span className="text-primary/70">04 //</span>{" "}
-                {messages.contact.eyebrow.replace(/^\/\s*/, "")}
-              </p>
-              <h2 className="mt-2.5 text-[clamp(1.5rem,4.5vw,2.5rem)] leading-tight font-semibold tracking-tight text-balance">
-                {messages.contact.title}
-              </h2>
-              <p className="mt-3 max-w-[52ch] text-sm leading-relaxed text-muted-foreground sm:mt-4 sm:text-base">
-                {messages.contact.text}
-              </p>
+  const isSubmitting = formStatus === "submitting";
 
-              <div className="mt-7 grid grid-cols-1 gap-2.5">
+  return (
+    <section id="contato" aria-labelledby="contato-title">
+      <div className="shell section-y grid gap-14 lg:grid-cols-12 lg:gap-10">
+        <div className="lg:col-span-5">
+          <SectionHeading id="contato-title" title={contact.title} intro={contact.text} />
+
+          <h3 data-reveal="" className="mt-12 text-lg font-semibold tracking-tight">
+            {contact.channelsLabel}
+          </h3>
+          <ul data-reveal="" className="mt-4 border-t border-border">
+            <li>
+              <button
+                type="button"
+                onClick={copyEmail}
+                aria-label={`${contact.email} ${links.email}, ${contact.copyAria}`}
+                className={channelRow}
+              >
+                <ChannelContent icon={Mail} label={contact.email} value={links.email} />
+                <span className="relative h-4 w-4 shrink-0 text-muted-foreground" aria-hidden>
+                  <Copy
+                    className={cn(
+                      "absolute inset-0 h-4 w-4 transition-[transform,opacity] duration-200 ease-out group-hover:text-foreground",
+                      copied ? "scale-75 opacity-0" : "scale-100 opacity-100",
+                    )}
+                  />
+                  <Check
+                    className={cn(
+                      "absolute inset-0 h-4 w-4 text-success transition-[transform,opacity] duration-200 ease-out",
+                      copied ? "scale-100 opacity-100" : "scale-75 opacity-0",
+                    )}
+                  />
+                </span>
+              </button>
+            </li>
+            {[
+              { label: "LinkedIn", value: "Gean Luca", icon: Linkedin, href: links.linkedin },
+              { label: "GitHub", value: links.githubHandle, icon: Github, href: links.github },
+            ].map((channel) => (
+              <li key={channel.label}>
+                <a
+                  href={channel.href}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className={channelRow}
+                >
+                  <ChannelContent icon={channel.icon} label={channel.label} value={channel.value} />
+                  <span className="sr-only">({messages.opensNewTab})</span>
+                  <ArrowUpRight
+                    className="h-4 w-4 shrink-0 text-muted-foreground transition-[color,transform] duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground"
+                    aria-hidden
+                  />
+                </a>
+              </li>
+            ))}
+            <li>
+              <a href={links.resume} download={links.resumeFileName} className={channelRow}>
+                <ChannelContent
+                  icon={FileDown}
+                  label={contact.resume}
+                  value={contact.resumeDetail}
+                />
+                <ArrowDown
+                  className="h-4 w-4 shrink-0 text-muted-foreground transition-[color,transform] duration-200 group-hover:translate-y-0.5 group-hover:text-foreground"
+                  aria-hidden
+                />
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div className="lg:col-span-7 lg:pt-14">
+          <div
+            data-reveal=""
+            className="rounded-md border border-border bg-surface p-5 sm:p-8 lg:p-10"
+          >
+            {formStatus === "success" ? (
+              <div key="success" className="fade-swap flex flex-col items-start gap-5 py-6">
+                <span className="grid h-12 w-12 place-items-center rounded-full border border-success/40 text-success">
+                  <CheckCircle2 className="h-6 w-6" aria-hidden />
+                </span>
+                <div>
+                  <h3
+                    ref={successHeading}
+                    tabIndex={-1}
+                    className="text-2xl font-semibold tracking-tight"
+                  >
+                    {contact.successTitle}
+                  </h3>
+                  <p className="mt-2 max-w-[48ch] leading-relaxed text-muted-foreground">
+                    {contact.successText}
+                  </p>
+                </div>
                 <button
                   type="button"
-                  onClick={copyEmail}
-                  aria-label={`${messages.contact.copyAria}: ${links.email}`}
-                  title={messages.contact.copyTitle}
-                  className="flex min-h-14 min-w-0 cursor-pointer items-center gap-3 border border-border bg-background p-3.5 text-left transition-[border-color,background-color] duration-200 hover:border-primary hover:bg-surface focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:p-4"
+                  onClick={() => setFormStatus("idle")}
+                  className={buttonClasses("secondary", "sm")}
                 >
-                  <Mail className="h-4 w-4 shrink-0 text-primary" aria-hidden />
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-sm font-medium text-foreground">
-                      {messages.contact.email}
-                    </span>
-                    <span className="mt-1 block select-text break-words font-mono text-xs text-muted-foreground [overflow-wrap:anywhere]">
-                      {links.email}
-                    </span>
-                  </span>
-                  <span className="relative h-4 w-4 shrink-0" aria-hidden>
-                    <Copy
-                      className={`absolute inset-0 h-4 w-4 transition-[transform,opacity] duration-200 ease-out ${copied ? "scale-75 opacity-0" : "scale-100 opacity-100"}`}
-                    />
-                    <Check
-                      className={`absolute inset-0 h-4 w-4 text-primary transition-[transform,opacity] duration-200 ease-out ${copied ? "scale-100 opacity-100" : "scale-75 opacity-0"}`}
-                    />
-                  </span>
+                  <RotateCcw className="h-4 w-4" aria-hidden />
+                  {contact.sendAnother}
                 </button>
-                {items.map(({ label, display, icon: Icon, href }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="flex min-h-14 min-w-0 items-center gap-3 border border-border bg-background p-3.5 transition-colors duration-200 hover:border-primary hover:bg-surface focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:p-4"
-                  >
-                    <Icon className="h-4 w-4 shrink-0 text-primary" aria-hidden />
-                    <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-medium text-foreground">{label}</span>
-                      <span className="mt-1 block break-words font-mono text-xs text-muted-foreground [overflow-wrap:anywhere]">
-                        {display}
-                      </span>
-                    </span>
-                  </a>
-                ))}
               </div>
-            </div>
+            ) : (
+              <form key="form" onSubmit={handleSubmit(onSubmit)} noValidate>
+                <h3 className="text-xl font-semibold tracking-tight">{contact.formTitle}</h3>
 
-            <div className="border-t border-border p-5 sm:p-8 md:p-10 lg:border-t-0 flex flex-col justify-center">
-              {formStatus === "success" ? (
-                <div
-                  key="success"
-                  className="fade-swap flex flex-col items-start gap-4 rounded-md border border-primary/30 bg-primary/5 p-6 sm:p-8"
-                >
-                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-                    <CheckCircle2 className="h-6 w-6" aria-hidden />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-foreground">
-                      {messages.contact.successTitle}
-                    </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                      {messages.contact.successText}
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setFormStatus("idle")}
-                    className="mt-2 inline-flex min-h-11 items-center gap-2 rounded-sm border border-border bg-background px-4 py-2.5 text-xs font-mono font-medium text-foreground transition-[transform,border-color,background-color] duration-150 hover:border-primary hover:bg-surface active:scale-[0.98]"
+                {formStatus === "error" && (
+                  <div
+                    role="alert"
+                    className="fade-swap mt-5 rounded-sm border border-destructive/40 bg-destructive/10 p-4 text-sm"
                   >
-                    <RotateCcw className="h-3.5 w-3.5" aria-hidden />
-                    {messages.contact.sendAnother}
-                  </button>
+                    <p className="font-medium text-destructive">{contact.errorTitle}</p>
+                    <p className="mt-1 text-muted-foreground">{contact.errorDescription}</p>
+                  </div>
+                )}
+
+                <div className="mt-6 grid gap-5 sm:grid-cols-2">
+                  <div className="grid content-start gap-2">
+                    <label htmlFor="contact-name" className="text-sm font-medium">
+                      {contact.name}
+                    </label>
+                    <input
+                      id="contact-name"
+                      type="text"
+                      autoComplete="name"
+                      enterKeyHint="next"
+                      disabled={isSubmitting}
+                      placeholder={contact.namePlaceholder}
+                      aria-invalid={Boolean(errors.name)}
+                      aria-describedby={errors.name ? "name-error" : undefined}
+                      {...register("name")}
+                      className={cn(fieldClasses(Boolean(errors.name)), "min-h-12")}
+                    />
+                    {errors.name && (
+                      <p id="name-error" className="text-sm text-destructive">
+                        {errors.name.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="grid content-start gap-2">
+                    <label htmlFor="contact-email" className="text-sm font-medium">
+                      {contact.email}
+                    </label>
+                    <input
+                      id="contact-email"
+                      type="email"
+                      autoComplete="email"
+                      inputMode="email"
+                      autoCapitalize="none"
+                      enterKeyHint="next"
+                      spellCheck={false}
+                      disabled={isSubmitting}
+                      placeholder={contact.emailPlaceholder}
+                      aria-invalid={Boolean(errors.email)}
+                      aria-describedby={errors.email ? "email-error" : undefined}
+                      {...register("email")}
+                      className={cn(fieldClasses(Boolean(errors.email)), "min-h-12")}
+                    />
+                    {errors.email && (
+                      <p id="email-error" className="text-sm text-destructive">
+                        {errors.email.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="grid gap-2 sm:col-span-2">
+                    <label htmlFor="contact-message" className="text-sm font-medium">
+                      {contact.message}
+                    </label>
+                    <textarea
+                      id="contact-message"
+                      rows={6}
+                      enterKeyHint="send"
+                      onKeyDown={submitOnShortcut}
+                      disabled={isSubmitting}
+                      placeholder={contact.messagePlaceholder}
+                      aria-invalid={Boolean(errors.message)}
+                      aria-describedby={errors.message ? "message-error" : undefined}
+                      {...register("message")}
+                      className={cn(
+                        fieldClasses(Boolean(errors.message)),
+                        "resize-y py-3 leading-relaxed",
+                      )}
+                    />
+                    {errors.message && (
+                      <p id="message-error" className="text-sm text-destructive">
+                        {errors.message.message}
+                      </p>
+                    )}
+                  </div>
                 </div>
-              ) : (
-                <form key="form" onSubmit={handleSubmit(onSubmit)} noValidate>
-                  <h3 className="text-lg font-medium text-foreground">
-                    {messages.contact.formTitle}
-                  </h3>
 
-                  {formStatus === "error" && (
-                    <div
-                      role="alert"
-                      className="mt-4 flex flex-col gap-2 rounded-sm border border-destructive/40 bg-destructive/10 p-3.5 text-xs text-destructive fade-swap"
-                    >
-                      <p className="font-medium">{messages.contact.errorTitle}</p>
-                      <p className="text-muted-foreground">{messages.contact.errorDescription}</p>
-                    </div>
-                  )}
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    aria-busy={isSubmitting}
+                    className={buttonClasses("primary", "md", "w-full sm:w-auto")}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                        {contact.sending}
+                      </>
+                    ) : (
+                      <>
+                        {contact.submit}
+                        <Send className={buttonIconNudge} aria-hidden />
+                      </>
+                    )}
+                  </button>
+                  <span className="hidden font-mono text-xs text-muted-foreground md:inline">
+                    {contact.shortcutHint}
+                  </span>
+                </div>
 
-                  <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                    <div className="grid gap-1.5">
-                      <label htmlFor="contact-name" className="text-sm font-medium text-foreground">
-                        {messages.contact.name}
-                      </label>
-                      <input
-                        id="contact-name"
-                        type="text"
-                        autoComplete="name"
-                        enterKeyHint="next"
-                        disabled={formStatus === "submitting"}
-                        placeholder={messages.contact.namePlaceholder}
-                        aria-invalid={Boolean(errors.name)}
-                        aria-describedby={errors.name ? "name-error" : undefined}
-                        {...register("name")}
-                        className={`min-h-12 w-full rounded-sm border bg-background px-3.5 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/60 transition-[border-color,box-shadow] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
-                          errors.name
-                            ? "border-destructive focus-visible:ring-destructive"
-                            : "border-border hover:border-border-strong focus:border-primary focus-visible:ring-primary/55"
-                        }`}
-                      />
-                      {errors.name && (
-                        <span id="name-error" className="text-xs font-medium text-destructive">
-                          {errors.name.message}
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="grid gap-1.5">
-                      <label
-                        htmlFor="contact-email"
-                        className="text-sm font-medium text-foreground"
-                      >
-                        {messages.contact.email}
-                      </label>
-                      <input
-                        id="contact-email"
-                        type="email"
-                        autoComplete="email"
-                        inputMode="email"
-                        autoCapitalize="none"
-                        enterKeyHint="next"
-                        spellCheck={false}
-                        disabled={formStatus === "submitting"}
-                        placeholder={messages.contact.emailPlaceholder}
-                        aria-invalid={Boolean(errors.email)}
-                        aria-describedby={errors.email ? "email-error" : undefined}
-                        {...register("email")}
-                        className={`min-h-12 w-full rounded-sm border bg-background px-3.5 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/60 transition-[border-color,box-shadow] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
-                          errors.email
-                            ? "border-destructive focus-visible:ring-destructive"
-                            : "border-border hover:border-border-strong focus:border-primary focus-visible:ring-primary/55"
-                        }`}
-                      />
-                      {errors.email && (
-                        <span id="email-error" className="text-xs font-medium text-destructive">
-                          {errors.email.message}
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="grid gap-1.5 sm:col-span-2">
-                      <label
-                        htmlFor="contact-message"
-                        className="text-sm font-medium text-foreground"
-                      >
-                        {messages.contact.message}
-                      </label>
-                      <textarea
-                        id="contact-message"
-                        rows={5}
-                        enterKeyHint="send"
-                        onKeyDown={submitOnShortcut}
-                        disabled={formStatus === "submitting"}
-                        placeholder={messages.contact.messagePlaceholder}
-                        aria-invalid={Boolean(errors.message)}
-                        aria-describedby={errors.message ? "message-error" : undefined}
-                        {...register("message")}
-                        className={`w-full resize-y rounded-sm border bg-background px-3.5 py-3 text-base sm:text-sm leading-relaxed text-foreground placeholder:text-muted-foreground/60 transition-[border-color,box-shadow] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
-                          errors.message
-                            ? "border-destructive focus-visible:ring-destructive"
-                            : "border-border hover:border-border-strong focus:border-primary focus-visible:ring-primary/55"
-                        }`}
-                      />
-                      {errors.message && (
-                        <span id="message-error" className="text-xs font-medium text-destructive">
-                          {errors.message.message}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2">
-                    <button
-                      type="submit"
-                      disabled={formStatus === "submitting"}
-                      className="inline-flex min-h-12 w-full items-center justify-center gap-2 bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-[transform,background-color,opacity] duration-150 hover:bg-primary/85 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed sm:w-auto"
-                    >
-                      <span
-                        key={formStatus === "submitting" ? "sending" : "idle"}
-                        className={
-                          formStatus === "submitting"
-                            ? "fade-swap inline-flex items-center gap-2"
-                            : "inline-flex items-center gap-2"
-                        }
-                      >
-                        {formStatus === "submitting" ? (
-                          <>
-                            <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                            <span>{messages.contact.sending}</span>
-                          </>
-                        ) : (
-                          <>
-                            <span>{messages.contact.submit}</span>
-                            <Send className="h-4 w-4" aria-hidden />
-                          </>
-                        )}
-                      </span>
-                    </button>
-                    <span className="hidden font-mono text-xs text-muted-foreground md:inline">
-                      {messages.contact.shortcutHint}
-                    </span>
-                  </div>
-
-                  <p className="mt-3 max-w-[54ch] text-xs leading-relaxed text-muted-foreground">
-                    {messages.contact.formHint} {messages.contact.formFallback}{" "}
-                    <a
-                      href={`mailto:${links.email}`}
-                      className="font-medium text-foreground underline decoration-border-strong underline-offset-4 transition-colors hover:text-primary"
-                    >
-                      {links.email}
-                    </a>
-                    .
-                  </p>
-                </form>
-              )}
-            </div>
+                <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
+                  {contact.formHint}{" "}
+                  <a
+                    href={`mailto:${links.email}`}
+                    className="font-medium [overflow-wrap:anywhere] text-foreground underline decoration-border-strong underline-offset-4 transition-colors hover:text-primary hover:decoration-primary"
+                  >
+                    {links.email}
+                  </a>
+                  .
+                </p>
+              </form>
+            )}
           </div>
         </div>
       </div>
-      <Toaster
-        theme={theme}
-        position={isMobile ? "top-center" : "bottom-center"}
-        duration={4000}
-        mobileOffset={{
-          top: "max(16px, calc(env(safe-area-inset-top) + 8px))",
-          bottom: "max(16px, env(safe-area-inset-bottom))",
-        }}
-      />
     </section>
   );
 }

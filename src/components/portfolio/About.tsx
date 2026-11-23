@@ -1,102 +1,74 @@
-import { useRef } from "react";
-import { Briefcase, GraduationCap, MapPin } from "lucide-react";
-import { facts } from "@/data/portfolio";
+﻿import type { CSSProperties } from "react";
+import { pillars, projects } from "@/data/portfolio";
 import { useLanguage } from "@/i18n/LanguageProvider";
-import { canRevealBelowFold, gsap, useGSAP } from "@/lib/gsap";
+import { scrollToSection } from "./internalNavigation";
+import { SectionHeading } from "./SectionHeading";
 
-const factIcons = {
-  "map-pin": MapPin,
-  briefcase: Briefcase,
-  "graduation-cap": GraduationCap,
-} as const;
-
-type FactCardData = {
-  icon: keyof typeof factIcons;
-  label: string;
-  value: string;
-  detail: string;
-};
-
-function FactCard({ fact }: { fact: FactCardData }) {
-  const Icon = factIcons[fact.icon];
-
-  return (
-    <div className="fact-card flex flex-col justify-between rounded-sm border border-border bg-surface p-4.5 transition-colors duration-200 hover:border-border-strong">
-      <div>
-        <div className="flex items-start justify-between gap-3">
-          <dt className="font-mono text-xs tracking-[0.06em] text-muted-foreground">
-            {fact.label}
-          </dt>
-          <Icon className="h-4 w-4 shrink-0 text-primary/80" aria-hidden />
-        </div>
-        <dd className="mt-2.5 text-sm font-medium text-foreground">{fact.value}</dd>
-      </div>
-      {fact.detail && (
-        <dd className="mt-2 text-xs leading-relaxed text-muted-foreground">{fact.detail}</dd>
-      )}
-    </div>
-  );
-}
+const projectNames = new Map(projects.map((project) => [project.id, project.name]));
 
 export function About() {
   const { messages } = useLanguage();
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useGSAP(
-    () => {
-      if (canRevealBelowFold(sectionRef.current, ".about-header")) {
-        gsap.from(".about-header", {
-          opacity: 0,
-          y: 16,
-          duration: 0.4,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: ".about-header",
-            start: "top 88%",
-            once: true,
-          },
-        });
-      }
-
-      if (canRevealBelowFold(sectionRef.current, ".about-facts")) {
-        gsap.from(".fact-card", {
-          opacity: 0,
-          y: 16,
-          duration: 0.38,
-          stagger: 0.06,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: ".about-facts",
-            start: "top 90%",
-            once: true,
-          },
-        });
-      }
-    },
-    { scope: sectionRef },
-  );
+  const { about } = messages;
 
   return (
-    <section ref={sectionRef} id="sobre" className="border-b border-border">
-      <div className="mx-auto max-w-[1160px] px-4 py-12 sm:px-6 sm:py-16">
-        <div className="about-header max-w-[68ch]">
-          <p className="inline-flex items-center gap-2 font-mono text-xs font-medium tracking-[0.12em] text-primary uppercase">
-            <span className="text-primary/70">01 //</span>{" "}
-            {messages.about.eyebrow.replace(/^\/\s*/, "")}
-          </p>
-          <h2 className="mt-2.5 text-2xl font-semibold tracking-tight sm:text-3xl lg:text-[2rem]">
-            {messages.about.title}
-          </h2>
-          <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:mt-4 sm:text-base text-pretty">
-            {messages.about.body}
-          </p>
+    <section id="sobre" aria-labelledby="sobre-title" className="border-b border-border">
+      <div className="shell section-y grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div className="lg:col-span-5">
+          <SectionHeading id="sobre-title" title={about.title} className="lg:sticky lg:top-28" />
         </div>
 
-        <dl className="about-facts mt-8 grid gap-2.5 sm:mt-10 sm:grid-cols-3 sm:gap-3.5">
-          {facts.map((fact, index) => (
-            <FactCard key={fact.icon} fact={{ icon: fact.icon, ...messages.about.facts[index]! }} />
-          ))}
-        </dl>
+        <div className="lg:col-span-7 lg:col-start-6 lg:pt-14">
+          <div
+            data-reveal=""
+            className="space-y-5 text-[17px] leading-[1.7] text-pretty sm:text-lg"
+          >
+            {about.paragraphs.map((paragraph, index) => (
+              <p key={index} className={index === 0 ? "text-foreground" : "text-muted-foreground"}>
+                {paragraph}
+              </p>
+            ))}
+          </div>
+
+          <h3 data-reveal="" className="mt-14 text-lg font-semibold tracking-tight">
+            {about.pillarsLabel}
+          </h3>
+          <ol className="mt-5 border-t border-border">
+            {pillars.map((pillar, index) => {
+              const copy = about.pillars[pillar.id];
+              return (
+                <li
+                  key={pillar.id}
+                  data-reveal=""
+                  style={{ "--reveal-delay": `${index * 70}ms` } as CSSProperties}
+                  className="grid gap-x-6 gap-y-2 border-b border-border py-6 sm:grid-cols-[2.5rem_1fr]"
+                >
+                  <span aria-hidden className="pt-1 font-mono text-xs text-primary">
+                    0{index + 1}
+                  </span>
+                  <div>
+                    <h4 className="text-lg font-semibold tracking-tight">{copy.title}</h4>
+                    <p className="mt-1.5 leading-relaxed text-muted-foreground">{copy.text}</p>
+                    <p className="mt-3 font-mono text-xs leading-relaxed text-muted-foreground">
+                      {about.evidenceLabel}:{" "}
+                      {pillar.projects.map((projectId, projectIndex) => (
+                        <span key={projectId}>
+                          <a
+                            href={`#projeto-${projectId}`}
+                            onClick={(event) => scrollToSection(event, `projeto-${projectId}`)}
+                            className="text-foreground underline decoration-border-strong underline-offset-4 transition-colors hover:text-primary hover:decoration-primary"
+                          >
+                            {projectNames.get(projectId)}
+                          </a>
+                          {projectIndex < pillar.projects.length - 1 && ", "}
+                        </span>
+                      ))}
+                    </p>
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
       </div>
     </section>
   );

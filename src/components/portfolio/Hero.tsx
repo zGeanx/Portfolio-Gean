@@ -1,111 +1,140 @@
-import { ArrowRight, FileDown, Github, Mail } from "lucide-react";
-import { links, profile } from "@/data/portfolio";
+﻿import type { CSSProperties } from "react";
+import { ArrowDown, FileDown } from "lucide-react";
+import { buttonClasses } from "@/components/ui/button-styles";
+import { links, profile, publishedProjectCount } from "@/data/portfolio";
 import { useLanguage } from "@/i18n/LanguageProvider";
+import { cn } from "@/lib/utils";
 import { scrollToSection } from "./internalNavigation";
 
-function ActionLink({
-  href,
-  children,
-  primary,
-  icon: Icon,
-  download,
-}: {
-  href: string;
-  children: string;
-  primary?: boolean;
-  icon: React.ComponentType<{ className?: string }>;
-  download?: string;
-}) {
-  const base =
-    "hero-cta inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-sm px-3.5 py-2.5 text-center text-sm font-medium transition-[transform,background-color,border-color,color] duration-150 ease-out active:scale-[0.97] sm:w-auto sm:px-4";
-  const cls = primary
-    ? `${base} bg-primary text-primary-foreground font-semibold shadow-sm hover:bg-primary/90`
-    : `${base} border border-border bg-background/50 text-foreground hover:border-primary hover:text-primary hover:bg-surface`;
+const rise = (delay: number) => ({ "--rise-delay": `${delay}ms` }) as CSSProperties;
 
-  return (
-    <a
-      href={href}
-      onClick={href.startsWith("#") ? (event) => scrollToSection(event, href.slice(1)) : undefined}
-      className={cls}
-      download={download}
-      target={href.startsWith("#") || download ? undefined : "_blank"}
-      rel={href.startsWith("#") || download ? undefined : "noreferrer noopener"}
-    >
-      <Icon className="h-4 w-4 shrink-0" aria-hidden />
-      {children}
-    </a>
-  );
-}
+const factCellBorders = [
+  "pr-4",
+  "border-l pl-4 sm:pl-6",
+  "border-t pr-4 lg:border-t-0 lg:border-l lg:pl-6",
+  "border-t border-l pl-4 sm:pl-6 lg:border-t-0",
+];
 
 export function Hero() {
   const { messages } = useLanguage();
+  const { hero } = messages;
+  const nameParts = profile.name.split(" ");
+  const lastName = nameParts.pop() ?? "";
+  const firstName = nameParts.join(" ");
+
+  const facts = [
+    {
+      key: "projects",
+      label: hero.facts.projects.label,
+      value: String(publishedProjectCount).padStart(2, "0"),
+      detail: hero.facts.projects.detail,
+    },
+    { key: "focus", ...hero.facts.focus },
+    { key: "education", ...hero.facts.education },
+    { key: "location", ...hero.facts.location },
+  ];
 
   return (
-    <section id="inicio" className="relative overflow-hidden border-b border-border">
-      <div aria-hidden className="hero-backdrop pointer-events-none absolute inset-0" />
-      <div className="relative mx-auto grid max-w-[1160px] gap-6 px-4 py-8 sm:gap-12 sm:px-6 sm:py-14 md:py-20 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
-        <div className="order-2 min-w-0 lg:order-1">
-          <h1 className="hero-title text-gradient text-[clamp(2.25rem,11vw,4.25rem)] leading-[1.05] font-semibold tracking-tight text-balance">
-            {profile.name}
-          </h1>
-          <p
-            className="hero-role mt-2.5 sm:mt-3 font-mono text-sm text-primary sm:text-base"
-            aria-label={messages.hero.role}
+    <section id="inicio" aria-labelledby="hero-title" className="border-b border-border">
+      <div className="shell grid gap-8 pt-6 pb-14 sm:pt-16 sm:pb-20 lg:grid-cols-12 lg:items-center lg:gap-10 lg:pt-20 lg:pb-24">
+        <div className="flex min-w-0 flex-col lg:col-span-7">
+          <h1
+            id="hero-title"
+            className="rise display mt-6 text-[clamp(3.25rem,11.5vw,6.5rem)] sm:mt-10 lg:text-[clamp(4.5rem,7.2vw,6.75rem)]"
+            style={rise(60)}
           >
+            {firstName} <span className="text-primary">{lastName}</span>
+          </h1>
+
+          <p
+            className="rise mt-6 font-mono text-lg leading-snug text-primary sm:text-xl"
+            style={rise(120)}
+          >
+            <span className="sr-only">{hero.role}</span>
             <span
               aria-hidden
               className="typing-role"
               style={
                 {
-                  "--typing-width": `${messages.hero.role.length}ch`,
-                  "--typing-steps": messages.hero.role.length,
-                } as React.CSSProperties
+                  "--typing-width": `${hero.role.length}ch`,
+                  "--typing-steps": hero.role.length,
+                } as CSSProperties
               }
             >
-              {messages.hero.role}
+              {hero.role}
+            </span>
+            <span className="mt-2 block font-sans text-base text-muted-foreground sm:text-lg">
+              {hero.focus}
             </span>
           </p>
-          <p className="hero-desc mt-4 max-w-[54ch] text-[15px] leading-relaxed text-muted-foreground sm:mt-5 sm:text-base text-pretty">
-            {messages.hero.description}
+
+          <p
+            className="rise mt-5 max-w-[52ch] text-base leading-relaxed text-muted-foreground text-pretty sm:text-lg"
+            style={rise(180)}
+          >
+            {hero.description}
           </p>
 
-          <div className="mt-7 grid grid-cols-2 gap-2.5 sm:mt-8 sm:flex sm:flex-wrap sm:gap-3">
-            <ActionLink href="#projetos" primary icon={ArrowRight}>
-              {messages.hero.viewProjects}
-            </ActionLink>
-            <ActionLink href="#contato" icon={Mail}>
-              {messages.hero.contact}
-            </ActionLink>
-            <ActionLink href={links.github} icon={Github}>
-              GitHub
-            </ActionLink>
-            <ActionLink href={links.resume} download="Gean-Luca-Curriculo.pdf" icon={FileDown}>
-              {messages.hero.downloadCv}
-            </ActionLink>
+          <div
+            className="rise mt-9 flex flex-col gap-3 min-[420px]:flex-row min-[420px]:flex-wrap"
+            style={rise(240)}
+          >
+            <a
+              href="#projetos"
+              onClick={(event) => scrollToSection(event, "projetos")}
+              className={buttonClasses("primary")}
+            >
+              {hero.viewProjects}
+              <ArrowDown
+                className="h-4 w-4 shrink-0 transition-transform duration-200 ease-out group-hover/button:translate-y-0.5"
+                aria-hidden
+              />
+            </a>
+            <a
+              href={links.resume}
+              download={links.resumeFileName}
+              className={buttonClasses("secondary")}
+            >
+              <FileDown className="h-4 w-4 shrink-0" aria-hidden />
+              {hero.downloadCv}
+            </a>
           </div>
         </div>
 
-        <div className="hero-avatar order-1 mx-auto w-full max-w-[190px] sm:max-w-[260px] lg:order-2 lg:max-w-[340px]">
-          <div className="aspect-[4/5] rounded-sm border border-primary/35 bg-surface p-2 shadow-[0_28px_80px_-52px_color-mix(in_oklch,var(--primary)_72%,transparent)]">
-            <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-sm bg-background">
-              {profile.avatar ? (
-                <img
-                  src={profile.avatar}
-                  alt={messages.hero.profileAlt}
-                  width={800}
-                  height={1000}
-                  loading="eager"
-                  fetchPriority="high"
-                  className="h-full w-full object-cover object-center"
-                />
-              ) : (
-                <span className="font-mono text-6xl font-semibold text-border-strong select-none">
-                  {profile.initials}
-                </span>
-              )}
+        <figure className="order-first mb-3 lg:order-none lg:col-span-5 lg:mb-0">
+          <div className="relative mx-auto w-full max-w-[22rem] lg:mr-0 lg:ml-auto lg:max-w-[420px]">
+            <span aria-hidden className="frame-square" />
+            <div className="portrait-frame portrait-in relative overflow-hidden rounded-md border border-border bg-surface">
+              <img
+                src={profile.avatar}
+                alt={hero.profileAlt}
+                width={800}
+                height={1421}
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+                className="portrait-face"
+              />
             </div>
           </div>
-        </div>
+        </figure>
+      </div>
+
+      <div className="border-t border-border">
+        <h2 className="sr-only">{hero.factsLabel}</h2>
+        <dl className="shell grid grid-cols-2 lg:grid-cols-4">
+          {facts.map((fact, index) => (
+            <div key={fact.key} className={cn("min-w-0 py-6 sm:py-8", factCellBorders[index])}>
+              <dt className="font-mono text-xs text-muted-foreground">{fact.label}</dt>
+              <dd className="mt-3 font-display text-lg leading-tight font-semibold tracking-tight [font-stretch:108%] sm:text-xl">
+                {fact.value}
+              </dd>
+              <dd className="mt-1.5 text-[13px] leading-snug text-muted-foreground sm:text-sm">
+                {fact.detail}
+              </dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </section>
   );

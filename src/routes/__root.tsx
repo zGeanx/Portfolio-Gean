@@ -10,29 +10,51 @@ import {
 import type { ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import { buttonClasses } from "@/components/ui/button-styles";
 import { profile } from "@/data/portfolio";
+import { themeColors, themeStorageKey } from "@/theme/theme-config";
 
-const themeBootstrapScript = `(function(){try{var t=localStorage.getItem("portfolio-theme");var l=t==="light";document.documentElement.classList.toggle("light",l);document.documentElement.style.colorScheme=l?"light":"dark";var m=document.querySelector('meta[name="theme-color"]');if(m){m.setAttribute("content",l?"#f3faf9":"#091413")}}catch(e){}})();`;
+const fontsHref =
+  "https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..700&family=Inter+Tight:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap";
+
+const themeBootstrapScript = `(function(){try{var d=document.documentElement;var t=localStorage.getItem(${JSON.stringify(themeStorageKey)});var l=t?t==="light":window.matchMedia("(prefers-color-scheme: light)").matches;d.classList.toggle("light",l);d.style.colorScheme=l?"light":"dark";var m=document.querySelector('meta[name="theme-color"]');if(m){m.setAttribute("content",l?${JSON.stringify(themeColors.light)}:${JSON.stringify(themeColors.dark)})}}catch(e){}})();`;
+
+function StatusPage({
+  code,
+  title,
+  text,
+  children,
+}: {
+  code: string;
+  title: string;
+  text: string;
+  children: ReactNode;
+}) {
+  return (
+    <main className="flex min-h-dvh items-center bg-background">
+      <div className="shell max-w-2xl py-20">
+        <p className="eyebrow text-primary">{code}</p>
+        <h1 className="display mt-5 text-[clamp(2.5rem,8vw,4.5rem)] leading-[1.02] text-balance">
+          {title}
+        </h1>
+        <p className="mt-5 max-w-[48ch] text-lg leading-relaxed text-muted-foreground">{text}</p>
+        <div className="mt-9 flex flex-wrap gap-3">{children}</div>
+      </div>
+    </main>
+  );
+}
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Página não encontrada</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Este endereço não existe ou foi alterado. Volte ao início para conhecer meus projetos.
-        </p>
-        <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex min-h-11 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Voltar ao início
-          </Link>
-        </div>
-      </div>
-    </div>
+    <StatusPage
+      code="404"
+      title="Página não encontrada."
+      text="Este endereço não existe ou foi alterado. Volte ao início para conhecer meus projetos."
+    >
+      <Link to="/" className={buttonClasses("primary")}>
+        Voltar ao início
+      </Link>
+    </StatusPage>
   );
 }
 
@@ -41,33 +63,25 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   const router = useRouter();
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          Não foi possível carregar a página
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Tente novamente ou volte ao início para continuar navegando.
-        </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button
-            onClick={() => {
-              router.invalidate();
-              reset();
-            }}
-            className="inline-flex min-h-11 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Tentar novamente
-          </button>
-          <a
-            href="/"
-            className="inline-flex min-h-11 items-center justify-center rounded-md border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-surface"
-          >
-            Voltar ao início
-          </a>
-        </div>
-      </div>
-    </div>
+    <StatusPage
+      code="Erro"
+      title="Não foi possível carregar a página."
+      text="Tente novamente ou volte ao início para continuar navegando."
+    >
+      <button
+        type="button"
+        onClick={() => {
+          router.invalidate();
+          reset();
+        }}
+        className={buttonClasses("primary")}
+      >
+        Tentar novamente
+      </button>
+      <a href="/" className={buttonClasses("secondary")}>
+        Voltar ao início
+      </a>
+    </StatusPage>
   );
 }
 
@@ -76,29 +90,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { name: "theme-color", content: "#091413" },
-      { title: `geanluca.dev │ ${profile.role}` },
-      {
-        name: "description",
-        content:
-          "Construo interfaces em React e TypeScript conectadas a APIs reais. Conheça os projetos de Gean Luca, desenvolvedor front-end com foco em performance e usabilidade.",
-      },
-      { name: "author", content: "Gean Luca" },
-      { property: "og:site_name", content: "geanluca.dev" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { name: "theme-color", content: themeColors.dark },
+      { name: "color-scheme", content: "dark light" },
+      { title: `${profile.name} | ${profile.role}` },
+      { name: "author", content: profile.name },
+      { property: "og:site_name", content: profile.brand },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap",
-      },
+      { rel: "stylesheet", href: fontsHref },
+      { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.png", type: "image/png", sizes: "512x512" },
     ],
     scripts: [{ children: themeBootstrapScript }],

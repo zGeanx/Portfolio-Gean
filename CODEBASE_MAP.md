@@ -1,4 +1,4 @@
-# 🗺️ Mapa Arquitetural do Portfólio (Codebase Map)
+﻿# 🗺️ Mapa Arquitetural do Portfólio (Codebase Map)
 
 > **Aviso para Modelos / Agentes de IA:**
 > Este documento mapeia **100% da arquitetura, dependências, componentes, fluxos de dados, estados e estilos** deste projeto.
@@ -10,8 +10,8 @@
 
 - **Framework**: [TanStack Start](https://tanstack.com/start) (Full-stack SSR com React 19 e Vite 8)
 - **Roteamento**: TanStack Router com _file-based routing_ (`src/routes/`)
-- **Estilização**: Tailwind CSS v4 (`@tailwindcss/vite`), paleta temática OKLCH Mint/Teal em CSS variables
-- **Animações**: GSAP 3.15 (`gsap`, `ScrollTrigger`, `@gsap/react`) com tratamento estrito de acessibilidade (`prefers-reduced-motion`)
+- **Estilização**: Tailwind CSS v4 (`@tailwindcss/vite`), identidade verde-floresta/menta em OKLCH (herdada do visual original), com estrutura editorial em CSS variables
+- **Animações**: CSS nativo + `IntersectionObserver` (`useRevealOnScroll`), sem bibliotecas de animação, com tratamento estrito de `prefers-reduced-motion`
 - **Validação & Formulários**: React Hook Form + Zod (`@hookform/resolvers/zod`)
 - **Comunicação Server-Side**: `createServerFn` do TanStack Start com envio de e-mails transacionais via Resend API
 - **Build & Deploy**: Nitro (`cloudflare-module` preset) direcionado a Cloudflare Workers & Pages
@@ -31,18 +31,18 @@ graph TD
     SkipLink["Skip to Content (#conteudo)"]
 
     subgraph PageLayout["Single Page Shell (src/routes/index.tsx)"]
-      Header["Header (Nav + ThemeToggle + LangSelector)"]
+      Header["Header (Nav + LanguageToggle + ThemeToggle + CTA)"]
 
       subgraph MainContent["Main Section (#conteudo)"]
-        Hero["Hero Section (GSAP Intro + Typing Effect + CTAs + Avatar)"]
-        About["About Section (GSAP ScrollTrigger + FactCards)"]
-        Tech["Technologies (Categorias + Chips com Ícones)"]
-        Proj["Projects (Mobile Carousel Snap / Desktop 2-Col Grid)"]
-        Contact["Contact Section (Links Diretos + Formulário Validado)"]
+        Hero["Hero (Disponibilidade + CTAs + Retrato + Resumo profissional)"]
+        About["About (Texto + Pilares com evidência nos projetos)"]
+        Tech["Technologies (Grupos em linhas + Chips com Ícones)"]
+        Proj["Projects (Lista de estudos de caso com captura emoldurada)"]
+        Contact["Contact (Canais diretos + Formulário Validado)"]
       end
 
-      Footer["Footer (Links + Tooltips + CopyEmail + BackToTop)"]
-      Sonner["Sonner Toaster (Notificações)"]
+      Footer["Footer (Links + CopyEmail + BackToTop)"]
+      Sonner["Sonner Toaster (Notificações, montado na página)"]
     end
   end
 
@@ -71,7 +71,7 @@ graph TD
   MainContent --> Proj
   MainContent --> Contact
   LangProv --> Footer
-  Contact --> Sonner
+  LangProv --> Sonner
 
   Contact -->|POST ContactFormData| ContactFn
   ContactFn --> ContactValidator
@@ -87,48 +87,50 @@ graph TD
 
 ### 3.1. Núcleo da Aplicação & Configurações de Rota
 
-| Arquivo          | Caminho                 | Responsabilidade & Detalhes                                                                                                                                            | Exports Principais         | Dependências Chave                                                              |
-| ---------------- | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- | ------------------------------------------------------------------------------- |
-| **Entry Server** | `src/server.ts`         | Entrypoint do servidor SSR Nitro/Cloudflare. Captura erros críticos não tratados da camada h3 e renderiza página de fallback estática.                                 | `export default { fetch }` | `@tanstack/react-start/server-entry`, `./lib/error-capture`, `./lib/error-page` |
-| **Start Config** | `src/start.ts`          | Configuração do TanStack Start com middlewares de CSRF para `serverFn` e middleware global de captura de erro 500.                                                     | `startInstance`            | `@tanstack/react-start`, `./lib/error-page`                                     |
-| **Router Setup** | `src/router.tsx`        | Instancia o `createRouter` integrando `QueryClient` do `@tanstack/react-query`, histórico e `scrollRestoration: true`.                                                 | `getRouter()`              | `@tanstack/react-router`, `@tanstack/react-query`, `./routeTree.gen`            |
-| **Root Shell**   | `src/routes/__root.tsx` | Layout raiz HTML/Head. Configura meta tags OpenGraph, script inline do tema anti-flicker, fontes Inter Tight e JetBrains Mono, `NotFoundComponent` e `ErrorComponent`. | `Route`                    | `@tanstack/react-router`, `@tanstack/react-query`, `@/data/portfolio`           |
-| **Home Page**    | `src/routes/index.tsx`  | Rota principal `/`. Envolve a aplicação nos providers (`ThemeProvider`, `LanguageProvider`), monta SEO com JSON-LD de `Person` e renderiza todas as seções.            | `Route`                    | Componentes de portfolio, dados de `portfolio.ts`, providers                    |
-| **Route Tree**   | `src/routeTree.gen.ts`  | Árvore de rotas gerada automaticamente pelo plugin TanStack Router. **Não editar manualmente**.                                                                        | `routeTree`                | `@tanstack/react-router`                                                        |
+| Arquivo          | Caminho                 | Responsabilidade & Detalhes                                                                                                                                                                                                                                         | Exports Principais         | Dependências Chave                                                                            |
+| ---------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- | --------------------------------------------------------------------------------------------- |
+| **Entry Server** | `src/server.ts`         | Entrypoint do servidor SSR Nitro/Cloudflare. Captura erros críticos não tratados da camada h3 e renderiza página de fallback estática.                                                                                                                              | `export default { fetch }` | `@tanstack/react-start/server-entry`, `./lib/error-capture`, `./lib/error-page`               |
+| **Start Config** | `src/start.ts`          | Configuração do TanStack Start com middlewares de CSRF para `serverFn` e middleware global de captura de erro 500.                                                                                                                                                  | `startInstance`            | `@tanstack/react-start`, `./lib/error-page`                                                   |
+| **Router Setup** | `src/router.tsx`        | Instancia o `createRouter` integrando `QueryClient` do `@tanstack/react-query`, histórico e `scrollRestoration: true`.                                                                                                                                              | `getRouter()`              | `@tanstack/react-router`, `@tanstack/react-query`, `./routeTree.gen`                          |
+| **Root Shell**   | `src/routes/__root.tsx` | Layout raiz HTML/Head. Meta tags globais, script inline anti-flicker (preferência salva ou `prefers-color-scheme`), fontes Archivo (títulos, eixos `wdth`/`wght`), Inter Tight (texto) e JetBrains Mono, `NotFoundComponent` e `ErrorComponent` (via `StatusPage`). | `Route`                    | `@tanstack/react-router`, `@tanstack/react-query`, `@/data/portfolio`, `@/theme/theme-config` |
+| **Home Page**    | `src/routes/index.tsx`  | Rota principal `/`. Providers (`ThemeProvider`, `LanguageProvider`), SEO (Open Graph `profile`, Twitter, canonical, JSON-LD `Person` com `alumniOf`/`knowsAbout`), `useRevealOnScroll()`, skip link, seções e `<Toaster />`.                                        | `Route`                    | Componentes de portfolio, dados de `portfolio.ts`, providers                                  |
+| **Route Tree**   | `src/routeTree.gen.ts`  | Árvore de rotas gerada automaticamente pelo plugin TanStack Router. **Não editar manualmente**.                                                                                                                                                                     | `routeTree`                | `@tanstack/react-router`                                                                      |
 
 ---
 
 ### 3.2. Estado Global e Internacionalização
 
-| Arquivo               | Caminho                         | Responsabilidade & Detalhes                                                                                                                                                                               | Exports Principais                                                             |
-| --------------------- | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| **Theme Provider**    | `src/theme/ThemeProvider.tsx`   | Controla tema `dark` / `light`. Atualiza classe `.light` no `<html>`, `colorScheme` e `<meta name="theme-color">` (`#091413` no dark, `#f3faf9` no light). Persiste em `localStorage("portfolio-theme")`. | `ThemeProvider`, `useTheme()`, tipo `Theme`                                    |
-| **Language Provider** | `src/i18n/LanguageProvider.tsx` | Gerencia dicionários e tradução dinâmica (`pt-BR` padrão e `en`). Contém textos completos de meta tags, cabeçalho, hero, sobre, stacks, projetos e rodapé.                                                | `LanguageProvider`, `useLanguage()`, `languages`, tipos `Language`, `Messages` |
+| Arquivo               | Caminho                         | Responsabilidade & Detalhes                                                                                                                                                                                            | Exports Principais                                                             |
+| --------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| **Theme Config**      | `src/theme/theme-config.ts`     | Tipo `Theme`, chave `portfolio-theme` e cores de `theme-color` (`#080f0c` dark, `#f3f8f5` light), compartilhados com o script anti-flicker.                                                                            | `Theme`, `themeStorageKey`, `themeColors`                                      |
+| **Theme Provider**    | `src/theme/ThemeProvider.tsx`   | Controla tema `dark` / `light` (sincroniza com a classe aplicada pelo script e segue o sistema se não houver escolha salva). Desativa transições durante a troca (`.theme-switching`).                                 | `ThemeProvider`, `useTheme()`, tipo `Theme`                                    |
+| **Language Provider** | `src/i18n/LanguageProvider.tsx` | Dicionários `pt-BR` (padrão) e `en`. Textos de seções indexados por id (`projects.entries[projectId]`, `technologies.groups[groupId]`, `about.pillars[pillarId]`), garantindo paridade de chaves pelo tipo `Messages`. | `LanguageProvider`, `useLanguage()`, `languages`, tipos `Language`, `Messages` |
 
 ---
 
 ### 3.3. Componentes da Interface (`src/components/portfolio/`)
 
-| Componente       | Arquivo                 | Responsabilidade Técnica & UX                                                                                                                                                                                                                                                                                                                                               |
-| ---------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Header**       | `Header.tsx`            | Barra de navegação fixa (`sticky top-0`) com backdrop-blur e Scroll-Spy (`IntersectionObserver`). Inclui links âncora com estado ativo (`aria-current="location"`), seletor de idiomas dropdown acessível, toggle de tema com `.icon-swap` e menu mobile responsivo.                                                                                                        |
-| **Hero**         | `Hero.tsx`              | Seção inicial com título com gradiente, animação de máquina de escrever CSS (`typing-role`), botões de ação (Ver projetos, Contato, GitHub, Download CV) e avatar otimizado em moldura com brilho OKLCH (`max-w-[190px]` no mobile). Animação de entrada orquestrada via GSAP Timeline (`useGSAP`).                                                                         |
-| **About**        | `About.tsx`             | Seção "Sobre mim" (01 // sobre) apresentando formação (ADS Senac RS), foco em React/TypeScript e 3 cards de fatos (`FactCard`: Localização, Foco Técnico, Formação). Entrada com GSAP `ScrollTrigger`.                                                                                                                                                                      |
-| **Technologies** | `Technologies.tsx`      | Seção "Tecnologias" (02 // stack). Agrupamento em 3 pilares: **Front-end**, **Back-end**, **Dados e entrega** com descrição resumo por pilar e ícones padronizados via `TechIcon.tsx`. Animação staggered com GSAP.                                                                                                                       |
-| **TechIcon**     | `TechIcon.tsx`          | Componente compartilhado de ícones de tecnologias (`react-icons/si` + `lucide-react`) utilizado tanto em `Technologies.tsx` quanto nos badges dos cards de `Projects.tsx`.                                                                                                                                                                                                  |
-| **Projects**     | `Projects.tsx`          | Seção "Projetos" (03 // projetos). **Mobile**: carrossel com snap scroll (`scroll-snap-type: x mandatory`), botões anterior/próximo com detecção de bordas via `ResizeObserver` e bolinhas indicadoras interativas com alvo de toque de 44px. **Desktop**: card em destaque 2 colunas + grid de 3 colunas com badges de tech icônicos, highlight técnico e links demo/repo. |
-| **Contact**      | `Contact.tsx`           | Seção "Contato" (04 // contato). Coluna esquerda com canais diretos (E-mail com cópia para clipboard em 1 clique, links de LinkedIn e GitHub). Coluna direita com formulário validado por Zod bilíngue (`createContactSchema`) + React Hook Form, atalho `Ctrl/Cmd + Enter`, estado de loading e mensagens de sucesso/erro. Inclui `<Toaster />` do Sonner.                 |
-| **Footer**       | `Footer.tsx`            | Rodapé com copyright, links sociais protegidos por `<Tooltip>` (`skipDelayDuration={300}`), botão de copiar e-mail e botão "Voltar ao topo" com rolagem suave.                                                                                                                                                                                                              |
-| **Internal Nav** | `internalNavigation.ts` | Helper utilitário `scrollToSection(event, id)` com `preventDefault()` e `scrollIntoView({ behavior: "smooth", block: "start" })`.                                                                                                                                                                                                                                           |
+| Componente         | Arquivo                 | Responsabilidade Técnica & UX                                                                                                                                                                                                                                                                                                                                                                                        |
+| ------------------ | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Header**         | `Header.tsx`            | Barra `sticky` com blur e Scroll-Spy (`IntersectionObserver`, `aria-current="location"`). Desktop: links Sobre/Stack/Projetos + `LanguageToggle` (PT/EN, `aria-pressed`) + `ThemeToggle` + CTA "Fale comigo". Mobile: painel com links numerados, foco no primeiro link ao abrir, fecha com Escape/clique fora/resize.                                                                                               |
+| **SectionHeading** | `SectionHeading.tsx`    | Cabeçalho padrão das seções: `h2` com filete vertical de acento e `id` para `aria-labelledby` e introdução opcional.                                                                                                                                                                                                                                                                                                 |
+| **Hero**           | `Hero.tsx`              | Selo de disponibilidade, `h1` com o nome, cargo + foco, descrição, CTAs (Ver projetos / Baixar currículo), cargo com efeito de digitação (`.typing-role`), retrato grande com moldura vazada (`.frame-square`; no mobile fica acima do texto, limitado a 58svh) e faixa "Resumo profissional" (`dl`) com projetos publicados (derivado dos dados), foco, formação e base. Entrada via CSS (`.rise`, `.portrait-in`). |
+| **About**          | `About.tsx`             | Título fixo (`sticky`) à esquerda; à direita, texto e 3 pilares (`pillars`) com links "Aplicado em" para os projetos que comprovam cada competência (`#projeto-{id}`).                                                                                                                                                                                                                                               |
+| **Technologies**   | `Technologies.tsx`      | Grupos (Front-end, Back-end, Dados e entrega) em linhas: título + resumo à esquerda, chips com `TechIcon` à direita.                                                                                                                                                                                                                                                                                                 |
+| **TechIcon**       | `TechIcon.tsx`          | Ícones de tecnologias (`react-icons/si` + `lucide-react`) usados em `Technologies.tsx` e `Projects.tsx`.                                                                                                                                                                                                                                                                                                             |
+| **Projects**       | `Projects.tsx`          | Lista ordenada de estudos de caso (`ProjectCase`): categoria, nome, destaque técnico, descrição, stack e links demo/código; captura em moldura com o host real da demo. Mobile: captura acima do texto. Link "Ver todos no GitHub".                                                                                                                                                                                  |
+| **Contact**        | `Contact.tsx`           | Canais diretos (copiar e-mail, LinkedIn, GitHub, currículo) + formulário Zod bilíngue com React Hook Form, `Ctrl/Cmd + Enter`, `aria-busy`, alerta de erro e foco movido para o título de sucesso.                                                                                                                                                                                                                   |
+| **Footer**         | `Footer.tsx`            | Nome, tagline, links com rótulo visível (GitHub, LinkedIn, copiar e-mail, currículo), créditos de stack e "Voltar ao topo".                                                                                                                                                                                                                                                                                          |
+| **Internal Nav**   | `internalNavigation.ts` | `scrollToSection(event, id)`: rolagem suave (instantânea com movimento reduzido) e foco programático no destino (`tabindex="-1"`) para leitores de tela e teclado.                                                                                                                                                                                                                                                   |
 
 ---
 
 ### 3.4. Componentes UI Reutilizáveis (`src/components/ui/`)
 
-| Componente  | Arquivo                         | Descrição                                                                                                           |
-| ----------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| **Tooltip** | `src/components/ui/tooltip.tsx` | Wrapper Radix UI (`@radix-ui/react-tooltip`) estilizado com classes Tailwind, bordas suaves e transições fade/zoom. |
-| **Sonner**  | `src/components/ui/sonner.tsx`  | Provedor de toasts leves integrado com as classes do Tailwind e variáveis de tema.                                  |
+| Componente        | Arquivo                              | Descrição                                                                                                                            |
+| ----------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Button styles** | `src/components/ui/button-styles.ts` | `buttonClasses(variant, size, className)` (`primary` / `secondary`, `sm` / `md`) e `buttonIconNudge` para ícones com microinteração. |
+| **Sonner**        | `src/components/ui/sonner.tsx`       | Provedor de toasts leves integrado com as classes do Tailwind e variáveis de tema.                                                   |
 
 ---
 
@@ -138,10 +140,10 @@ graph TD
 | --------------------- | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Contact Client/Fn** | `src/lib/contact.ts`             | Define `createContactSchema(messages)` (validação Zod bilíngue), `contactSchema` (Zod server-side: `name`, `email`, `message`) e a função servidora `sendContactMessage = createServerFn({ method: "POST" })`. |
 | **Contact Mailer**    | `src/lib/contact-mail.server.ts` | Executado exclusivamente no servidor. Lê variáveis de ambiente (`RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`), escapa HTML e envia requisição HTTPS para a API do Resend.                        |
-| **GSAP Setup**        | `src/lib/gsap.ts`                | Inicializa e registra `ScrollTrigger` e `useGSAP` apenas no ambiente do navegador (`typeof window !== "undefined"`).                                                                                           |
+| **useRevealOnScroll** | `src/hooks/useRevealOnScroll.ts` | Marca como `pending` apenas os elementos `[data-reveal]` abaixo da dobra e os revela com `IntersectionObserver`. Sem JS ou com movimento reduzido, tudo fica visível.                                          |
 | **Error Capture**     | `src/lib/error-capture.ts`       | Intercepta erros não capturados e chamadas `console.error` para contornar limitações do h3, mantendo stack traces e causas de erro.                                                                            |
 | **Error Page**        | `src/lib/error-page.ts`          | Template HTML puro para respostas 500 caso ocorra falha catastrófica de SSR sem quebrar a resposta HTTP.                                                                                                       |
-| **Utils**             | `src/lib/utils.ts`               | Utilitário `cn(...inputs)` combinando `clsx` e `tailwind-merge`.                                                                                                                                               |
+| **Utils**             | `src/lib/utils.ts`               | `cn(...inputs)` (`clsx` + `tailwind-merge`) e `prefersReducedMotion()`.                                                                                                                                        |
 | **useCopyEmail**      | `src/hooks/useCopyEmail.ts`      | Copia o e-mail para `navigator.clipboard`, altera ícone temporariamente por 2s e dispara toast no Sonner (com ajuste mobile/desktop).                                                                          |
 | **useMobile**         | `src/hooks/use-mobile.tsx`       | Hook que escuta a media query `(max-width: 767px)` para alternar layouts e comportamentos dinâmicos.                                                                                                           |
 
@@ -151,11 +153,13 @@ graph TD
 
 Centraliza todas as informações do profissional:
 
-- `profile`: Nome, role ("Desenvolvedor Front-end"), bio, avatar WebP.
-- `facts`: Localização (Pelotas, RS), Atuação, Formação (ADS no Senac RS).
-- `links`: GitHub (`zGeanx`), LinkedIn, E-mail (`geanlucadias12@gmail.com`), Currículo (`/gean-luca-cv.pdf`).
-- `techGroups`: Front-end, Back-end, Dados e entrega.
-- `projects`:
+- `profile`: Nome, role ("Desenvolvedor Front-end"), iniciais, avatar WebP, instituição (Senac RS) e localização.
+- `links`: GitHub (`zGeanx`), LinkedIn, E-mail (`geanlucadias12@gmail.com`), Currículo (`/gean-luca-cv.pdf`) e nome do arquivo baixado.
+- `sectionIds`: ids das seções usados pelo Scroll-Spy (`inicio`, `sobre`, `tecnologias`, `projetos`, `contato`).
+- `techGroups`: `frontend`, `backend`, `delivery` (textos em `messages.technologies.groups`).
+- `pillars`: competências (`interfaces`, `apis`, `delivery`) com os ids dos projetos que as comprovam.
+- `publishedProjectCount`: total de projetos com demo publicada (exibido no Hero).
+- `projects` (textos em `messages.projects.entries[id]`):
   1. **Pulso TV** (React, Vinext, Vite, TS, Tailwind, Cloudflare Workers)
   2. **Sistema de Folgas** (React, Vite, Django, DRF, JWT, PostgreSQL, Supabase)
   3. **API Pulso** (Hono, Cloudflare Workers, D1, React, TS, JWT, Zod)
@@ -217,14 +221,14 @@ stateDiagram-v2
 
   state BootstrapScript {
     [*] --> ReadStorage: localStorage.getItem("portfolio-theme")
-    ReadStorage --> ApplyDark: Se null ou "dark"
-    ReadStorage --> ApplyLight: Se === "light"
-    ApplyDark --> SetDarkMeta: classList.remove("light") & theme-color = #091413
-    ApplyLight --> SetLightMeta: classList.add("light") & theme-color = #f3faf9
+    ReadStorage --> ApplyDark: Se "dark" ou (null e sistema escuro)
+    ReadStorage --> ApplyLight: Se "light" ou (null e sistema claro)
+    ApplyDark --> SetDarkMeta: classList.remove("light") & theme-color = #080f0c
+    ApplyLight --> SetLightMeta: classList.add("light") & theme-color = #f3f8f5
   }
 
   BootstrapScript --> ReactHydration: Hidratação do React
-  ReactHydration --> ThemeProviderInit: ThemeProvider lê localStorage
+  ReactHydration --> ThemeProviderInit: ThemeProvider lê a classe aplicada no html
 
   state UserInteraction {
     [*] --> ThemeToggleClicked: Usuário clica no botão de Sol/Lua
@@ -238,17 +242,10 @@ stateDiagram-v2
 
 ## 6. Sistema de Animação & Motion Pipeline
 
-1. **GSAP + ScrollTrigger (`src/lib/gsap.ts`)**:
-   - `Hero`: Timeline encadeada com `.from()` escalonando `.hero-title`, `.hero-role`, `.hero-desc`, `.hero-cta` e `.hero-avatar`.
-   - `About`: `ScrollTrigger` ativado em `top 85%` para o cabeçalho e `top 88%` escalonando `.fact-card`.
-   - `Technologies`: `ScrollTrigger` disparando animação com stagger em `.tech-group`.
-   - `Projects`: Animação suave nos cards do desktop (`.desktop-project-card`).
-   - `Contact`: Entrada suave do container `.contact-panel`.
-2. **Acessibilidade estrita**:
-   - Todas as animações GSAP verificam `window.matchMedia("(prefers-reduced-motion: reduce)").matches` e retornam imediatamente caso o usuário prefira movimento reduzido.
-3. **CSS Específico (`src/styles.css`)**:
-   - Efeito de digitação com cursor piscante: `.typing-role` com `@keyframes typing` e `@keyframes blink`.
-   - Backdrops com gradientes radiais em OKLCH: `.hero-backdrop`.
+1. **Entrada do Hero (CSS puro)**: `.rise` (fade + translate, atraso por `--rise-delay`) e `.portrait-in` (revelação do retrato com `clip-path`).
+2. **Revelação ao rolar (`useRevealOnScroll`)**: elementos com `data-reveal=""` abaixo da dobra recebem `pending` e passam a `visible` ao entrar na viewport; atraso escalonado via `--reveal-delay`.
+3. **Microinterações**: deslocamento de ícones em botões (`buttonIconNudge`), sublinhado animado (`link-underline`), zoom sutil das capturas (`.project-shot`) apenas em dispositivos com hover.
+4. **Acessibilidade estrita**: com `prefers-reduced-motion: reduce`, animações e transições são neutralizadas em CSS e o hook não esconde nada; a troca de tema desativa transições (`.theme-switching`); impressão força tudo visível.
 
 ---
 
@@ -257,25 +254,25 @@ stateDiagram-v2
 O projeto utiliza **Tailwind CSS v4** com tokens declarados via `@theme inline` em `src/styles.css`:
 
 ```css
-/* Paleta Dark (Padrão) */
---background: oklch(0.13 0.015 165); /* #091413 tom verde petróleo profundo */
---foreground: oklch(0.96 0.008 165); /* Quase branco esmeralda */
---surface: oklch(0.175 0.018 165); /* Fundo de cards */
---surface-2: oklch(0.225 0.022 165); /* Hover / elementos ativos */
---primary: oklch(0.78 0.13 165); /* Verde menta vibrante (acento principal) */
---border: oklch(0.3 0.025 165); /* Linhas e separadores sutis */
---border-strong: oklch(0.44 0.035 165);
+/* Paleta Dark (padrão sem preferência do sistema) */
+--background: oklch(0.16 0.014 165); /* #080f0c verde-floresta escuro */
+--foreground: oklch(0.95 0.008 165); /* 16.8:1 */
+--muted-foreground: oklch(0.72 0.022 165); /* 7.9:1 */
+--primary: oklch(0.78 0.12 165); /* menta, 10.2:1 */
+--border: oklch(0.3 0.02 165);
+--border-strong: oklch(0.52 0.04 165); /* bordas de campos ≥ 3:1 */
 
 /* Paleta Light (.light) */
---background: oklch(0.98 0.008 165); /* #f3faf9 tom gelo com leve matiz menta */
---foreground: oklch(0.18 0.03 165); /* Texto escuro com alto contraste */
---surface: oklch(0.998 0.004 165);
---primary: oklch(0.46 0.13 165); /* Verde menta mais escuro para contraste AA */
+--background: oklch(0.975 0.007 165); /* #f3f8f5 */
+--foreground: oklch(0.19 0.025 165); /* 17.1:1 */
+--muted-foreground: oklch(0.4 0.025 165); /* 8.5:1 */
+--primary: oklch(0.46 0.12 165); /* 6.1:1 (texto claro sobre ele: 6.3:1) */
 ```
 
+- **Utilitários próprios**: `shell` (container), `section-y` (ritmo vertical), `display` (títulos em Archivo semi-expandida), `eyebrow` (rótulos mono), `link-underline`.
 - **Fontes**:
-  - Sans: `Inter Tight`, sans-serif (para títulos e texto corrido)
-  - Mono: `JetBrains Mono`, monospace (para tags, labels, números de seção `01 //` e código)
+  - Sans: `Inter Tight` para texto corrido; `Archivo` variável (`wdth` 100–125) apenas em títulos (`font-display`)
+  - Mono: `JetBrains Mono` 400/500 para cargo, rótulos, hosts e stacks
 
 ---
 
